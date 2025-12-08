@@ -7,9 +7,8 @@ transport . deux roues:
   formule:
     variations:
       - si: transport . deux roues . présent = oui
-#          est défini: usager
         alors: empreinte
-      - sinon: empreinte moyenne
+      - sinon: empreinte moyenne * 0
   unité: kgCO2e
 
 #transport . deux roues . usager:
@@ -18,7 +17,7 @@ transport . deux roues:
 #    Les scooters et motos sont aujourd'hui très majoritairement des engins qui fonctionnent au pétrole. Les scooters électriques ayant fait une réelle percée, ils sont ajoutés au modèle.
 
 transport . deux roues . empreinte:
-  formule: (empreinte au km + entretien pondéré) * km
+  formule: (empreinte au km + entretien pondéré) * km * 12
   unité: kgCO2e
 
 transport . deux roues . empreinte moyenne:
@@ -30,10 +29,12 @@ transport . deux roues . empreinte moyenne:
 
 transport . deux roues . km:
   applicable si: présent
-  question: Combien de km allez vous parcourir en deux roues pour aller et revenir de votre lieu de séjour ?
+  question: Dans le cadre de vos déplacements professionnels, quelle distance parcourez-vous en deux roues chaque mois ?
+  description: |
+    Indiquez la distance moyenne mensuelle parcourue en deux-roues (moto) dans le cadre de vos déplacements professionnels.
   par défaut: 200
   plancher: 0
-  unité: km
+  unité: km/mois
   suggestions:
     200 km: 200
     400 km: 400

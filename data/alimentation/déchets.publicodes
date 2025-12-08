@@ -6,7 +6,7 @@ alimentation . déchets:
     les ménages sont des emballages alimentaires)
   formule:
     variations:
-      - si: tri = 'yes'
+      - si: tri = 'jamais'
         alors: 0.01
       - si: tri = 'parfois'
         alors: 0.02
@@ -19,10 +19,13 @@ alimentation . déchets:
 #            - gestes
 
 alimentation . déchets . tri:
-  question: Avez-vous l'habitude de faire le tri même lors de vos week-ends et vacances ?
+  question: Avez-vous l'habitude de faire le tri au bureau ?
   description: |
-    Répondez "Oui" si le geste de tri est un geste automatique pour vous (même si vous ne disposez pas toujours de poubelles de tri à votre disposition). Répondez "Oui parfois" si ce 
-    n'est pas un réflexe et qu'il vous arrive parfois d'oublier. Répondez "Non" si vous ne faites jamais le tri.
+    Répondez "Oui" si le geste de tri est un geste automatique pour vous (même si vous ne disposez pas toujours de poubelles de tri à votre disposition). 
+
+    Répondez "Oui parfois" si ce n'est pas un réflexe et qu'il vous arrive parfois d'oublier. 
+    
+    Répondez "Non" si vous ne faites jamais le tri.
   par défaut: "'non'"
   formule:
     une possibilité:

@@ -1,44 +1,23 @@
 transport . avion:
+  applicable si: présent
   icônes: ✈️
-  description: |
-    ![](https://images.unsplash.com/photo-1525624286412-4099c83c1bc8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80)
-
-    L'empreinte de l'avion est conséquente. Il n'est pas forcément plus polluant *au kilomètre* qu'une voiture qui ne déplace qu'une personne,
-    mais la distance et surtout la distance parcourue en une heure (qu'on appelle couramment la vitesse), permet de changer de continent pour un week-end.
-
-    Gardons aussi en tête que le Français moyen ne prend pas ou peu l'avion. L'essentiel de l'empreinte de l'aviation est donc concentrée sur 10% ou moins des Français.
-
-    > Pour la définition des gammes de vol, de court-courrier à long-courrier, nous utilisons [cette discussion](https://bilans-ges.ademe.fr/forum/viewtopic.php?t=4192#p5530) du forum Base Carbone.
-
-  note: |
+  description: 
+  note: 
     Nous avons fait le choix de demander le total d'heures de vol, plutôt que de demander à l'utilisateur de renseigner chacun de ses vols
     via l'aéroport de départ, d'arrivée et la classe économique. C'est une évolution possible par la suite,
     voir [ce simulateur](https://futur.eco/simulateur/transport/avion/impact) où une partie du travail est déjà faite.
 
     A noter aussi que les escales entrainent des décollages supplémentaires, qui consomment plus de carburant qu'une vitesse de croisière.
     C'est aussi un paramètre à prendre en compte par la suite.
+  formule: empreinte 
 
-    Pour un modèle plus détaillé de l'empreinte de l'avion, nous avons trouvé deux sources.
-
-    L'algorithme complet de l'appli North, disponible [ici](https://github.com/tmrowco/northapp-contrib/blob/master/co2eq/flights/index.js).
-
-    Le pseudo-algorithme de myclimate.org, ci-dessous.
-
-    ![](https://imgur.com/hIVvuIw.jpg).
-  formule:
-    variations:
-      - si:
-          est défini: usager
-        alors: 0 * empreinte
-      - sinon: 0 * empreinte moyenne
-
-transport . avion . empreinte moyenne:
-  valeur: transport . avion . empreinte
-  contexte:
-    transport . avion . usager: oui
-    transport . avion . court courrier . heures de vol: transport . avion . court courrier . durée moyenne
-    transport . avion . moyen courrier . heures de vol: transport . avion . moyen courrier . durée moyenne
-    transport . avion . long courrier . heures de vol: transport . avion . long courrier . durée moyenne
+# transport . avion . empreinte moyenne:
+#   valeur: transport . avion . empreinte
+#   contexte:
+#     transport . avion . usager: oui
+#     transport . avion . court courrier . heures de vol: transport . avion . court courrier . durée moyenne
+#     transport . avion . moyen courrier . heures de vol: transport . avion . moyen courrier . durée moyenne
+#     transport . avion . long courrier . heures de vol: transport . avion . long courrier . durée moyenne
 
 transport . avion . empreinte:
   formule:
@@ -47,14 +26,14 @@ transport . avion . empreinte:
       - moyen courrier
       - long courrier
 
-transport . avion . usager:
-  question: Avez-vous pris l'avion au moins une fois ces 3 dernières années ?
-  description: |
-    Nous faisons ici le choix de vous proposer de compter l'impact de vos déplacements en avion sur plusieurs années. L'empreinte sur le climat est telle qu'il est important de prendre cela en compte.
+# transport . avion . usager:
+#   question: Avez-vous pris l'avion au moins une fois ces 3 dernières années ?
+#   description: |
+#     Nous faisons ici le choix de vous proposer de compter l'impact de vos déplacements en avion sur plusieurs années. L'empreinte sur le climat est telle qu'il est important de prendre cela en compte.
 
-    Ainsi, que vous preniez l'avion tous les ans ou non, répondez "oui" et vous aurez l'option par la suite de saisir vos temps de vol des 3 dernières années.
+#     Ainsi, que vous preniez l'avion tous les ans ou non, répondez "oui" et vous aurez l'option par la suite de saisir vos temps de vol des 3 dernières années.
 
-    > 💡 Si vous avez pris l'avion pour faire Paris-New York en 2021 (environ 17h A/R), vos émissions associées (près de 2 tonnes) seront échelonnées sur les 3 dernières années.
+#     > 💡 Si vous avez pris l'avion pour faire Paris-New York en 2021 (environ 17h A/R), vos émissions associées (près de 2 tonnes) seront échelonnées sur les 3 dernières années.
 
 transport . avion . court courrier:
   formule: heures de vol * vitesse moyenne * empreinte par km
@@ -72,8 +51,8 @@ transport . avion . court courrier . empreinte par km:
   unité: kgCO2e/km
 
 transport . avion . court courrier . heures de vol:
-  applicable si: usager
-  question: Sur une année, combien d'heures voyagez-vous sur des vols de moins de 2h (court-courrier) ?
+  applicable si: présent
+  question: Sur l'année passée, combien d'heures avez-vous voyagé sur des vols de moins de 2h (court-courrier) ?
   description: |
     Comptez les heures que vous avez passées dans un avion pour des trajets de moins de 2h (ce qui correspond à des vols d'une distance inférieure à 1000km environ). Si vous faites des escales, additionnez simplement les durées de chaque vol.
 
@@ -136,8 +115,8 @@ transport . avion . moyen courrier . empreinte par km:
   unité: kgCO2e/km
 
 transport . avion . moyen courrier . heures de vol:
-  applicable si: usager
-  question: Sur une année, combien d'heures voyagez-vous sur des vols entre 2 et 6h (moyen-courrier) ?
+  applicable si: présent
+  question: Sur l'année passée, combien d'heures avez-vous voyagé sur des vols de 2 à 6h (moyen-courrier) ?
   description: |
     Comptez les heures que vous avez passées dans un avion pour des trajets entre 2h et 6h (ce qui correspond à des vols d'une distance comprise entre 1000km et 3500km environ). Si vous faites des escales, additionnez simplement les durées de chaque vol.
 
@@ -199,8 +178,8 @@ transport . avion . long courrier . empreinte par km:
   unité: kgCO2e/km
 
 transport . avion . long courrier . heures de vol:
-  applicable si: usager
-  question: Sur une année, combien d'heures voyagez-vous sur des vols de plus de 6h (long-courrier) ?
+  applicable si: présent
+  question: Sur l'année passée, combien d'heures avez-vous voyagé sur des vols de plus de 6h (long-courrier) ?
   description: |
     Comptez les heures que vous avez passées dans un avion pour des trajets de plus de 6h (ce qui correspond à des vols d'une distance supérieure à 3500km environ). Si vous faites des escales, additionnez simplement les durées de chaque vol.
 

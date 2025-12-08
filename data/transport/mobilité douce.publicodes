@@ -1,8 +1,8 @@
 transport . mobilité douce:
 # Cette variable "intermédiaire" est un hack pour réussir à mettre une mosaique fille après une mosaique mère (même si le choix mobilité douce n'est pas à l'heure actuelle proposé dans la mosaique mère)
   applicable si: présent
-  titre: Déplacements actifs
-  icônes: 🚋
+  titre: Mobilité douce (marche, vélo...)
+  icônes: 🚶‍♀️🚲
   formule: transport . mobilité douce . type * 1
 
 transport . mobilité douce . type:
@@ -62,7 +62,7 @@ transport . mobilité douce . type . marche:
   note: L'empreinte de la marche est considérée comme nulle.
 
 transport . mobilité douce . type . marche . présent:
-  question: Allez-vous vous déplacer en marchant pour vous rendre ou revenir de votre lieu de séjour ?
+  question: Dans le cadre de vos déplacements professionnels, vous déplacez-vous en marchant ?
   par défaut: non
 
 transport . mobilité douce . type . vélo:
@@ -70,7 +70,7 @@ transport . mobilité douce . type . vélo:
   applicable si: présent
   icônes: 🦵🚲
 # On proratise la construction en fonction de la durée du séjour car il s'agit très certainement d'un vélo de location
-  formule: construction amortie * (transport . durée séjour / 365)
+  formule: construction amortie
   unité: kgCO2e
   note: |
     Nous considérons que **l'usage** du vélo musculaire a une empreinte nulle.
@@ -80,7 +80,7 @@ transport . mobilité douce . type . vélo:
     Nous avons tous les ingrédients ici pour le faire, mais c'est loin d'être aussi simple. Le surplus d'activité physique est aussi associé à des risques et donc des dépenses de santé bien moindres.
 
 transport . mobilité douce . type . vélo . présent:
-  question: Allez-vous vous déplacer avec un vélo "classique" (i.e. sans assistance électrique)  pour vous rendre ou revenir de votre lieu de séjour ?
+  question: Dans le cadre de vos déplacements professionnels, vous déplacez-vous avec un vélo "classique" (i.e. sans assistance électrique) ?
   par défaut: non
 
 transport . mobilité douce . type . vélo . construction amortie:
@@ -110,13 +110,13 @@ transport . mobilité douce . type . vae:
   titre: Vélo à Assistance Électrique
   icônes: 🚲⚡
   applicable si: présent
-  formule: empreinte au km * km
+  formule: empreinte au km * km * 12
   unité: kgCO2e
   note: |
     Les vélos-cargo à assistance électrique sont à classer dans la catégorie VAE. La différence de motorisation et de poids, et donc d'empreinte, est trop minime pour mériter une catégorie à part.
 
 transport . mobilité douce . type . vae . présent:
-  question: Allez-vous vous déplacer avec un Vélo à Assistance Électrique (VAE) pour vous rendre ou revenir de votre lieu de séjour ?
+  question: Dans le cadre de vos déplacements professionnels, vous déplacez-vous avec un Vélo à Assistance Électrique (VAE) ?
   par défaut: non
 
 transport . mobilité douce . type . vae . empreinte au km:
@@ -125,11 +125,10 @@ transport . mobilité douce . type . vae . empreinte au km:
   note: FE issu de la base empreinte (Vélo/à assistance électrique) sur le périmètre complet (fabrication + usage)
 
 transport . mobilité douce . type . vae . km:
-  question: Combien de kilomètres allez-vous faire en vélo électrique pour aller et revenir de votre lieu de séjour ?
-  par défaut: 20
-  unité: km
+  question: Dans le cadre de vos déplacements professionnels, quelle distance parcourez-vous avec un Vélo à Assistance Électrique (VAE) chaque mois ?
+  par défaut: 100 
+  unité: km/mois
   suggestions:
-    10 km: 10
     20 km: 20
     50 km: 50
     100 km: 100
@@ -139,11 +138,11 @@ transport . mobilité douce . type . trottinette électrique:
   titre: Trottinette électrique
   icônes: 🛴⚡
   applicable si: présent
-  formule: empreinte au km * km
+  formule: empreinte au km * km * 12
   unité: kgCO2e
 
 transport . mobilité douce . type . trottinette électrique . présent:
-  question: Allez-vous vous déplacer avec une trottinette électrique pour vous rendre ou revenir de votre lieu de séjour  ?
+  question: Dans le cadre de vos déplacements professionnels, vous déplacez-vous avec une trottinette électrique ?
   par défaut: non
 
 transport . mobilité douce . type . trottinette électrique . empreinte au km:
@@ -152,10 +151,10 @@ transport . mobilité douce . type . trottinette électrique . empreinte au km:
   note: FE issu de la base empreinte (Trottinette) sur le périmètre complet (fabrication + usage)
 
 transport . mobilité douce . type . trottinette électrique . km:
-  question: Combien de kilomètres allez-vous faire en trottinette électrique pour aller et revenir de votre lieu de séjour ?
-  par défaut: 1000
-  unité: km
+  question: Dans le cadre de vos déplacements professionnels, quelle distance parcourez-vous avec une trottinette électrique chaque mois ?
+  par défaut: 50
+  unité: km/mois
   suggestions:
-    10 km: 10
     20 km: 20
     50 km: 50
+    100 km: 100

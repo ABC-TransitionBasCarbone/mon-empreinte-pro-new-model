@@ -41,7 +41,7 @@ bilan:
     somme:
       - logement
       - transport
-      - séjour
+      - DT
       - alimentation
       - divers
 #      - services sociétaux
@@ -73,9 +73,9 @@ déforestation:
 #    en couple: 2
 #    en famille: 4
 #
-#bilan . durée séjour:
-#  titre: Durée du séjour
-#  question: Quelle sera la durée total de votre séjour ?
+#bilan . durée DT:
+#  titre: Durée du DT
+#  question: Quelle sera la durée total de votre DT ?
 #  description: |
 #    A vous de nous dire combien de temps vous allez rester dans la région Hauts-de-France.
 #  par défaut: 2

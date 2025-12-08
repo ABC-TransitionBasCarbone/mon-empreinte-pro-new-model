@@ -8,7 +8,6 @@ alimentation . nombre de plats poisson:
 
 alimentation . repas . réduire viande:
 alimentation . repas . réduire viande . max 1 par jour:
-  applicable si: nombre de plats viande > transport . durée séjour
   titre: Limiter la viande à un repas par jour pendant votre séjour
   icônes: 🥩1️⃣
   formule: différence séjour
@@ -23,8 +22,8 @@ alimentation . repas . réduire viande . max 1 par jour . différence séjour:
 alimentation . repas . réduire viande . max 1 par jour . nouveau régime:
   formule:
     somme:
-      - (plats . viande blanche / nombre de plats viande) * transport . durée séjour #Nb de repas total = 2 * transport . durée séjour --> on divise donc bien par deux
-      - (plats . viande rouge / nombre de plats viande) * transport . durée séjour
+      - (plats . viande blanche / nombre de plats viande) #Nb de repas total = 2 * transport . durée séjour --> on divise donc bien par deux
+      - (plats . viande rouge / nombre de plats viande)
       - plats . végétalien
       - plats . végétarien
       - plats . poisson gras
@@ -32,7 +31,7 @@ alimentation . repas . réduire viande . max 1 par jour . nouveau régime:
       - compensation végétarienne
 
 alimentation . repas . réduire viande . max 1 par jour . nouveau régime . compensation végétarienne:
-  formule: plats . végétarien . empreinte * (nombre de plats viande - transport . durée séjour)
+  formule: plats . végétarien . empreinte * nombre de plats viande
 
 #alimentation . repas . réduire viande . max 2 par semaine:
 #  applicable si: nombre de plats viande > 2
@@ -189,7 +188,7 @@ alimentation . devenir végétarien . différence séjour:
 
 alimentation . devenir végétarien . différence séjour petits déjeuners:
   applicable si: alimentation . petit déjeuner . type = 'britannique'
-  formule: (alimentation . petit déjeuner . par jour - un jour petit déjeuner végétalien) * transport . durée séjour
+  formule: (alimentation . petit déjeuner . par jour - un jour petit déjeuner végétalien) 
 
 alimentation . devenir végétarien . différence séjour repas:
   formule: plats - recalcul
@@ -249,7 +248,7 @@ alimentation . devenir végétalien . différence séjour petits déjeuners:
       - toutes ces conditions:
           - alimentation . petit déjeuner . type = 'lait céréales'
           - alimentation . type de lait = 'lait de vache'
-  formule: (alimentation . petit déjeuner . par jour - un jour petit déjeuner végétalien) * transport . durée séjour
+  formule: (alimentation . petit déjeuner . par jour - un jour petit déjeuner végétalien)
 
 alimentation . un jour petit déjeuner végétalien:
   valeur: petit déjeuner . par jour
@@ -301,7 +300,7 @@ alimentation . boisson . réduire café . max deux par jour:
   applicable si: boisson . chaude . café . nombre > 2 tasse/jour
   titre: Se limiter à deux cafés par jour
   icônes: ☕️2️⃣
-  formule: (boisson . chaude . café - (2 * boisson . tasse de café)) * transport . durée séjour
+  formule: (boisson . chaude . café - (2 * boisson . tasse de café)) 
   description: |
     Saviez-vous que la consommation de café pouvait avoir une importance non négligeable dans le calcul de votre empreinte carbone ? Chaque tasse de café ajoute 120 grammes de CO₂e à votre empreinte carbone.
 
@@ -315,7 +314,7 @@ alimentation . boisson . réduire café . max deux par jour:
 #      - alimentation . boisson . réduire café . remplace un café par jour par thé
 #  titre: Se limiter à un café par jour
 #  icônes: ☕️1️⃣
-#  formule: (boisson . chaude . café - boisson . tasse de café) * transport . durée séjour
+#  formule: (boisson . chaude . café - boisson . tasse de café) 
 #  description: |
 #    Saviez-vous que la consommation de café pouvait avoir une importance non négligeable dans le calcul de votre empreinte carbone ? Chaque tasse de café ajoute 120 grammes de CO₂e à votre empreinte carbone.
 #
@@ -325,7 +324,7 @@ alimentation . boisson . réduire café . remplace un café par jour par thé:
   applicable si: boisson . chaude . café . nombre > 1 tasse/jour
   titre: Remplacer une tasse de café par du thé
   icônes: ☕️🫖
-  formule: (boisson . tasse de café - boisson . tasse de thé) * 1 tasse/jour * transport . durée séjour
+  formule: (boisson . tasse de café - boisson . tasse de thé) * 1 tasse/jour
   description: |
     Le café a une empreinte carbone largement supérieure au thé (près de 20 fois supérieure !).
 
@@ -341,7 +340,7 @@ alimentation . boisson . réduire café . remplace un café par jour par thé:
 #      - alimentation . boisson . réduire café . remplace un café par jour par thé
 #  titre: Remplacer le café par du thé
 #  icônes: ☕️🫖
-#  formule: boisson . chaude . café . nombre * (boisson . tasse de café - boisson . tasse de thé) * transport . durée séjour
+#  formule: boisson . chaude . café . nombre * (boisson . tasse de café - boisson . tasse de thé) 
 #  description: |
 #    Le thé a une empreinte carbone moins élevée que le café.
 #
@@ -355,7 +354,7 @@ alimentation . boisson . réduire café . remplace par chicorée:
 #      - alimentation . boisson . réduire café . max un par jour
   titre: Remplacer le café par de la chicorée
   icônes: ☕️🌿
-  formule: boisson . chaude . café . nombre * (boisson . tasse de café - boisson . tasse de chicorée) * transport . durée séjour
+  formule: boisson . chaude . café . nombre * (boisson . tasse de café - boisson . tasse de chicorée) 
   description: |
     La chicorée a une empreinte carbone moins élevée que le café. Utilisée depuis longtemps comme substitut au café, cette plante (dont la France est le premier producteur mondial !) fait en ce moment un retour progressif dans nos tasses, pour des raisons écologiques et de santé.
 
@@ -366,7 +365,7 @@ alimentation . boisson . réduire chocolat chaud . max un par jour:
   applicable si: boisson . chaude . chocolat chaud . nombre > 1 tasse/jour
   titre: Se limiter à un chocolat chaud par jour
   icônes: ☕️1️⃣
-  formule: (boisson . chaude . chocolat chaud - boisson . tasse de chocolat chaud) * transport . durée séjour
+  formule: (boisson . chaude . chocolat chaud - boisson . tasse de chocolat chaud)
   description: |
     Le chocolat chaud a une empreinte carbone non négligeable : près de 600 gCO2e / tasse !
 
