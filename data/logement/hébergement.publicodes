@@ -168,7 +168,7 @@ logement . hébergement . nuitées . hotel . nombre de nuitées:
   description: |
     Renseignez ici les nuits passées dans un hôtel, une chambre privée ou chambre d'hôtes.
   plancher: 0
-  par défaut: transport . durée séjour - 1
+  par défaut: 0
   note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
 #  suggestions:
 #    un week-end: 1
@@ -196,7 +196,7 @@ logement . hébergement . nuitées . résidence de tourisme . nombre de nuitées
   description: |
     Renseignez ici les nuits passées en résidence de tourisme, apparhôtel ou vilage vacances
   plancher: 0
-  par défaut: transport . durée séjour - 1
+  par défaut: 0
   note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
 #  suggestions:
 #    un week-end: 1
@@ -232,7 +232,7 @@ logement . hébergement . nuitées . camping . nombre de nuitées:
   description: |
     Renseignez ici les nuits passées en camping (tente, hamac, bungalow...).
   plancher: 0
-  par défaut: transport . durée séjour - 1
+  par défaut: 0
   note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
 #  suggestions:
 #    un week-end: 1
@@ -271,7 +271,7 @@ logement . hébergement . nuitées . auberge de jeunesse . nombre de nuitées:
   description: |
     Renseignez ici les nuits passées en auberge de jeunesse (dortoir).
   plancher: 0
-  par défaut: transport . durée séjour - 1
+  par défaut: 0
   note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
 #  suggestions:
 #    un week-end: 1
@@ -312,7 +312,7 @@ logement . hébergement . nuitées . locations . nombre de nuitées:
   description: |
     Renseignez ici les nuits passées en location meublée (Airbnb, Abritel...).
   plancher: 0
-  par défaut: transport . durée séjour - 1
+  par défaut: 0
   note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
 #  suggestions:
 #    un week-end: 1
@@ -370,7 +370,7 @@ logement . hébergement . aquatique:
   formule:
     variations:
       - si: choix utilisateur
-        alors: (empreinte totale / habitants) * transport . durée séjour
+        alors: (empreinte totale / habitants)
       - sinon: 0 #On considère que par défaut un hébergement n'a pas de piscine --> à sourcer toutefois !
 #  formule:
 #    somme:
