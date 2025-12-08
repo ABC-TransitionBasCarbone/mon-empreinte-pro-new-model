@@ -1,19 +1,14 @@
 divers:
-  titre: Loisirs
-  abréviation: lois.
+  titre: Numérique
+  abréviation: num.
   description: |
-    Nous avons rangé dans cette catégorie tous les objets de notre quotidien, du t-shirt à la machine à laver,
-    mais également le numérique (des usages aux devices).
-  note: |
-    Notre modèle n'est clairement pas exhaustif en ce qui concerne ce poste, une sous-estimation de l'empreinte est donc probable.
-
-    Tant d'achats du quotidien (du tapis de bain, détecteur à incendie, lunettes de soleil...) n'y sont pas encore inclus.
-  icônes: 📦
+    Cette catégorie regroupe les objets et usages numériques propre aux usages professionnels.
+  icônes: 🧑‍💻
   formule:
     somme:
 #      - animaux domestiques
-      - loisirs
-#      - numérique
+      # - loisirs
+      - numérique
 #      - textile
 #      - électroménager
 #      - ameublement

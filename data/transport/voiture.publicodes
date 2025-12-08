@@ -79,7 +79,7 @@ transport . voiture:
                       une de ces conditions:
                         - transport . train . présent
                         - transport . deux roues . présent
-                        - transport . car longue distance . présent
+                        # - transport . car longue distance . présent
                     alors: 0
                   - sinon: empreinte par défaut #pour le cas où l'utilisateur répond "jnsp" à la mosaique de transport pour venir en HdF
 #            - sinon: empreinte par défaut #pour le cas où l'utilisateur répond "jnsp" à la mosaique de transport pour venir en HdF
@@ -100,17 +100,13 @@ transport . voiture . km:
 #  ordre: 1
   titre: Km en voiture
   applicable si: voiture . présent
-  question: Quelle distance allez-vous parcourir en voiture pour aller et revenir de votre lieu de séjour  ?
+  question: Dans le cadre de vos déplacements professionnels, combien de kilomètres parcourrez-vous en voiture chaque mois ?
   description: |
-    Ne cherchez pas à renseignez le kilométrage exact, l'arrondi à la dizaine ou centaine supérieure fera l'affaire.
-# It seems that there is a [publicodes bug](https://github.com/publicodes/publicodes/issues/517). For now, we can't use `km annuels moyen réel` directly here, until the problem is fixed.
-#  par défaut: 8210  
+    A adapter  
   par défaut: 500 
-  unité: km
+  unité: km/mois
   plancher: 0
-  suggestions:
-    Paris ⇄ Lille: 440
-    Bruxelles ⇄ Lille : 220
+
 
 #transport . voiture . km annuels moyen réel:
 #  #8210
@@ -172,23 +168,35 @@ transport . voiture . nombre véhicules circulation . VUL:
     Ce chiffre est issu des [Données sur le parc automobile français au 1er janvier 2023](https://www.statistiques.developpement-durable.gouv.fr/donnees-sur-le-parc-automobile-francais-au-1er-janvier-2023?rubrique=&dossier=1348).
 
     Nous considérons néanmoins les données pour l'année 2022 car la distance moyenne parcourue par véhicule n'est dispo que pour 2022.
+    On garde la sémantique du modèle source NGC (propriétaire, régulier non propriétaire, non régulier) pour ne pas se compliquer quand bien même elle n'est pas des plus claire au regard des cas d'utilisation (proprio, location/emprunt, covoit)
 
-#On garde la sémantique du modèle source NGC (propriétaire, régulier non propriétaire, non régulier) pour ne pas se compliquer quand bien même elle n'est pas des plus claire au regard des cas d'utilisation (proprio, location/emprunt, covoit)
+transport . voiture . passagers:
+  applicable si: voiture . présent
+  question: Combien il y a t-il en moyenne de passagers avec vous lors de vos déplacements professionnels en voiture ?
+  description: Cette question permet de répartir les émissions de votre voiture entre les différents passagers, selon le nombre. Si vous êtes seul dans la voiture, indiquez 1. S'il y a vous et un passager, indiquez 2. Comme nous raisonnons en moyenne par mois, vous pouvez remplir des nombres décimaux. (Par exemple si vous avez un passager 1 trajet sur 2 repondez 1.5)
+  par défaut: 1
+  suggestions:
+    seul: 1
+    tout le temps accompagné d'une personne: 2
+    parfois accompagné d'une personne: 1.5
+
+
+
 transport . voiture . utilisateur:
 #  ordre: 2
 #  question: Allez-vous utiliser votre propre voiture, faire du covoiturage ou bien utiliser une voiture louée ou empruntée ?
-  question: Parmi les situations ci-dessous, dans quel cas vous trouverez-vous pour venir en Hauts-de-France en voiture ?
-  applicable si: km > 0
-  formule:
-    une possibilité:
-      choix obligatoire: oui
-      possibilités:
-        - propriétaire
-        - propriétaire covoit
-        - régulier non propriétaire
-        - régulier non propriétaire covoit
-        - non régulier
-#  par défaut: "'propriétaire'"
+  # question: Parmi les situations ci-dessous, dans quel cas vous trouverez-vous pour venir en Hauts-de-France en voiture ?
+  # applicable si: km > 0
+  # formule:
+    # une possibilité:
+    #   choix obligatoire: oui
+    #   possibilités:
+    #     - propriétaire
+    #     - propriétaire covoit
+    #     - régulier non propriétaire
+    #     - régulier non propriétaire covoit
+    #     - non régulier
+  par défaut: "'propriétaire'"
 #  par défaut: "'régulier non propriétaire'"
 #  par défaut: "'non régulier'"
 
@@ -235,7 +243,8 @@ transport . voiture . empreinte par défaut:
   contexte:
     voiture . présent: oui
     voiture . km: 500
-    voiture . voyageurs: transport . voyageurs
+    voiture . passagers: 1.4
+    # ici on met le taux de remplissage moyen
     voiture . utilisateur: "'propriétaire'"
     voiture . gabarit: "'berline'"
     voiture . motorisation: "'thermique'"
@@ -302,7 +311,7 @@ transport . voiture . empreinte régulier non propriétaire électrique:
 transport . voiture . empreinte non régulier thermique:
   valeur: voiture . empreinte calculée
   contexte:
-    voiture . voyageurs: transport . voyageurs + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit)
+    voiture . passagers: 1.4 + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit), on prend le taux de remplissage moyen 
     voiture . construction: 0 #En vérifiant dans quick-doc le 0 ici n'est pas overuled par le "propriétaire" de voiture . utilisateur (dans cette fonction contexte) qui aurait pu se répercuter dans la variable voiture . construction:
     voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100"
     voiture . thermique . carburant: "'essence E5 ou E10'"
@@ -315,7 +324,7 @@ transport . voiture . empreinte non régulier thermique:
 transport . voiture . empreinte non régulier hybride:
   valeur: voiture . empreinte calculée
   contexte:
-    voiture . voyageurs: transport . voyageurs + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit)
+    voiture . passagers: 1.4 + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit), on prend le taux de remplissage moyen 
     voiture . construction: 0 #En vérifiant dans quick-doc le 0 ici n'est pas overuled par le "propriétaire" de voiture . utilisateur (dans cette fonction contexte) qui aurait pu se répercuter dans la variable voiture . construction:
     voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100"
     voiture . thermique . carburant: "'essence E5 ou E10'"
@@ -328,7 +337,7 @@ transport . voiture . empreinte non régulier hybride:
 transport . voiture . empreinte non régulier électrique:
   valeur: voiture . empreinte calculée
   contexte:
-    voiture . voyageurs: transport . voyageurs + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit)
+    voiture . passagers: 1.4 + 1 #Non régulier implique une personne de plus dans la voiture (le conducteur qui prend en covoit), on prend le taux de remplissage moyen 
     voiture . construction: 0 #En vérifiant dans quick-doc le 0 ici n'est pas overuled par le "propriétaire" de voiture . utilisateur (dans cette fonction contexte) qui aurait pu se répercuter dans la variable voiture . construction:
     voiture . utilisateur: "'propriétaire'" # Nécessaire pour la variable "consommation aux 100"
     voiture . électrique . consommation aux 100:
@@ -337,31 +346,29 @@ transport . voiture . empreinte non régulier électrique:
         voiture . utilisateur: "'propriétaire'"
 
 transport . voiture . empreinte calculée:
-#  formule: (usage + construction) / voyageurs / durée séjour #Je commente car je ne sais plus pourquoi j'avais mis divisé par durée séjour (alors qu'on a un amortissement par km en plus).
-  formule: (usage + construction) / voyageurs  
-  unité: kgCO2e
+  formule: (usage + construction) / passagers
 
-transport . voiture . voyageurs:
-#  ordre: 3
-  titre: Nombre de voyageurs pour venir en Hauts-de-France
-#  question: Quel sera le nombre moyen de voyageurs dans la voiture ?
-  applicable si: transport . voiture . présent
-# Suite à une demande des Hauts-de-France on affecte directement "transport . voyageurs" (nombre de personnes qui voyageront sur la durée du séjour) --> En conséquence si l'utilisateur choisit covoiturage dans "utilisateurs" on considère un covoitureur
-# On garde quand même la variable "transport . voiture . voyageurs" pour simplifier d'éventuelles futures modif plus tard (ex : retour du questionnement)
-  formule : transport . voyageurs + covoitureurs #Suite à une demande des Hauts-de-France on affecte directement "transport . voyageurs" (nombre de personnes qui voyageront sur la durée du séjour) --> En conséquence si l'utilisateur choisit covoiturage dans "utilisateurs" on considère un covoitureur
-  description: |
-    Pensez à vous inclure ! Ainsi, si vous voyagez en couple, renseignez 2. Si vous êtes une famille de quatre, renseignez 4, etc.
+# transport . voiture . voyageurs:
+# #  ordre: 3
+#   titre: Nombre de voyageurs pour venir en Hauts-de-France
+# #  question: Quel sera le nombre moyen de voyageurs dans la voiture ?
+#   applicable si: transport . voiture . présent
+# # Suite à une demande des Hauts-de-France on affecte directement "transport . voyageurs" (nombre de personnes qui voyageront sur la durée du séjour) --> En conséquence si l'utilisateur choisit covoiturage dans "utilisateurs" on considère un covoitureur
+# # On garde quand même la variable "transport . voiture . voyageurs" pour simplifier d'éventuelles futures modif plus tard (ex : retour du questionnement)
+#   formule : transport . voyageurs + covoitureurs #Suite à une demande des Hauts-de-France on affecte directement "transport . voyageurs" (nombre de personnes qui voyageront sur la durée du séjour) --> En conséquence si l'utilisateur choisit covoiturage dans "utilisateurs" on considère un covoitureur
+#   description: |
+#     Pensez à vous inclure ! Ainsi, si vous voyagez en couple, renseignez 2. Si vous êtes une famille de quatre, renseignez 4, etc.
     
-    Si jamais vous prévoyez de prendre des covoitureurs ou si vous allez faire du covoiturage vous-même, essayez d'estimer un nombre cohérent avec vos habitudes et/ou votre véhicule.
-  plancher: 1
-  avertissement: |
-    Le nombre de voyageurs ne peut pas être nul. Il y a forcément un conducteur derrière le volant.
-  par défaut: transport . voyageurs
-#  par défaut: 1.2
-  suggestions:
-    je suis seul: 1
-    deux: 2
-    quatre: 4
+#     Si jamais vous prévoyez de prendre des covoitureurs ou si vous allez faire du covoiturage vous-même, essayez d'estimer un nombre cohérent avec vos habitudes et/ou votre véhicule.
+#   plancher: 1
+#   avertissement: |
+#     Le nombre de voyageurs ne peut pas être nul. Il y a forcément un conducteur derrière le volant.
+#   par défaut: transport . voyageurs
+# #  par défaut: 1.2
+#   suggestions:
+#     je suis seul: 1
+#     deux: 2
+#     quatre: 4
 
 transport . voiture . covoitureurs:
   titre: Nombre de covoitureurs

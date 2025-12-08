@@ -231,4 +231,4 @@ transport . voiture . boulot . faire du covoiturage . empreinte boulot:
   valeur: transport . voiture
   contexte:
     transport . voiture . km: boulot . distance
-    transport . voiture . voyageurs: 1
+    transport . voiture . passagers: 1

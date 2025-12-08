@@ -1,9 +1,9 @@
-séjour . voiture . éco-conduite:
+DT . voiture . éco-conduite:
   titre: Adopter une éco-conduite
   applicable si: 
     toutes ces conditions:
-      - séjour . voiture . présent
-      - séjour . voiture . km > 0
+      - DT . voiture . présent
+      - DT . voiture . km > 0
   icônes: 🚗☮
   formule: 
     variations:
@@ -12,12 +12,12 @@ séjour . voiture . éco-conduite:
             - est non défini: transport . voiture . utilisateur
             - transport . voiture . utilisateur = 'non régulier'
             - transport . train . présent
-            - transport . car longue distance . présent
+            # - transport . car longue distance . présent
             - transport . deux roues . présent
-        alors: séjour . voiture - recalcul séjour
+        alors: DT . voiture - recalcul DT
       - sinon: transport . voiture - recalcul transport 
-#        alors: voiture . empreinte au kilomètre * voiture . km * réduction / séjour . voiture . voyageurs #Cas ou l'utilisateur vient en Hauts-de-France autrement qu'en voiture (proprio ; non proprio régulier)
-#      - sinon: transport . voiture . empreinte au kilomètre * voiture . km * réduction / séjour . voiture . voyageurs
+#        alors: voiture . empreinte au kilomètre * voiture . km * réduction / DT . voiture . voyageurs #Cas ou l'utilisateur vient en Hauts-de-France autrement qu'en voiture (proprio ; non proprio régulier)
+#      - sinon: transport . voiture . empreinte au kilomètre * voiture . km * réduction / DT . voiture . voyageurs
   unité: kgCO2e
   description: |
     Sécurité, réduction des émissions de gaz à effet de serre, économies de carburant : l’écoconduite n’a que des avantages. 
@@ -28,14 +28,14 @@ séjour . voiture . éco-conduite:
   note: |
     Voir le [Guide de formation à l'éco-conduite ADEME-LaPoste](https://expertises.ademe.fr/air-mobilites/mobilite-transports/passer-a-laction/solutions-technologiques/dossier/optimiser-lutilisation-lentretien-vehicule/lecoconduite-attitude-a-adopter)
 
-séjour . voiture . éco-conduite . recalcul séjour:
-  valeur: séjour . voiture
+DT . voiture . éco-conduite . recalcul DT:
+  valeur: DT . voiture
   contexte:
-    séjour . voiture . empreinte au kilomètre calculée: 85% * séjour . voiture . empreinte au kilomètre calculée
+    DT . voiture . empreinte au kilomètre calculée: 85% * DT . voiture . empreinte au kilomètre calculée
   note: |
     Hypothèse de réduction de 15% ([Guide de formation à l'éco-conduite ADEME-LaPoste](https://expertises.ademe.fr/air-mobilites/mobilite-transports/passer-a-laction/solutions-technologiques/dossier/optimiser-lutilisation-lentretien-vehicule/lecoconduite-attitude-a-adopter))
 
-séjour . voiture . éco-conduite . recalcul transport:
+DT . voiture . éco-conduite . recalcul transport:
   valeur: transport . voiture
   contexte:
     transport . voiture . empreinte au kilomètre calculée: 85% * transport . voiture . empreinte au kilomètre calculée
@@ -43,116 +43,116 @@ séjour . voiture . éco-conduite . recalcul transport:
     Hypothèse de réduction de 15% ([Guide de formation à l'éco-conduite ADEME-LaPoste](https://expertises.ademe.fr/air-mobilites/mobilite-transports/passer-a-laction/solutions-technologiques/dossier/optimiser-lutilisation-lentretien-vehicule/lecoconduite-attitude-a-adopter))
 
 
-séjour . voiture . éco-conduite . réduction:
+DT . voiture . éco-conduite . réduction:
   titre: Gain de consommation éco-conduite
   formule: 15%
   note: |
     Hypothèse de réduction de 15% ([Guide de formation à l'éco-conduite ADEME-LaPoste](https://expertises.ademe.fr/air-mobilites/mobilite-transports/passer-a-laction/solutions-technologiques/dossier/optimiser-lutilisation-lentretien-vehicule/lecoconduite-attitude-a-adopter))
 
-séjour . voiture . opter transport commun:
+DT . voiture . opter transport commun:
   titre: Se déplacer (en partie) en transport en commun
   applicable si: 
     toutes ces conditions:
-      - séjour . voiture . présent
-      - séjour . voiture . km > 0
-  non applicable si: séjour . transports commun . présent
+      - DT . voiture . présent
+      - DT . voiture . km > 0
+  non applicable si: DT . transports commun . présent
   icônes: 🚌
   formule:
     variations:
       - si: 
           toutes ces conditions:
-            - séjour . voiture . présent
-            - est défini: séjour . voiture . empreinte au kilomètre calculée
-            - séjour . voiture . empreinte au kilomètre calculée > 0
-        alors: ((séjour . voiture . empreinte au kilomètre calculée * voiture . km) - (impact par km bus * voiture . km)) * 15%
+            - DT . voiture . présent
+            - est défini: DT . voiture . empreinte au kilomètre calculée
+            - DT . voiture . empreinte au kilomètre calculée > 0
+        alors: ((DT . voiture . empreinte au kilomètre calculée * voiture . km) - (impact par km bus * voiture . km)) * 15%
       - sinon: ((transport . voiture . empreinte au kilomètre calculée * voiture . km) - (impact par km bus * voiture . km)) * part report modal
-#  formule: ((séjour . voiture . empreinte au kilomètre calculée * voiture . km) - (séjour . transports commun . type . bus . impact par km * voiture . km)) * séjour . voiture . opter transport commun . part report modal
-#  formule: 85% * séjour . voiture
+#  formule: ((DT . voiture . empreinte au kilomètre calculée * voiture . km) - (DT . transports commun . type . bus . impact par km * voiture . km)) * DT . voiture . opter transport commun . part report modal
+#  formule: 85% * DT . voiture
   unité: kgCO2e
   description: |
 
-séjour . voiture . part report modal:
+DT . voiture . part report modal:
   titre: Part de déplacements en voiture faisables en TC #A variabiliser selon le lieu ? Pas pour une v1
   formule: 15%
   note: |
     Valeur choisie arbitrairement et non (encore) sourcée
 
-séjour . voiture . opter transport commun . impact par km bus:
-# On copie colle la variable "séjour . transports commun . type . bus . impact par km". Cf. note pour les explication
+DT . voiture . opter transport commun . impact par km bus:
+# On copie colle la variable "DT . transports commun . type . bus . impact par km". Cf. note pour les explication
   formule: 0.113
   unité: kgCO2e/km
   note: |
-    Copié collé de la variable "séjour . transports commun . type . bus . impact par km"
-    On recrée une variable au sein de actions/séjour.publicodes pour palier au fait que publicodes ne lit pas la variable dans séjour.publicodes
+    Copié collé de la variable "DT . transports commun . type . bus . impact par km"
+    On recrée une variable au sein de actions/DT.publicodes pour palier au fait que publicodes ne lit pas la variable dans DT.publicodes
     si le choix transport commun n'est pas coché par l'utilisateur
 
-séjour . voiture . intensifier transport commun:
+DT . voiture . intensifier transport commun:
   titre: Intensifier l'usage des transports en commun
   applicable si: 
     toutes ces conditions:
-      - séjour . voiture . présent
-      - séjour . voiture . km > 0
-      - séjour . transports commun . présent
+      - DT . voiture . présent
+      - DT . voiture . km > 0
+      - DT . transports commun . présent
   icônes: 🚌↗️
   formule:
     variations:
       - si: 
           toutes ces conditions:
-            - séjour . voiture . présent
-            - est défini: séjour . voiture . empreinte au kilomètre calculée
-            - séjour . voiture . empreinte au kilomètre calculée > 0
-        alors: ((séjour . voiture . empreinte au kilomètre calculée * voiture . km) - (séjour . transports commun . type . bus . impact par km * voiture . km)) * part report modal
-      - sinon: ((transport . voiture . empreinte au kilomètre calculée * voiture . km) - (séjour . transports commun . type . bus . impact par km * voiture . km)) * part report modal
+            - DT . voiture . présent
+            - est défini: DT . voiture . empreinte au kilomètre calculée
+            - DT . voiture . empreinte au kilomètre calculée > 0
+        alors: ((DT . voiture . empreinte au kilomètre calculée * voiture . km) - (DT . transports commun . type . bus . impact par km * voiture . km)) * part report modal
+      - sinon: ((transport . voiture . empreinte au kilomètre calculée * voiture . km) - (DT . transports commun . type . bus . impact par km * voiture . km)) * part report modal
   unité: kgCO2e
   description: |
 
-séjour . voiture . sans voiture:
-  titre: Essayez un séjour sans voiture 
+DT . voiture . sans voiture:
+  titre: Essayez un DT sans voiture 
   icônes: 🚗❌
   applicable si:
     toutes ces conditions:
-      - séjour . voiture . présent
-      - séjour . voiture . km > 0
-  formule: séjour . voiture # A vérifier s'il ne faut pas des variations en fonction des différents choix utilisateur
+      - DT . voiture . présent
+      - DT . voiture . km > 0
+  formule: DT . voiture # A vérifier s'il ne faut pas des variations en fonction des différents choix utilisateur
   unité: kgCO2e
   description: |
     Se passer de voiture c'est aussi un moyen de découvrir les beautés proches de votre hébergement. Ce n'est, certes, pas chose aisée mais pas impossible non plus : sorties pédestres,
     balades à vélo, transport en commun, TER, les moyens de se passer de voiture existent.
 
 # Action à confirmer au regard des données GES utilisées qui semblait mettre en avant que les e-scooter shared avait un énorme impact car gros et à durée de vie très faible
-séjour . deux roues . location deux roues électrique:
+DT . deux roues . location deux roues électrique:
   titre: Louer électrique plutôt que thermique
   icônes: 🔌🚗
   applicable si:
     toutes ces conditions:
-      - séjour . deux roues . km > 0
-      - est défini: séjour . deux roues . type
-      - séjour . deux roues . type = 'scooter thermique'
+      - DT . deux roues . km > 0
+      - est défini: DT . deux roues . type
+      - DT . deux roues . type = 'scooter thermique'
   non applicable si:
     toutes ces conditions:
-      - est défini: séjour . deux roues . type
-      - séjour . deux roues . type = 'scooter électrique'
-  formule: séjour . deux roues - recalcul
+      - est défini: DT . deux roues . type
+      - DT . deux roues . type = 'scooter électrique'
+  formule: DT . deux roues - recalcul
 #  description: |
 #  note: |
 
-séjour . deux roues . location deux roues électrique . recalcul:
-  valeur: séjour . deux roues
+DT . deux roues . location deux roues électrique . recalcul:
+  valeur: DT . deux roues
   contexte:
-    séjour . deux roues . type: "'scooter électrique'"
+    DT . deux roues . type: "'scooter électrique'"
 
-séjour . voiture . location réduire taille:
-  titre: Louer une petite voiture pendant le séjour
+DT . voiture . location réduire taille:
+  titre: Louer une petite voiture pendant le DT
   applicable si:
     toutes ces conditions : 
-      - séjour . voiture . km > 0
+      - DT . voiture . km > 0
 #      - une de ces conditions:
 #          - est non défini: transport . voiture . utilisateur
 #          - transport . voiture . utilisateur = 'non régulier'
   non applicable si:
     une de ces conditions:
-      - séjour . voiture . motorisation = 'petite'
-      - séjour . voiture . voyageurs > 3 #Si plus de 3 passagers on considère qu'on ne peut pas prendre une petite voiture
+      - DT . voiture . motorisation = 'petite'
+      - DT . voiture . voyageurs > 3 #Si plus de 3 passagers on considère qu'on ne peut pas prendre une petite voiture
       - toutes ces conditions:
           - est défini: transport . voiture . utilisateur
           - une de ces conditions:
@@ -160,29 +160,29 @@ séjour . voiture . location réduire taille:
               - transport . voiture . utilisateur = 'propriétaire covoit'
               - transport . voiture . utilisateur = 'régulier non propriétaire'
               - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
-  formule: séjour . voiture - recalcul
+  formule: DT . voiture - recalcul
   description: |
     Les voitures sont de plus en plus grosses et de plus en plus lourdes. L'impact de leur fabrication sur le climat augmente donc en conséquence. A cela
      s'ajoute le fait que ces voitures sont de moins en moins adaptées à la ville. Tournez vous donc vers un véhicule de taille raisonnable pour votre location.
 
-séjour . voiture . location réduire taille . recalcul:
-  valeur: séjour . voiture
+DT . voiture . location réduire taille . recalcul:
+  valeur: DT . voiture
   contexte:
-    séjour . voiture . gabarit: "'petite'"
+    DT . voiture . gabarit: "'petite'"
 
-séjour . voiture . location voiture électrique:
+DT . voiture . location voiture électrique:
   titre: Louer électrique plutôt que thermique
   icônes: 🔌🚗
   applicable si:
     toutes ces conditions:
-      - séjour . voiture . km > 0
-      - séjour . voiture . km < 401
+      - DT . voiture . km > 0
+      - DT . voiture . km < 401
 #      - une de ces conditions:
 #          - est non défini: transport . voiture . utilisateur
 #          - transport . voiture . utilisateur = 'non régulier'
   non applicable si:
     une de ces conditions:
-      - séjour . voiture . motorisation = 'électrique'
+      - DT . voiture . motorisation = 'électrique'
       - toutes ces conditions:
           - est défini: transport . voiture . utilisateur
           - une de ces conditions:
@@ -190,13 +190,13 @@ séjour . voiture . location voiture électrique:
               - transport . voiture . utilisateur = 'propriétaire covoit'
               - transport . voiture . utilisateur = 'régulier non propriétaire'
               - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
-  formule: séjour . voiture - recalcul
+  formule: DT . voiture - recalcul
   description: |
-    Les véhicules électriques sont des modes de transport écologiques notamment si ces derniers sont partagés et c'est ce que vous faites, bravo ! Et ne vous inquiètez pas, au regard des km que vous avez renseignés, l'autonomie de la batterie sera suffisante pour votre séjour en Hauts-de-France.
+    Les véhicules électriques sont des modes de transport écologiques notamment si ces derniers sont partagés et c'est ce que vous faites, bravo ! Et ne vous inquiètez pas, au regard des km que vous avez renseignés, l'autonomie de la batterie sera suffisante pour votre DT en Hauts-de-France.
   note: |
     On considère une autonomie de la batterie de 400 km. Cette hypothèse n'est pas issue de la littérature mais arrêtée arbitrairement
 
-séjour . voiture . location voiture électrique . recalcul:
-  valeur: séjour . voiture
+DT . voiture . location voiture électrique . recalcul:
+  valeur: DT . voiture
   contexte:
-    séjour . voiture . motorisation: "'électrique'"
+    DT . voiture . motorisation: "'électrique'"
