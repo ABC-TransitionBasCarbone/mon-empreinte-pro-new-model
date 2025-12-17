@@ -102,8 +102,8 @@ transport . voiture . km:
   applicable si: voiture . présent
   question: Dans le cadre de vos déplacements professionnels, combien de kilomètres parcourrez-vous en voiture chaque mois ?
   description: |
-    A adapter  
-  par défaut: 500 
+    Renseignez la distance moyenne que vous parcourez chaque mois en voiture pour vos déplacements professionnels. Si vous la prenez très ponctuellement, sommez vos différents trajets et divisez par 12.
+  par défaut: 200 
   unité: km/mois
   plancher: 0
 
@@ -465,7 +465,9 @@ transport . voiture . empreinte au kilomètre calculée:
     > Hybride : enlever 15% aux consommations ci-dessus (source ADEME: http://www2.ademe.fr/servlet/KBaseShow?catid=13655)
 
 transport . voiture . motorisation:
-  question: Quelle est la motorisation de la voiture que vous allez utiliser ?
+  question: Quelle est la motorisation de la voiture que vous utilisez le plus pour vos déplacements professionnels ?
+  description: |
+    Si vous l'ignorez, choisissez la motorisation thermique, qui est la plus répandue.
   applicable si:
     toutes ces conditions:
       - est défini: utilisateur
@@ -811,7 +813,7 @@ transport . voiture . électrique . consommation estimée:
   note: Données moyennes fournies par le service Transport et Mobilité de l'ADEME.
 
 transport . voiture . gabarit:
-  question: Quel est le gabarit de la voiture ?
+  question: Quel est le gabarit de la voiture que vous utilisez le plus pour vos déplacements professionnels ?
   applicable si:
     toutes ces conditions:
       - est défini: utilisateur

@@ -18,6 +18,10 @@ DT:
 ##      - transport . transports commun . présent
 ##      - transport . mobilité douce . présent
 ##      - transport . taxi . présent
+  applicable si:
+    toutes ces conditions:
+      - DT . congé >= 0
+      - DT . TT >= 0  
   titre: Déplacements domicile-travail
   mosaique:
     type: selection
@@ -42,23 +46,42 @@ DT:
   icônes: 🏠➡️🏢
   description: |
     Renseignez les différents types de transport que vous utilisez le plus souvent pour vos déplacements entre votre domicile et votre lieu de travail pour une semaine type.
+  formule:
+    somme:
+      - train
+      - voiture 
+      - deux roues 
+      - transports commun 
+      - mobilité douce
+#  formule: empreinte totale
 #  formule:
 #    variations:
 #      - si: choix utilisateur
 #        alors: empreinte totale DT
 #      - sinon: empreinte par défaut
-  formule: ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT ) * ( train + voiture + deux roues + transports commun + mobilité douce )
-    
-    
-#     somme:
-#       - train * ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT )
-#       - voiture * ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT )
-#       - deux roues * ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT )
-#       - transports commun * ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT )
-#       - mobilité douce * ( 253 - transport . congé - ( 52 - transport . congé / 5 ) * transport . TT )
-#       # - taxi
-# Explication formule : On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
+#   formule: ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT ) * ( train + voiture + deux roues + transports commun + mobilité douce )
 
+DT . empreinte totale:
+  formule:
+    somme:
+      - train
+      - voiture 
+      - deux roues 
+      - transports commun 
+      - mobilité douce
+  unité: kgCO2e
+
+#DT . empreinte totale:
+#  formule:
+#    somme:
+#      - train * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+#      - voiture * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+#      - deux roues * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+#      - transports commun * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+#      - mobilité douce * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+#      # - taxi
+#  note: |
+#    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 DT . choix utilisateur:  ### Enlever les par défaut: non 
   titre: Choix utilisateur pour les modes de transport du DT
@@ -80,7 +103,37 @@ DT . empreinte par défaut:
 #        alors: DT . voiture . empreinte par défaut
 #      - sinon: 0 #Si A-R = défini --> on considère qu'on peut dire jnsp à DT (car on ne sait pas ce qu'on va faire) et donc attribuer 0
 
+DT . congé:
+  titre: Jours de congés pris par an
+  question: Combien de jours ne travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
+  description: |
+    Cette question permet d'estimer vos jours d'absence du lieu de travail. Renseignez donc tous vos jours d'absence quelle que soit leur nature (congés payés, RTT, arrêt maladie)
+    Moins de jours sur site signifie moins de trajets domicile-travail par exemple.
+  par défaut: 25
+  plancher: 0 
+  plafond: 365
+  suggestions:
+    25: 25
+    30: 30
+    40: 40
+  unité: jour
 
+DT . TT:
+  titre: Jours de télétravail par semaine
+  question: Combien de jours par semaine travaillez-vous en télétravail en moyenne ?
+  description: |
+    Le télétravail modifie l’empreinte carbone professionnelle, car il réduit certains déplacements mais augmente les consommations liées au domicile.
+  par défaut: 2
+  plancher: 0
+  plafond: 5
+  suggestions:
+    aucun: 0
+    un jour: 1
+    deux jours: 2
+    trois jours: 3
+    quatre jours: 4
+    cinq jours: 5
+  unité: jour
 
 ### Train ###
 DT . train . présent:
@@ -104,11 +157,12 @@ DT . train . km:
   applicable si: DT . train . présent
   question: Combien de kilomètres parcourez-vous en Train par jour pour vos déplacements domicile-travail ?
   suggestions:
-    Amiens ⇄ Lille : 440
-    Bruxelles ⇄ Lille : 220
+    10 km: 10
+    20 km: 20
+    50 km: 50
   unité: km/jour
   plancher: 0
-  par défaut: 300
+  par défaut: 50
 
 ### Car longue distance ###
 
@@ -164,99 +218,112 @@ DT . voiture:
         alors: 0
       - sinon:
           variations:
-            - si: #A-R voiture (complété en entier) + DT = voiture
-                toutes ces conditions:
-                  - transport . voiture . présent
-                  - est défini: transport . voiture . utilisateur
-                  - DT . voiture . présent
+            - si: DT . voiture . présent
               alors:
                 variations:
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'propriétaire'
-                          - transport . voiture . utilisateur = 'propriétaire covoit'
-                        - transport . voiture . motorisation = 'thermique'
-                    alors: empreinte DT propriétaire thermique
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'propriétaire'
-                          - transport . voiture . utilisateur = 'propriétaire covoit'
-                        - transport . voiture . motorisation = 'hybride'
-                    alors: empreinte DT propriétaire hybride
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'propriétaire'
-                          - transport . voiture . utilisateur = 'propriétaire covoit'
-                        - transport . voiture . motorisation = 'électrique'
-                    alors: empreinte DT propriétaire électrique
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'régulier non propriétaire'
-                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
-                        - transport . voiture . motorisation = 'thermique'
-                    alors: empreinte DT régulier non propriétaire thermique
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'régulier non propriétaire'
-                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
-                        - transport . voiture . motorisation = 'hybride'
-                    alors: empreinte DT régulier non propriétaire hybride
-                  - si:
-                      toutes ces conditions:
-                        - une de ces conditions:
-                          - transport . voiture . utilisateur = 'régulier non propriétaire'
-                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
-                        - transport . voiture . motorisation = 'électrique'
-                    alors: empreinte DT régulier non propriétaire électrique
-                  - sinon: empreinte calculée #A-R = voiture/non régulier + DT = voiture
-            - si: #A-R = voiture/jnsp sur voiture . utilisateur + DT = voiture
-                toutes ces conditions:
-                  - transport . voiture . présent
-                  - est non défini: transport . voiture . utilisateur
-                  - DT . voiture . présent
-              alors: empreinte moyenne #Si utilisateur n'est pas défini en AR on attribue une empreinte moyenne en AR --> on fait de même dans DT
-            - sinon:
-                variations:
-                  - si: #Pour le cas A-R = défini et autres que voiture + DT = voiture (+ autres éventuellement)
+                  - si: #Cas ou l'utilisateur répond à voiture . utilisateur
                       une de ces conditions:
-                        - DT . train . présent
-                        - DT . deux roues . présent
-                        - DT . mobilité douce . présent
-                        - DT . transports commun . présent
-                        - DT . taxi . présent
-                        - DT . voiture . présent
-                    alors: empreinte calculée #(devrait renvoyer 0 si uniquement train ou autre de sélectionnés)
-                  - si: #Pour le cas A-R = défini + DT = jnsp
-                      une de ces conditions:
-                        - transport . train . présent
-                        - transport . deux roues . présent
-                        # - transport . car longue distance . présent
-                        - transport . voiture . présent
-                    alors: 0 #On accepte que l'utilisateur ne sache pas ce qu'il va faire pendant son DT. On lui impute donc 0
-                  - sinon: empreinte par défaut #Pour le cas A-R = jnsp + DT = jnsp
-#            - si: DT . voiture . présent #A-R = autres que voiture OU voiture/jnsp
-#                une de ces conditions:
-#                  - est non défini: transport . voiture . présent
-#                  - transport . train . présent
-#                  - transport . car longue distance . présent
-#                  - transport . deux roues . présent
-#               alors: 
-##            - si: #A-R voiture (complété en entier) + DT = voiture/jnsp (probablement que marchera pas avec les non défini)
-##                toutes ces conditions:
-##                  - transport . voiture . présent
-##                  - est défini: transport . voiture . utilisateur
-##                  - toutes ces conditions:
-##                      - est non défini:  transport . train . présent
-##                      - est non défini:  transport . car longue distance . présent
-##                      - est non défini:  transport . deux roues . présent
-##              alors: #mettre les mêmes fonctions contexte que si DT . présent mais avec des km considérés
-###            - sinon: empreinte par défaut ### Empreinte par défaut pour le cas A-R = jnsp + DT = jnsp
+                        - une de ces conditions:
+                          - utilisateur = 'propriétaire'
+                          - utilisateur = 'régulier non propriétaire'
+                    alors: empreinte calculée
+                  - si: utilisateur = 'non régulier' #Cas ou l'utilisateur répond à voiture . utilisateur
+                    alors: empreinte non régulier
+                  - sinon: 500 #Cas ou l'utilisateur répond jnsp à voiture . utilisateur
+            - sinon: 1000 #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T
   unité: kgCO2e
+#            - si: #A-R voiture (complété en entier) + DT = voiture
+#                toutes ces conditions:
+#                  - transport . voiture . présent
+#                  - est défini: transport . voiture . utilisateur
+#                  - DT . voiture . présent
+#              alors:
+#                variations:
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'propriétaire'
+#                          - transport . voiture . utilisateur = 'propriétaire covoit'
+#                        - transport . voiture . motorisation = 'thermique'
+#                    alors: empreinte DT propriétaire thermique
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'propriétaire'
+#                          - transport . voiture . utilisateur = 'propriétaire covoit'
+#                        - transport . voiture . motorisation = 'hybride'
+#                    alors: empreinte DT propriétaire hybride
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'propriétaire'
+#                          - transport . voiture . utilisateur = 'propriétaire covoit'
+#                        - transport . voiture . motorisation = 'électrique'
+#                    alors: empreinte DT propriétaire électrique
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire'
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
+#                        - transport . voiture . motorisation = 'thermique'
+#                    alors: empreinte DT régulier non propriétaire thermique
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire'
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
+#                        - transport . voiture . motorisation = 'hybride'
+#                    alors: empreinte DT régulier non propriétaire hybride
+#                  - si:
+#                      toutes ces conditions:
+#                        - une de ces conditions:
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire'
+#                          - transport . voiture . utilisateur = 'régulier non propriétaire covoit'
+#                        - transport . voiture . motorisation = 'électrique'
+#                    alors: empreinte DT régulier non propriétaire électrique
+#                  - sinon: empreinte calculée #A-R = voiture/non régulier + DT = voiture
+#            - si: #A-R = voiture/jnsp sur voiture . utilisateur + DT = voiture
+#                toutes ces conditions:
+#                  - transport . voiture . présent
+#                  - est non défini: transport . voiture . utilisateur
+#                  - DT . voiture . présent
+#              alors: empreinte moyenne #Si utilisateur n'est pas défini en AR on attribue une empreinte moyenne en AR --> on fait de même dans DT
+#            - sinon:
+#                variations:
+#                  - si: #Pour le cas A-R = défini et autres que voiture + DT = voiture (+ autres éventuellement)
+#                      une de ces conditions:
+#                        - DT . train . présent
+#                        - DT . deux roues . présent
+#                        - DT . mobilité douce . présent
+#                        - DT . transports commun . présent
+#                        - DT . taxi . présent
+#                        - DT . voiture . présent
+#                    alors: empreinte calculée #(devrait renvoyer 0 si uniquement train ou autre de sélectionnés)
+#                  - si: #Pour le cas A-R = défini + DT = jnsp
+#                      une de ces conditions:
+#                        - transport . train . présent
+#                        - transport . deux roues . présent
+#                        # - transport . car longue distance . présent
+#                        - transport . voiture . présent
+#                    alors: 0 #On accepte que l'utilisateur ne sache pas ce qu'il va faire pendant son DT. On lui impute donc 0
+#                  - sinon: empreinte par défaut #Pour le cas A-R = jnsp + DT = jnsp
+##            - si: DT . voiture . présent #A-R = autres que voiture OU voiture/jnsp
+##                une de ces conditions:
+##                  - est non défini: transport . voiture . présent
+##                  - transport . train . présent
+##                  - transport . car longue distance . présent
+##                  - transport . deux roues . présent
+##               alors: 
+###            - si: #A-R voiture (complété en entier) + DT = voiture/jnsp (probablement que marchera pas avec les non défini)
+###                toutes ces conditions:
+###                  - transport . voiture . présent
+###                  - est défini: transport . voiture . utilisateur
+###                  - toutes ces conditions:
+###                      - est non défini:  transport . train . présent
+###                      - est non défini:  transport . car longue distance . présent
+###                      - est non défini:  transport . deux roues . présent
+###              alors: #mettre les mêmes fonctions contexte que si DT . présent mais avec des km considérés
+###            - sinon: empreinte par défaut ### Empreinte par défaut pour le cas A-R = jnsp + DT = jnsp
 #  description: |
 #    ![](https://upload.wikimedia.org/wikipedia/commons/9/9a/Congestion_caused_by_a_road_accident%2C_Algarve%2C_Portugal.jpg)
 #
@@ -276,13 +343,13 @@ DT . voiture . km:
 #    toutes ces conditions:
 #      - transport . voiture . présent
 #      - est non défini: transport . voiture . utilisateur
-  question: Quelle distance parcourez en voiture chaque jour pour vos déplacements domicile-travail ?
+  question: Quelle distance (aller-retour) parcourez en voiture chaque jour pour vos déplacements domicile-travail ?
   description: |
     Renseignez un nombre de km cohérent (en arrondissant à la dizaine ou centaine supérieure) avec les distances que vous parcourez quotidiennement en voiture pour vos déplacements domicile-travail.
 # It seems that there is a [publicodes bug](https://github.com/publicodes/publicodes/issues/517). For now, we can't use `km annuels moyen réel` directly here, until the problem is fixed.
 #  par défaut: 8210
   par défaut: 15
-  unité: km/jour
+  unité: km
   plancher: 0
   suggestions:
     5 km: 5
@@ -290,7 +357,6 @@ DT . voiture . km:
     15 km: 15
     20 km: 20
     30 km: 30
-
 
 #DT . voiture . km annuels moyen réel:
 #  #8210
@@ -355,147 +421,169 @@ DT . voiture . nombre véhicules circulation . VUL:
 
 DT . voiture . utilisateur:
   par défaut: "'propriétaire'"
-#  question: Utilisez-vous majoritairement la même voiture pour vous déplacer ?
-##  question: Allez-vous utiliser votre propre voiture ou une voiture louée ou empruntée ?
-#  applicable si: km > 0
-#  formule:
-#    une possibilité:
-#      choix obligatoire: oui
-#      possibilités:
-#        - propriétaire
-#        - régulier non propriétaire
-#        - non régulier
-#  description: |
-#    Deux données sont importantes dans le cadre du calcul de l'empreinte liée à la construction :
-#
-#    - L'usage ou non d'un même véhicule pour tous les kilomètres parcourus (si non : on vous attribue un véhicule "moyen")
-#    - La propriété ou non dudit véhicule s'il s'agit toujours du même
-#
-#    Nous avons fait le choix d'attribuer l'empreinte de construction au pro-rata des kilomètres parcourus. Mais cette approche avait deux défauts :
-#
-#    - Elle était extrêmement avantageuse pour les petits rouleurs, alors que leur véhicule qui roule moins peut s'user plus vite (un moteur a besoin de tourner régulièrement) et donc avoir une durée de vie inférieure.
-#    - Elle ne permettait pas de valoriser l'engagement de ne pas disposer de son propre véhicule, et de pratiquer à la place l'autopartage, ou la location ponctuelle (car l'empreinte de construction était la même, que l'on soit propriétaire ou non).
-#
-#    > Pour pallier ces deux problèmes, et mieux représenter qu'un véhicule possédé mais sous-utilisé s'use plus vite et mérite une empreinte de construction plus importante, **nous appliquons un seuil pour la partie construction de l'empreinte, pour les propriétaires**.
+  question: Utilisez-vous majoritairement la même voiture pour vous déplacer ?
+  applicable si: km > 0
+  formule:
+    une possibilité:
+      choix obligatoire: oui
+      possibilités:
+        - propriétaire
+        - régulier non propriétaire
+        - non régulier
+  description: |
+    Deux données sont importantes dans le cadre du calcul de l'empreinte liée à la construction :
+
+    - L'usage ou non d'un même véhicule pour tous les kilomètres parcourus (si non : on vous attribue un véhicule "moyen")
+    - La propriété ou non dudit véhicule s'il s'agit toujours du même
+
+    Nous avons fait le choix d'attribuer l'empreinte de construction au pro-rata des kilomètres parcourus. Mais cette approche avait deux défauts :
+
+    - Elle était extrêmement avantageuse pour les petits rouleurs, alors que leur véhicule qui roule moins peut s'user plus vite (un moteur a besoin de tourner régulièrement) et donc avoir une durée de vie inférieure.
+    - Elle ne permettait pas de valoriser l'engagement de ne pas disposer de son propre véhicule, et de pratiquer à la place l'autopartage, ou la location ponctuelle (car l'empreinte de construction était la même, que l'on soit propriétaire ou non).
+
+    > Pour pallier ces deux problèmes, et mieux représenter qu'un véhicule possédé mais sous-utilisé s'use plus vite et mérite une empreinte de construction plus importante, **nous appliquons un seuil pour la partie construction de l'empreinte, pour les propriétaires**.
 #  par défaut: "'régulier non propriétaire'"
-#
-#DT . voiture . utilisateur . propriétaire:
-#  titre: Oui et j'en suis propriétaire
-#  description: Vous faites la grande majorité de vos trajets avec un même véhicule que vous possédez.
-#DT . voiture . utilisateur . régulier non propriétaire:
-#  titre: Oui mais ce n'est pas la mienne
-#  description: Vous utilisez presque systématiquement la voiture d'un ami, de votre grand-mère, ou le même véhicule en autopartage.
-#DT . voiture . utilisateur . non régulier:
-#  titre: Non, je change souvent (autopartage, proches, taxi...)
-#  description: Vous ne disposez pas de votre propre véhicule et les usages sont tous différents.
-#
-#DT . voiture . notif utilsateur irrégulier:
-#  type: notification
-#  formule:
-#    toutes ces conditions:
-#      - est défini: voiture . utilisateur
-#      - utilisateur = 'non régulier'
-#      - km > 0
-#  description: |
-#    Vous roulez avec des véhicules différents : nous vous avons donc attribué les caractéristiques d'une voiture "moyenne".
 
-# Le bloc qui suit a 6 fois la même construction de modèle et donc la même valeur affectée à 6 variables différentes et c'est dans la formule de DT . voiture qu'on affecte la valeur au bon endroit
-DT . voiture . empreinte DT propriétaire thermique:
-  valeur: transport . voiture . empreinte calculée
-  contexte:
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
+DT . voiture . utilisateur . propriétaire: ### Formulation à reprendre
+  titre: Oui et j'en suis propriétaire
+  description: Vous faites la grande majorité de vos trajets avec le véhicule que vous possédez (qu'il s'aggisse du votre ou celui de l'entreprise).
+DT . voiture . utilisateur . régulier non propriétaire:
+  titre: Oui mais ce n'est pas la mienne
+  description: Vous utilisez presque systématiquement la voiture d'un même collègue.
+DT . voiture . utilisateur . non régulier:
+  titre: Non, je change souvent (autopartage avec différents véhicules)
+  description: Vous ne disposez pas de votre propre véhicule et les vous covoiturez avec les véhicules de collègues différents.
 
-DT . voiture . empreinte DT propriétaire hybride:
-  valeur: transport . voiture . empreinte calculée
-  contexte:
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
+DT . voiture . notif utilisateur irrégulier:
+  type: notification
+  formule:
+    toutes ces conditions:
+      - est défini: voiture . utilisateur
+      - utilisateur = 'non régulier'
+      - km > 0
+  description: |
+    Vous roulez avec des véhicules différents : nous vous avons donc attribué les caractéristiques d'une voiture "moyenne".
 
-DT . voiture . empreinte DT propriétaire électrique:
-  valeur: transport . voiture . empreinte calculée
-  contexte:
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
+DT . voiture . notif utilisateur jnsp:
+  type: notification
+  formule:
+    toutes ces conditions:
+      - est non défini: voiture . utilisateur
+      - km > 0
+  description: |
+    Vous avez répondu 'je ne sais pas' : nous vous avons donc attribué les caractéristiques d'un usager moyen
 
-DT . voiture . empreinte DT régulier non propriétaire thermique:
-  valeur: transport . voiture . empreinte calculée
+DT . voiture . empreinte non régulier:
+  valeur: voiture . empreinte calculée
   contexte:
-#    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
-    transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
-    transport . voiture . thermique . carburant: "'essence E5 ou E10'"
-    transport . voiture . thermique . consommation aux 100:
-      valeur: transport . voiture . thermique . consommation estimée
+    voiture . utilisateur: "'régulier non propriétaire'"
+    voiture . gabarit: "'berline'"
+    voiture . motorisation: "'thermique'"
+    voiture . thermique . carburant: "'essence E5 ou E10'"
+    voiture . thermique . consommation aux 100:
+      valeur: voiture . thermique . consommation estimée
       contexte:
-        transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
-        transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+        voiture . utilisateur: "'régulier non propriétaire'"
+        voiture . gabarit: "'berline'"
+        voiture . motorisation: "'thermique'"
+        voiture . thermique . carburant: "'essence E5 ou E10'"
 
-DT . voiture . empreinte DT régulier non propriétaire hybride:
-  valeur: transport . voiture . empreinte calculée
-  contexte:
-#    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
-    transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
-    transport . voiture . thermique . carburant: "'essence E5 ou E10'"
-    transport . voiture . thermique . consommation aux 100:
-      valeur: transport . voiture . thermique . consommation estimée
-      contexte:
-        transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
-        transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+# # Le bloc qui suit a 6 fois la même construction de modèle et donc la même valeur affectée à 6 variables différentes et c'est dans la formule de DT . voiture qu'on affecte la valeur au bon endroit
+# DT . voiture . empreinte DT propriétaire thermique:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
 
-DT . voiture . empreinte DT régulier non propriétaire électrique:
-  valeur: transport . voiture . empreinte calculée
-  contexte:
-#    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
-    transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
-    transport . voiture . électrique . consommation aux 100:
-      valeur: transport . voiture . électrique . consommation estimée
-      contexte:
-        transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
-# Fin du bloc
+# DT . voiture . empreinte DT propriétaire hybride:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
 
+# DT . voiture . empreinte DT propriétaire électrique:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
+
+# DT . voiture . empreinte DT régulier non propriétaire thermique:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+# #    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
+#     transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
+#     transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+#     transport . voiture . thermique . consommation aux 100:
+#       valeur: transport . voiture . thermique . consommation estimée
+#       contexte:
+#         transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
+#         transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+
+# DT . voiture . empreinte DT régulier non propriétaire hybride:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+# #    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
+#     transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour les variables "carburant" et "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
+#     transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+#     transport . voiture . thermique . consommation aux 100:
+#       valeur: transport . voiture . thermique . consommation estimée
+#       contexte:
+#         transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
+#         transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+
+# DT . voiture . empreinte DT régulier non propriétaire électrique:
+#   valeur: transport . voiture . empreinte calculée
+#   contexte:
+# #    DT . voiture . présent: oui #je dois rajouter ça car on a commenté la condition "voiture . présent" en entrée de "DT . voiture". La valeur voiture . présent renvoie alors la valeur par défaut à non (ce qui ne calcule pas les km) quand bien même on sélectionne voiture comme mode de transport pendant le DT (probablement un lien avec le par défaut: non de "DT . voiture . présent" mais on laisse comme ça)
+#     transport . voiture . km: DT . voiture . km
+#     transport . voiture . passagers: DT . voiture . voyageurs
+#     transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100" sinon ça bug avec les conditions d'entrée de ces variables
+#     transport . voiture . électrique . consommation aux 100:
+#       valeur: transport . voiture . électrique . consommation estimée
+#       contexte:
+#         transport . voiture . utilisateur: "'propriétaire'" #Nécessaire pour la variable "consommation aux 100"
+# # Fin du bloc
+
+### Voir si le commentaire ci-dessous est toujours vrai --> pour l'instant je laisse transport . voiture . empreinte calculée
 #Je n'arrive pas à faire fonctionner la fonction contexte en pointant sur les variables "DT . voiture . XXX". Je recalcul donc avec les variables "transport . voiture . XXX"
 DT . voiture . empreinte moyenne:
-  valeur: transport . voiture . empreinte calculée
+  valeur: voiture . empreinte calculée
   contexte:
-    transport . voiture . présent: oui
-    transport . voiture . km: DT . voiture . km
-    transport . voiture . passagers: DT . voiture . voyageurs
-    transport . voiture . utilisateur: "'propriétaire'"
-    transport . voiture . gabarit: "'berline'"
-    transport . voiture . motorisation: "'thermique'"
-    transport . voiture . thermique . carburant: "'essence E5 ou E10'"
-    transport . voiture . thermique . consommation aux 100:
-      valeur: transport . voiture . thermique . consommation estimée
+    voiture . utilisateur: "'propriétaire'"
+    voiture . voyageurs: 1
+    voiture . gabarit: "'berline'"
+    voiture . motorisation: "'thermique'"
+    voiture . thermique . carburant: "'essence E5 ou E10'"
+    voiture . thermique . consommation aux 100:
+      valeur: voiture . thermique . consommation estimée
       contexte:
-        transport . voiture . utilisateur: "'propriétaire'"
-        transport . voiture . gabarit: "'berline'"
-        transport . voiture . motorisation: "'thermique'"
-        transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+        voiture . utilisateur: "'régulier non propriétaire'"
+        voiture . gabarit: "'berline'"
+        voiture . motorisation: "'thermique'"
+        voiture . thermique . carburant: "'essence E5 ou E10'"
 
+### Voir si le commentaire ci-dessous est toujours vrai --> pour l'instant je laisse transport . voiture . empreinte calculée
 #Je n'arrive pas à faire fonctionner la fonction contexte en pointant sur les variables "DT . voiture . XXX". Je recalcul donc avec les variables "transport . voiture . XXX"
 DT . voiture . empreinte par défaut:
-  valeur: transport . voiture . empreinte calculée
+  valeur: voiture . empreinte calculée
   contexte:
-    transport . voiture . présent: oui
-    transport . voiture . km: 200
-    transport . voiture . passagers: 2
-    transport . voiture . utilisateur: "'propriétaire'"
-    transport . voiture . gabarit: "'berline'"
-    transport . voiture . motorisation: "'thermique'"
-    transport . voiture . thermique . carburant: "'essence E5 ou E10'"
-    transport . voiture . thermique . consommation aux 100:
+    voiture . utilisateur: "'propriétaire'"
+    voiture . km: 15
+    voiture . voyageurs: 1
+    voiture . gabarit: "'berline'"
+    voiture . motorisation: "'thermique'"
+    voiture . thermique . carburant: "'essence E5 ou E10'"
+    voiture . thermique . consommation aux 100:
       valeur: transport . voiture . thermique . consommation estimée
       contexte:
-        transport . voiture . utilisateur: "'propriétaire'"
-        transport . voiture . gabarit: "'berline'"
-        transport . voiture . motorisation: "'thermique'"
-        transport . voiture . thermique . carburant: "'essence E5 ou E10'"
+        voiture . utilisateur: "'propriétaire'"
+        voiture . gabarit: "'berline'"
+        voiture . motorisation: "'thermique'"
+        voiture . thermique . carburant: "'essence E5 ou E10'"
 
 DT . voiture . empreinte calculée:
   formule: (usage + construction) / voyageurs
@@ -515,6 +603,23 @@ DT . voiture . voyageurs:
     je suis seul: 1
     Je suis tout le temps accompagné d'une personne: 2
     Je suis accompagné sur la moitié des mes trajets: 1.5
+
+DT . voiture . notif nombreux voyageurs:
+  type: notification
+  formule:
+    toutes ces conditions:
+      - DT . voiture . voyageurs >= 3
+      - DT . voiture . voyageurs < 9
+      # C'est un hack.. On devrait avoir <= 9. Pas de notif si "9" renseigné mais au moins, la notif n'est pas présente si 12 renseigné (car derrière le 12 de l'interface, c'est bien le plafond qui est considéré dans le moteur).
+  description: |
+    > Bravo ! Vous optimisez bien vos trajets en voiture !
+
+    > Est-ce bien votre taux de remplissage moyen ? Celui-ci est malheureusement souvent surévalué.
+
+    > Pour rappel, voici les chiffres moyens en France :
+
+    - pour les trajets longs : 2,25 passagers/voiture
+    - pour les trajets courts : 1,43 passagers/voiture
 
 DT . voiture . usage:
   titre: Usage de la voiture
@@ -594,8 +699,10 @@ DT . voiture . motorisation:
   question: Quelle est la motorisation de la voiture que vous allez utiliser ?
   applicable si:
     toutes ces conditions:
-      - km > 0
-      - DT . voiture . présent
+      - est défini: utilisateur
+      - une de ces conditions:
+          - utilisateur = 'propriétaire'
+          - utilisateur = 'régulier non propriétaire'
 #      - une de ces conditions:
 #          - est non défini: transport . voiture . utilisateur
 #          - transport . voiture . utilisateur = 'non régulier'
@@ -637,19 +744,18 @@ DT . voiture . thermique . consommation aux 100:
   question: Connaissez-vous la consommation moyenne de la voiture ?
   applicable si:
     toutes ces conditions:
-      - voiture . présent
+      - DT . voiture . présent
       - est défini: utilisateur
       - une de ces conditions:
           - utilisateur = 'propriétaire'
-          - utilisateur = 'propriétaire covoit'
-#          - utilisateur = 'régulier non propriétaire'
+          - utilisateur = 'régulier non propriétaire' #A voir si on ne veut pas poser cette question pour 'régulier non proprio' --> auquel cas il faudra une fonction contexte supplémentaire
       - une de ces conditions:
           - motorisation = 'thermique'
           - motorisation = 'hybride'
       - km > 0
-  non applicable si: #On met cette condition car, sans savoir pourquoi, la question apparait alors qu'on calcule l'empreinte par défaut via le cheminement [voiture/jnsp]
-    toutes ces conditions:
-      - est non défini: voiture . présent
+  # non applicable si: #On met cette condition car, sans savoir pourquoi, la question apparait alors qu'on calcule l'empreinte par défaut via le cheminement [voiture/jnsp]
+  #   toutes ces conditions:
+  #     - est non défini: voiture . présent
   description: |
     Si vous ne savez pas, cliquez sur _Passer la question_ et nous vous attribuerons une consommation en lien avec le gabarit
     de la voiture que vous avez renseigné.
@@ -899,11 +1005,11 @@ DT . voiture . thermique . carburant:
   question: Quel type de carburant la voiture consomme-t-elle ?
   applicable si:
     toutes ces conditions:
+      - DT . voiture . présent
       - est défini: utilisateur
       - une de ces conditions:
           - utilisateur = 'propriétaire'
-          - utilisateur = 'propriétaire covoit'
-#          - utilisateur = 'régulier non propriétaire'
+          - utilisateur = 'régulier non propriétaire' ##A voir si on ne veut pas poser cette question pour 'régulier non proprio' --> auquel cas il faudra une fonction contexte supplémentaire
       - une de ces conditions:
           - motorisation = 'thermique'
           - motorisation = 'hybride'
@@ -914,7 +1020,6 @@ DT . voiture . thermique . carburant:
     [Cet article](https://www.ecologie.gouv.fr/carburants-et-combustibles-autorises-en-france) du ministère de l'Écologie explique plus en détail les carburants légaux en France.
 
     > Attention, si le type de carburant fait varier de façon significative l'empreinte climat au litre, la consommation en litre par 100km elle aussi varie. Veillez à saisir une consommation au litre basée sur votre moyenne réelle.
-
   par défaut: "'essence E5 ou E10'"
   formule:
     une possibilité:
@@ -1012,8 +1117,7 @@ DT . voiture . électrique . consommation aux 100:
       - est défini: utilisateur
       - une de ces conditions:
           - utilisateur = 'propriétaire'
-          - utilisateur = 'propriétaire covoit'
-#          - utilisateur = 'régulier non propriétaire'
+          - utilisateur = 'régulier non propriétaire' #A voir si on ne veut pas poser cette question pour 'régulier non proprio' --> auquel cas il faudra une fonction contexte supplémentaire
       - motorisation = 'électrique'
       - km > 0
   suggestions:
@@ -1042,8 +1146,10 @@ DT . voiture . gabarit:
   question: Quel est le gabarit de la voiture ?
   applicable si:
     toutes ces conditions:
-      - km > 0
-      - DT . voiture . présent
+      - est défini: utilisateur
+      - une de ces conditions:
+          - utilisateur = 'propriétaire'
+          - utilisateur = 'régulier non propriétaire'
 #      - une de ces conditions:
 #          - est non défini: transport . voiture . utilisateur
 #          - transport . voiture . utilisateur = 'non régulier'
@@ -1122,12 +1228,15 @@ DT . voiture . gabarit . SUV . poids:
 DT . voiture . base au kilomètre:
   applicable si:
     une de ces conditions:
-      - est non défini: transport . voiture . utilisateur
-      - transport . voiture . utilisateur = 'non régulier'
-      - transport . train . présent
-      # - transport . car longue distance . présent
-      - transport . deux roues . présent
-#      - transport . taxi . présent
+      - est défini: utilisateur
+      - une de ces conditions:
+          - utilisateur = 'propriétaire'
+          - utilisateur = 'régulier non propriétaire'
+#       - transport . voiture . utilisateur = 'non régulier'
+#       - transport . train . présent
+#       # - transport . car longue distance . présent
+#       - transport . deux roues . présent
+# #      - transport . taxi . présent
   titre: Entretien et climatisation au kilomètre
   formule: entretien pondéré + climatisation
   unité: kgCO2e/km
@@ -1396,9 +1505,23 @@ DT . deux roues:
 #  description: |
 #    Les scooters et motos sont aujourd'hui très majoritairement des engins qui fonctionnent au pétrole. Les scooters électriques ayant fait une réelle percée, ils sont ajoutés au modèle.
 
+DT . deux roues . passagers:
+  question: Combien de personnes voyagent avec vous en moyenne sur votre deux-roues lors de vos déplacements domicile-travail ?
+  description: |
+    Indiquez le nombre moyen de personnes (y compris vous-même) voyageant sur votre deux-roues lors de vos déplacements domicile-travail. 
+    
+    Si vous voyagez tout le temps seul, indiquez 1. 
+    
+    Si vous prenez souvent un passager, indiquez un nombre décimal (1.5 si vous le prenez 1 trajet sur 2).
+    
+    Si vous êtes toujours accompagné(e), indiquez 2.
+  par défaut: 1
+  plancher: 1
+  unicongéé: personne
+
 DT . deux roues . empreinte:
   icônes: 🛵
-  formule: (empreinte au km + entretien pondéré) * km
+  formule: (empreinte au km + entretien pondéré) * km / passagers
   unité: kgCO2e
 
 DT . deux roues . empreinte DT deux roues possédé:
@@ -1411,18 +1534,19 @@ DT . deux roues . empreinte moyenne:
   contexte:
 #    DT . deux roues . présent: oui
     deux roues . type: "'moto sup 250'"
-    deux roues . km: 100
+    deux roues . km: 15
 
 DT . deux roues . km:
   applicable si: présent
   question: Combien de km parcourez-vous chaque jour en deux roues pour vos déplacements domicile-travail ?
-  par défaut: 100
+  par défaut: 15
   plancher: 0
   unité: km/jour
   suggestions:
+    10km: 10
+    15km: 15
     25km: 25
     50km: 50
-    100km: 100
 
 DT . deux roues . type:
   applicable si: #On pose cette question uniquement si Q1 transport (aller-retour) un utilisateur renseigne un deux roues de "petite cylindrée" (i.e = scooter) ou pas de deux roues dans la combinaison de transport
@@ -1462,28 +1586,27 @@ DT . deux roues . empreinte au km:
       - si: type = 'scooter thermique'
         alors: 0.0763 kgCO2e/km
       - si: type = 'scooter électrique'
-        alors: 0.091 kgCO2e/km
+        alors: 0.0154 kgCO2e/km
       - si: type = 'moto inf 250'
         alors: 0.0763 kgCO2e/km
       - si: type = 'moto sup 250'
         alors: 0.191 kgCO2e/km
-
   note: |
     Cyclomoteur - Mixte - 2018 ; 76,3 gCO2e/km/personne ; calculs ADEME à partir d'HBEFA (2020)
-
     Scooter électrique : 30 gCO2e/km/personne ; étude "Assessing the Environmental Performance of New Mobility" de l'International Transport Forum. [Excel disponible ici](https://www.itf-oecd.org/good-to-go-environmental-performance-new-mobility)
     Scooter électrique : FE retravaillé depuis l'étude "Assessing the Environmental Performance of New Mobility" de l'International Transport Forum. [Excel disponible ici](https://www.itf-oecd.org/good-to-go-environmental-performance-new-mobility):
       - Modification du mix électrique considéré pour prendre en compte le mix français en compte du mix électrique  
       - On considère l'usager non propriétaire (= autopartage) -> FE _Shared e-scooter (new generation)_. Ce FE est très émissif car :
-        - la fabrication de ces scooters est beaucoup plsu émissive car ils sont beaucoup plus lourd que leur équivalent non partagés (25 kg contre 11 kg)
+        - la fabrication de ces scooters est beaucoup plus émissive car ils sont beaucoup plus lourd que leur équivalent non partagés (25 kg contre 11 kg)
         - le nombre de km roulés sur l'ensemble du cycle de vie est très faible (5700 km)
         - les services opérationnels des systèmes d'autopartage représentent plus du quart de l'empreinte du FE
-    
-    Moto =< 250 cm3 - Mixte - 2018 ; 76,3 gCO2e/km/personne ; calculs ADEME à partir d'HBEFA (2020)
+      Avec cette méthodologie on obtient un FE de 91 gCO2e/km/personne,
+      Cependant cette valeur découle de choix conservateurs, on utilisera un FE issu d'un ACV de scooter électriques en autopartage YEGO, réalisé par ECOACT, qui prend un perimètre "cradle to grave". Etude : https://eco-act.com/case-study/yego-measures-the-environmental-impact-of-its-scooters-through-life-cycle-assessment/?utm_source=chatgpt.com
+      Le FE issu de cette étude est de 15,4gCO2e/km/personnne.
+      Moto =< 250 cm3 - Mixte - 2018 ; 76,3 gCO2e/km/personne ; calculs ADEME à partir d'HBEFA (2020)
+      Moto > 250 cm3 - Mixte - 2018 ; 191 gCO2e/km/personne ; calculs ADEME à partir d'HBEFA (2020)
+      Les chiffres ci-dessus incluent la fabrication du véhicule, contrairement aux données précédentes (2021).
 
-    Moto > 250 cm3 - Mixte - 2018 ; 191 gCO2e/km/personne ; calculs ADEME à partir d'HBEFA (2020)
-
-    Les chiffres ci-dessus incluent la fabrication du véhicule, contrairement aux données précédentes (2021).
 
 DT . deux roues . entretien pondéré:
   formule:

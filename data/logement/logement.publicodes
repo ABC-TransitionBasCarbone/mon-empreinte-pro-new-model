@@ -15,8 +15,8 @@ logement:
       - bureaux
 
 logement . habitants:
-  formule: habitants . moyen
-  par défaut: habitants . moyen
+  formule: 1
+  par défaut: 1
 #  titre: Nombre voyageurs
 #  question: Combien de personnes voyagent (vous inclus) ?
 #  description: |
@@ -31,8 +31,8 @@ logement . habitants:
 #    en famille: 4
 
 logement . habitants . moyen:
-  formule: 2
-  note: On considère qu'un séjour se fait au moins à deux personnes.
+  formule: 1
+  note: Ce nombre n'a pas vraient de sens en tant que tel, il sert uniquement de valeur par défaut pour "logement . habitants".
 #  formule: 2.2
 #  note: D'après les chiffres [INSEE](https://www.insee.fr/fr/statistiques/2381486)
 

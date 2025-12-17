@@ -39,11 +39,11 @@ bilan:
 
   formule:
     somme:
-      - logement
-      - transport
       - DT
+      - transport
       - alimentation
       - divers
+      - logement
 #      - services sociétaux
 
 bilan . par jour:

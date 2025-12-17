@@ -59,7 +59,7 @@ alimentation . déforestation . forfait base:
 alimentation . déjeuner:
   icônes: 🍽️
   titre: Déjeuners
-  formule: (plats / 52) * (253 - transport . congé)
+  formule: (plats / 52) * (253 - DT . congé)
 
 # Ici on veut le total sur un an donc on multiplie l'empreinte par semaine au nombre de semaine effectivement travaillée dans l'année (en enlevant les jours de congés).
 
@@ -108,8 +108,10 @@ alimentation . plats:
   titre: Empreinte des repas
   description: |
     On inclut le repas du midi car il est directement lié au cadre professionnel : il existe parce que l’on travaille.
+
     Que le déjeuner soit pris au restaurant d’entreprise, avec des tickets restaurant fournis par l’employeur, ou à domicile en télétravail, c’est un impact induit par l’activité professionnelle et organisé en partie par l’entreprise.
-    Vous devez rensignez ici les 5 repas du midi de votre semaine de travail type.
+    
+    Vous devez renseignez ici les 5 repas du midi de votre semaine de travail type.
   formule:
     somme:
       - végétalien
