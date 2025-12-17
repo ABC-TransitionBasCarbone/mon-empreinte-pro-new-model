@@ -51,20 +51,7 @@ alimentation . boisson . chaude:
     Cherchez ici à renseigner une consommation représentative de votre consommation, ce n'est pas grave si cela ne correspond pas à ce que vous buvez exactement
 
     _Précision_ : considérez le déca comme un café !
-  formule: par jour
-
-# alimentation . boisson . chaude . notif chicorée région générale: #"région générale" = hack pour la lecture des notifs par le front
-#   type: notification
-#   formule:
-#     une de ces conditions:
-#       - café . nombre > 0
-#       - thé . nombre > 0
-#       - chocolat chaud . nombre > 0
-#       - chicorée . nombre > 0
-#   description: |
-#     **Le saviez-vous ?** La chicorée est une plante emblématique des Hauts-de-France, cultivée localement depuis le XIXe siècle. Peu gourmande en eau et résistante, 
-#     elle s’inscrit dans une agriculture durable. Naturellement sans caféine, elle est riche en fibres, notamment en inuline, un prébiotique bénéfique pour la digestion et la satiété. 
-#     On la savoure en boisson, ou dans des plats aux notes amères typiques de la région.
+  formule: par jour * (251 - DT . congé)
 
 alimentation . boisson . chaude . par jour:
   titre: Empreinte boissons chaudes par jour
@@ -96,28 +83,28 @@ alimentation . boisson . chaude . chicorée:
   formule: tasse de chicorée * nombre
 
 alimentation . boisson . chaude . café . nombre:
-  question: Nombre de cafés par jour pendant le séjour
+  question: Nombre de cafés par jour 
   par défaut: 1.5
   plancher: 0
   unité: tasse/jour
   note: Un français moyen boit 500 tasses de café par an ([source](https://fr.statista.com/themes/10144/le-cafe-en-france/#topFacts)), soit environ une tasse et demi par jour.
 
 alimentation . boisson . chaude . thé . nombre:
-  question: Nombre de thés par jour pendant le séjour
+  question: Nombre de thés par jour 
   par défaut: 0.5
   plancher: 0
   unité: tasse/jour
   note: Un français moyen consomme 250g de thé par an ([source](https://www.francesoir.fr/lifestyle-vie-quotidienne/le-boom-de-la-consommation-en-france)), soit 5 grammes par semaine. Nous avons estimé que cela correspondait approximativement à une demi tasse par jour.
 
 alimentation . boisson . chaude . chocolat chaud . nombre:
-  question: Nombre de chocolats chauds par jour pendant le séjour
+  question: Nombre de chocolats chauds par jour 
   par défaut: 0
   plancher: 0
   unité: tasse/jour
   note: Nous ne considérons pas de tasses de chocolat chaud par défaut.
 
 alimentation . boisson . chaude . chicorée . nombre:
-  question: Nombre de tasses de chicorée par jour pendant le séjour
+  question: Nombre de tasses de chicorée par jour 
   par défaut: 0
   plancher: 0
   unité: tasse/jour
@@ -343,7 +330,7 @@ alimentation . boisson . tasse de chocolat chaud . quantité lait par tasse:
   unité: kg/tasse
   note: on fait l'hypothèse qu'une tasse de chocolat chaud contient en moyenne 200 grammes de lait.
 
-# Suite à une demande des Hauts de France on commente les questions sur les boissons sucrées et alcoolisées et sur l'eau en bouteille.
+
 alimentation . boisson . froide:
   icônes: 🍺🥤🧴
   formule:
@@ -358,7 +345,7 @@ alimentation . boisson . eau en bouteille:
     variations:
       - si:
           est défini: consommateur
-        alors: consommation * empreinte
+        alors: 1.5 * empreinte
       - sinon: 0 
   unité: kgCO2e
 
@@ -367,23 +354,21 @@ alimentation . boisson . eau en bouteille . consommateur:
  description: |
    Si vous buvez principalement de l'eau du robinet et que votre consommation d'eau en bouteille se réduit à de rares occasions (par exemple un repas sur le pouce en boulangerie par semaine, avec leur fameux menu "sandwich + dessert + boisson en bouteille plastique"), répondez non.
 
-   Si vous achetez régulièrement des packs d'eau en bouteille au supermarché ou si vous achetez une petite bouteille chaque jour à la cantine du boulot, répondez oui.
-
    > Sachez que la consommation d'eau du robinet a une empreinte climat si faible que nous ne vous poserons pas la question de votre consommation alimentaire d'eau.
  note: |
    Les français boivent en moyenne entre 100 et 150 litres d'eau en bouteille par an [source](https://www.planetoscope.com/consommation-eau/854-litres-d-eau-en-bouteille-vendus-en-france.html), soit environ un tiers de nos besoins de 1-1,5l par jour [source](https://www.mangerbouger.fr/Le-Mag/Bien-etre/L-eau-indispensable-a-notre-bonne-sante).
 
    Nous avons considéré que la valeur par défaut était donc "non".
 
-alimentation . boisson . eau en bouteille . consommation:
-  applicable si:
-    consommateur = oui
-  question: Combien de bouteille d'eau en plastique buvez-vous par jour (en équivalent d'1 litre) ?
-  description: |
-    Si vous comptez acheter une bouteille d'1,5l par jour, renseignez 1,5l. Si vous ne boirez qu'une seule
-    bouteille de 0,5l, renseignez 0,5.
-  par défaut: consommation moyenne / 365 #On divise par 365 pour ramener la consommation moyenne annuelle à une consommation moyenne journalière
-  unité: l
+# alimentation . boisson . eau en bouteille . consommation:
+#   applicable si:
+#     consommateur = oui
+#   question: Combien de bouteille d'eau en plastique buvez-vous par jour (en équivalent d'1 litre) ?
+#   description: |
+#     Si vous comptez acheter une bouteille d'1,5l par jour, renseignez 1,5l. Si vous ne boirez qu'une seule
+#     bouteille de 0,5l, renseignez 0,5.
+#   par défaut: consommation moyenne / 365 #On divise par 365 pour ramener la consommation moyenne annuelle à une consommation moyenne journalière
+#   unité: l
 
 alimentation . boisson . eau en bouteille . empreinte:
   formule:
@@ -433,7 +418,7 @@ alimentation . boisson . sucrées:
         vin . nombre: 0
         champagne . nombre: 0
         cocktail . nombre: 0
-  question: Quelle est votre consommation de boissons au travail ? (en nombre de verres par jour)
+  question: Quelle est votre consommation de boissons sucrées au travail ? (en nombre de verres par jour)
   formule:
     somme:
       - sirop
@@ -448,7 +433,7 @@ alimentation . boisson . sucrées:
 alimentation . boisson . sucrées . sirop:
   titre: Sirop à l'eau
   icônes: 💧
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
 alimentation . boisson . sucrées . sirop . empreinte:
@@ -484,7 +469,7 @@ alimentation . boisson . sucrées . cocktail sans alcool . nombre:
 alimentation . boisson . sucrées . soda:
   titre: Soda
   icônes: 🥤
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
 alimentation . boisson . sucrées . soda . empreinte:
@@ -502,7 +487,7 @@ alimentation . boisson . sucrées . soda . nombre:
 alimentation . boisson . sucrées . jus de fruit:
   titre: Jus de fruit
   icônes: 🧃
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
 alimentation . boisson . sucrées . jus de fruit . empreinte:

@@ -60,7 +60,9 @@ divers . numérique:
   titre: Numérique
   abréviation: num.
   icônes: 📺
-  description: |
+  description : 
+    Pour le numérique, l’empreinte carbone professionnelle intègre les équipements utilisés, leur durée de vie, leur consommation d’énergie et les services numériques mobilisés (réseaux, cloud, stockage, échanges).
+  note: |
     Pour ce poste, nous utilisons les données proposées par le service SoNum de l'ADEME, notamment:
       - Les données d'ACV des équipements, téléchargeables sur le site de la Base Empreinte (section Documentation > 2- AE - Référentiels sectoriels & Echelles > Numérique). Ces données sont également dispoinbles via le modèle publicodes [@incubateur-ademe/publicodes-acv-numerique](https://github.com/incubateur-ademe/publicodes-acv-numerique).
       - Le [baromètre du numérique](https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/barometre-du-numerique/le-barometre-du-numerique-edition-2025.html), piloté notamment par l'Arcep, fournissant des données sur la diffusion des équipements numériques (nombre d'équipements au sein des foyers), l’évolution de leurs usages et la perception de leur empreinte environnementale.
@@ -73,7 +75,7 @@ divers . numérique:
 
 divers . numérique . ia:
   icônes: 🤖
-  formule: empreinte requête * nombre de requêtes par jour * 228
+  formule: empreinte requête * nombre de requêtes par jour * (251 - DT . congé)
 
 divers . numérique . ia . empreinte requête:
   formule:
@@ -100,7 +102,7 @@ divers . numérique . ia . nombre de requêtes par jour:
 
 divers . numérique . visio:
   icônes: 🎥
-  formule: empreinte horaire * durée journalière * (251 - transport . congé)
+  formule: empreinte horaire * durée journalière * (251 - DT . congé)
 
 divers . numérique . visio . empreinte horaire:
   formule: 0.995 kgCO2e/h
@@ -122,7 +124,7 @@ divers . numérique . visio . durée journalière:
 
 divers . numérique . internet:
   icônes: 🌐
-  formule: empreinte horaire * durée journalière * 228
+  formule: empreinte horaire * durée journalière * (251 - DT . congé)
 
 divers . numérique . internet . empreinte horaire:
   formule:
@@ -513,8 +515,6 @@ divers . numérique . appareils . imprimante . nombre:
   plafond: 5
   arrondi: 2 décimales
   par défaut: 0
-  note: |
-    Le baromètre du numérique 2025 ne donne pas d'information sur la possession d'imprimantes. Nous considérons qu'un foyer moyen ne possède pas d'imprimante.
 divers . numérique . appareils . imprimante . durée:
   titre: Durée de vie d'une imprimante
   formule: acv numerique . acv . imprimante . durée de vie théorique / 1 an
