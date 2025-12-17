@@ -84,10 +84,11 @@ transport . train . passagers km intercités:
 ### A voir si on passe le modèle en heure et non plus en km
 transport . train . km:
   question: Dans le cadres de vos déplacements professionnels, quelle distance parcourez-vous en train chaque mois ?
-  description: A ADAPTER
-  suggestions:
-    Paris ⇄ Lille: 440
-    Bruxelles ⇄ Lille : 220
+  description: Renseignez la distance moyenne que vous parcourez chaque mois en  train pour vos déplacements professionnels. Si vous le prenez ponctuellement, sommez vos différents trajets et divisez par 12.
+  Suggestions:
+    peu: 100
+    moyennement: 300
+    beaucoup: 600
   unité: km/mois
   plancher: 0
   par défaut: 300
