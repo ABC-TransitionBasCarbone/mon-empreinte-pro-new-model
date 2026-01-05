@@ -1,4 +1,4 @@
-bureaux:
+logement . bureaux:
   titre: bureaux
   applicable si: question rhétorique
   abréviation: brx.
@@ -8,7 +8,7 @@ bureaux:
   formule:
     bureaux . empreinte
 
-bureaux . question rhétorique:
+logement . bureaux . question rhétorique:
   titre: Question d'information sur les consommation d'énergie associée à la vie de bureau et au télétravail (Chauffage, climatisation, électricité)
   question: Nous attribuons à chaque employé l'empreinte de sa "vie de bureau" sur son lieu de travail et chez lui (chauffage, climatisation, électricité...). Cela représente autour de 0,28 tonnes de CO2e par personne par an d'après un calcul mené par l'ABC.
   description: |
@@ -21,9 +21,9 @@ bureaux . question rhétorique:
       possibilités:
         - ok
 
-bureaux . question rhétorique . ok:
+logement . bureaux . question rhétorique . ok:
   titre: OK
 
-bureaux . empreinte:
+logement . bureaux . empreinte:
   formule:
     282 kgCO2e/an
