@@ -114,7 +114,7 @@ divers . numérique . visio . durée journalière:
   unité: h/jour
   plancher: 0
   plafond: 16
-  par défaut: 2
+  par défaut: 1
   suggestions:
     Aucune: 0
     Peu: 1
@@ -163,7 +163,7 @@ divers . numérique . internet . durée journalière:
   unité: h/jour
   plancher: 0
   plafond: 16
-  par défaut: 3
+  par défaut: 2
   suggestions:
     Aucune: 0
     Peu: 1
@@ -358,7 +358,7 @@ divers . numérique . appareils . tablette . nombre:
   plancher: 0
   plafond: 5
   arrondi: 2 décimales
-  par défaut: 1.2 / logement . habitants
+  par défaut: 0
   note: |
     D'après le [baromètre du numérique 2025](https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/barometre-du-numerique/le-barometre-du-numerique-edition-2025.html), un foyer français possède en moyenne 1,2 tablettes (voir 19 du rapport complet).
 divers . numérique . appareils . tablette . durée:
