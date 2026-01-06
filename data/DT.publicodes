@@ -105,7 +105,7 @@ DT . empreinte par défaut:
 
 DT . congé:
   titre: Jours de congés pris par an
-  question: Combien de jours ne travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
+  question: Combien de jours travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
   description: |
     Cette question permet d'estimer vos jours d'absence du lieu de travail. Renseignez donc tous vos jours d'absence quelle que soit leur nature (congés payés, RTT, arrêt maladie)
     Moins de jours sur site signifie moins de trajets domicile-travail par exemple.
@@ -229,8 +229,8 @@ DT . voiture:
                     alors: empreinte calculée
                   - si: utilisateur = 'non régulier' #Cas ou l'utilisateur répond à voiture . utilisateur
                     alors: empreinte non régulier
-                  - sinon: 500 #Cas ou l'utilisateur répond jnsp à voiture . utilisateur
-            - sinon: 1000 #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T
+                  - sinon: 500 #Cas ou l'utilisateur répond jnsp à voiture . utilisateur (à remplacer par empreinte moyenne)
+            - sinon: 1000 #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T (à remplacer par empreinte par défaut)
   unité: kgCO2e
 #            - si: #A-R voiture (complété en entier) + DT = voiture
 #                toutes ces conditions:
@@ -452,7 +452,7 @@ DT . voiture . utilisateur . régulier non propriétaire:
   description: Vous utilisez presque systématiquement la voiture d'un même collègue.
 DT . voiture . utilisateur . non régulier:
   titre: Non, je change souvent (autopartage avec différents véhicules)
-  description: Vous ne disposez pas de votre propre véhicule et les vous covoiturez avec les véhicules de collègues différents.
+  description: Vous ne disposez pas de votre propre véhicule et vous covoiturez avec les véhicules de collègues différents.
 
 DT . voiture . notif utilisateur irrégulier:
   type: notification
@@ -727,7 +727,7 @@ DT . voiture . motorisation . hybride:
 
 DT . voiture . thermique:
   titre: Voiture thermique
-
+  
 DT . voiture . thermique . empreinte au kilomètre:
   titre: empreinte au km thermique
   formule: consommation au kilomètre * empreinte au litre
@@ -765,6 +765,7 @@ DT . voiture . thermique . consommation aux 100:
     9 l/100km: 9
   par défaut: consommation estimée
   unité: l/centkm
+
 #  note: Les suggestions de réponse sont à la louche, à préciser et sourcer.
 #    toutes ces conditions:
 #      - km > 0
@@ -1020,6 +1021,7 @@ DT . voiture . thermique . carburant:
     [Cet article](https://www.ecologie.gouv.fr/carburants-et-combustibles-autorises-en-france) du ministère de l'Écologie explique plus en détail les carburants légaux en France.
 
     > Attention, si le type de carburant fait varier de façon significative l'empreinte climat au litre, la consommation en litre par 100km elle aussi varie. Veillez à saisir une consommation au litre basée sur votre moyenne réelle.
+  
   par défaut: "'essence E5 ou E10'"
   formule:
     une possibilité:

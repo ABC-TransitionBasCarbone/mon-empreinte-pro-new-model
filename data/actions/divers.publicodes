@@ -31,37 +31,37 @@ divers . publicité:
   note: |
     ADEME: https://librairie.ademe.fr/dechets-economie-circulaire/325-biens-d-equipement-benefices-environnementaux-d-allonger-leur-duree-de-vie.html
 
-divers . électroménager . appareils . allongement:
-  titre: Faire durer son électroménager
-  icônes: 💪🔌
-  non applicable si: divers . ameublement . préservation = 'maximum'
-  formule: (divers . électroménager . appareils - divers . électroménager . appareils . préservation allongée) / logement . habitants
-  description: |
-    Augmenter la durée de vie de ses équipements électroménagers (en en prenant soin ou en les réparant lorsqu'ils tombent en panne) permet de limiter son impact environnemental.
+# divers . électroménager . appareils . allongement:
+#   titre: Faire durer son électroménager
+#   icônes: 💪🔌
+#   non applicable si: divers . ameublement . préservation = 'maximum'
+#   formule: (divers . électroménager . appareils - divers . électroménager . appareils . préservation allongée) / logement . habitants
+#   description: |
+#     Augmenter la durée de vie de ses équipements électroménagers (en en prenant soin ou en les réparant lorsqu'ils tombent en panne) permet de limiter son impact environnemental.
 
-    A l'inverse, renouveler de manière prématurée ses équipements contribue à produire plus d'équipements pour un même service rendu.
+#     A l'inverse, renouveler de manière prématurée ses équipements contribue à produire plus d'équipements pour un même service rendu.
 
-    > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
+#     > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
 
-divers . électroménager . appareils . préservation allongée:
-  valeur: divers . électroménager . appareils
-  contexte:
-    coefficient préservation: 4 / 3
+# divers . électroménager . appareils . préservation allongée:
+#   valeur: divers . électroménager . appareils
+#   contexte:
+#     coefficient préservation: 4 / 3
 
-divers . ameublement . meubles . allongement:
-  titre: Allonger la vie de ses meubles
-  icônes: 💪🪑
-  non applicable si: divers . ameublement . préservation = 'maximum'
-  formule: (divers . ameublement . meubles - divers . ameublement . meubles . préservation allongée) / logement . habitants
-  description: |
-    Certains meubles fabriqués avec des panneaux de particules sont des sources potentielles d’émissions de COV et de formaldéhyde. Les colles employées dans ces meubles rejettent du formaldéhyde pendant plusieurs mois. Il vaut donc mieux privilégier le bois massif (que vous pourrez garder longtemps !) au bois aggloméré.
+# divers . ameublement . meubles . allongement:
+#   titre: Allonger la vie de ses meubles
+#   icônes: 💪🪑
+#   non applicable si: divers . ameublement . préservation = 'maximum'
+#   formule: (divers . ameublement . meubles - divers . ameublement . meubles . préservation allongée) / logement . habitants
+#   description: |
+#     Certains meubles fabriqués avec des panneaux de particules sont des sources potentielles d’émissions de COV et de formaldéhyde. Les colles employées dans ces meubles rejettent du formaldéhyde pendant plusieurs mois. Il vaut donc mieux privilégier le bois massif (que vous pourrez garder longtemps !) au bois aggloméré.
 
-    De plus, vous pouvez trouver des meubles moins polluants en choisissant des mobiliers avec [un écolabel](https://www.ademe.fr/labels-environnementaux).
+#     De plus, vous pouvez trouver des meubles moins polluants en choisissant des mobiliers avec [un écolabel](https://www.ademe.fr/labels-environnementaux).
 
-divers . ameublement . meubles . préservation allongée:
-  valeur: divers . ameublement . meubles
-  contexte:
-    coefficient préservation: 4 / 3
+# divers . ameublement . meubles . préservation allongée:
+#   valeur: divers . ameublement . meubles
+#   contexte:
+#     coefficient préservation: 4 / 3
 
 divers . tabac . arrêter:
   titre: Arrêter de fumer
@@ -94,18 +94,18 @@ divers . numérique . internet . durée journalière . réduction:
   description: Nous proposons ici de réduire d'une heure le temps passé à regarder des vidéos en ligne.
   unité: h/jour
 
-divers . numérique . appareils . allongement:
-  titre: Allonger la vie de tous ses appareils
-  icônes: 💪💻️
-  non applicable si: divers . ameublement . préservation = 'maximum'
-  formule: divers . numérique . appareils - divers . numérique . appareils . préservation allongée
-  description: |
-    > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
+# divers . numérique . appareils . allongement:
+#   titre: Allonger la vie de tous ses appareils
+#   icônes: 💪💻️
+#   non applicable si: divers . ameublement . préservation = 'maximum'
+#   formule: divers . numérique . appareils - divers . numérique . appareils . préservation allongée
+#   description: |
+#     > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
 
-divers . numérique . appareils . préservation allongée:
-  valeur: divers . numérique . appareils
-  contexte:
-    coefficient préservation: 4 / 3
+# divers . numérique . appareils . préservation allongée:
+#   valeur: divers . numérique . appareils
+#   contexte:
+#     coefficient préservation: 4 / 3
 
 divers . textile . réduire neuf:
 
