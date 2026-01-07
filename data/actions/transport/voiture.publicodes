@@ -1,5 +1,5 @@
 transport . voiture . éco-conduite:
-  titre: Adopter une éco-conduite pendant votre séjour
+  titre: Adopter une éco-conduite
   applicable si:
     toutes ces conditions:
       - voiture . km > 0
@@ -341,7 +341,7 @@ transport . voiture . location voiture électrique . recalcul:
 #    transport . voiture . motorisation: "'électrique'"
 
 transport . voiture . location réduire taille:
-  titre: Louer une petite voiture pour le séjour
+  titre: Louer une petite voiture pour les déplacements professionnels
   applicable si:
     toutes ces conditions: 
       - voiture . km > 0

@@ -107,7 +107,7 @@ DT . voiture . intensifier transport commun:
   description: |
 
 DT . voiture . sans voiture:
-  titre: Essayez un DT sans voiture 
+  titre: Réfléchir si il existe une alternative à la voiture 
   icônes: 🚗❌
   applicable si:
     toutes ces conditions:
@@ -115,9 +115,6 @@ DT . voiture . sans voiture:
       - DT . voiture . km > 0
   formule: DT . voiture # A vérifier s'il ne faut pas des variations en fonction des différents choix utilisateur
   unité: kgCO2e
-  description: |
-    Se passer de voiture c'est aussi un moyen de découvrir les beautés proches de votre hébergement. Ce n'est, certes, pas chose aisée mais pas impossible non plus : sorties pédestres,
-    balades à vélo, transport en commun, TER, les moyens de se passer de voiture existent.
 
 # Action à confirmer au regard des données GES utilisées qui semblait mettre en avant que les e-scooter shared avait un énorme impact car gros et à durée de vie très faible
 DT . deux roues . location deux roues électrique:
@@ -200,3 +197,9 @@ DT . voiture . location voiture électrique . recalcul:
   valeur: DT . voiture
   contexte:
     DT . voiture . motorisation: "'électrique'"
+
+DT . train déplacements domicile travail:
+  titre: Le train est un poste principal de vos déplacements domicile-travail... c'est donc qu'il est peu carboné ! **Félicitations !**
+  icônes: 🚅
+  description: |
+    Le train apparait comme un poste d'empreinte principal de vos déplacements domicile-travail... c'est donc que celui-ci est peu carboné ! **Félicitations !**

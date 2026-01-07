@@ -1,10 +1,10 @@
-divers . partage MSD:
-  titre: Promouvoir Mon Séjour Durable !
-  icônes: 📢🌍
-  description: |
-    Faire connaître ce simulateur à vos proches, vos collègues, le partager sur les réseaux sociaux, c'est un moyen de contribuer à la lutte contre le changement climatique.
+# divers . partage MSD:
+#   titre: Promouvoir Mon Séjour Durable !
+#   icônes: 📢🌍
+#   description: |
+#     Faire connaître ce simulateur à vos proches, vos collègues, le partager sur les réseaux sociaux, c'est un moyen de contribuer à la lutte contre le changement climatique.
 
-    Le partage de l’info via des outils numériques va consommer un peu d’énergie mais peut générer beaucoup d’actions positives pour le climat ! Si vos contacts décident des mêmes actions que vous, imaginez l'effet démultiplicateur ! 🙌
+#     Le partage de l’info via des outils numériques va consommer un peu d’énergie mais peut générer beaucoup d’actions positives pour le climat ! Si vos contacts décident des mêmes actions que vous, imaginez l'effet démultiplicateur ! 🙌
 
 divers . aider les autres:
   titre: Inviter ses proches à réduire leur empreinte
@@ -70,7 +70,7 @@ divers . tabac . arrêter:
   formule: divers . tabac
 
 divers . numérique . internet . diminuer:
-  titre: Réduire son temps de streaming
+  titre: Réduire son temps en ligne
   icônes: 💻📉
   applicable si: internet . durée journalière >= 2
   formule: numérique . internet - empreinte réduite
@@ -94,18 +94,34 @@ divers . numérique . internet . durée journalière . réduction:
   description: Nous proposons ici de réduire d'une heure le temps passé à regarder des vidéos en ligne.
   unité: h/jour
 
-# divers . numérique . appareils . allongement:
-#   titre: Allonger la vie de tous ses appareils
-#   icônes: 💪💻️
-#   non applicable si: divers . ameublement . préservation = 'maximum'
-#   formule: divers . numérique . appareils - divers . numérique . appareils . préservation allongée
-#   description: |
-#     > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
+divers . numérique . appareils . allongement:
+  titre: Allonger la vie de tous ses appareils
+  icônes: 💪💻️
+  # non applicable si: divers . ameublement . préservation = 'maximum'
+  formule: divers . numérique . appareils - divers . numérique . appareils . préservation allongée
+  description: |
+    > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
 
-# divers . numérique . appareils . préservation allongée:
-#   valeur: divers . numérique . appareils
-#   contexte:
-#     coefficient préservation: 4 / 3
+divers . numérique . appareils . préservation allongée:
+  valeur: divers . numérique . appareils
+  contexte:
+    coefficient préservation: 4 / 3
+
+divers . numérique . reconditionné:
+  titre: Acheter des appareils reconditionnés
+  icônes: ♻️💻️
+  formule: divers . numérique . appareils * 0.5 # On diminue de moitié arbitrairement
+  description: |
+    Acheter un appareil reconditionné permet d'éviter la fabrication d'un appareil neuf, qui consomme de l'énergie et des ressources.
+
+divers . numérique . réduire ia:
+  titre: Limiter l'usage de l'IA générative
+  icônes: 🤖❌
+  formule: divers . numérique . ia * 0.5 # On diminue de moitié arbitrairement
+  description: |
+    L'utilisation d'outils d'intelligence artificielle générative (comme ChatGPT, DALL-E, etc.) nécessite une puissance de calcul importante, ce qui se traduit par une consommation d'eau et d'énergie élevée.
+
+    Pour réduire votre empreinte carbone liée à l'utilisation de ces outils, limitez leur usage aux situations où ils sont vraiment nécessaires ou priviligiez des petits modèles spécifiques à votre besoin.
 
 divers . textile . réduire neuf:
 
