@@ -53,7 +53,7 @@ DT:
       - deux roues 
       - transports commun 
       - mobilité douce
-#  formule: empreinte totale
+  # formule: empreinte totale
 #  formule:
 #    variations:
 #      - si: choix utilisateur
@@ -61,17 +61,17 @@ DT:
 #      - sinon: empreinte par défaut
 #   formule: ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT ) * ( train + voiture + deux roues + transports commun + mobilité douce )
 
-DT . empreinte totale:
-  formule:
-    somme:
-      - train
-      - voiture 
-      - deux roues 
-      - transports commun 
-      - mobilité douce
-  unité: kgCO2e
+# DT . empreinte totale:
+#   formule:
+#     somme:
+#       - train
+#       - voiture 
+#       - deux roues 
+#       - transports commun 
+#       - mobilité douce
+#   unité: kgCO2e
 
-#DT . empreinte totale:
+# DT . empreinte totale:
 #  formule:
 #    somme:
 #      - train * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
@@ -105,7 +105,7 @@ DT . empreinte par défaut:
 
 DT . congé:
   titre: Jours de congés pris par an
-  question: Combien de jours travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
+  question: Combien de jours ne travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
   description: |
     Cette question permet d'estimer vos jours d'absence du lieu de travail. Renseignez donc tous vos jours d'absence quelle que soit leur nature (congés payés, RTT, arrêt maladie)
     Moins de jours sur site signifie moins de trajets domicile-travail par exemple.
@@ -120,7 +120,7 @@ DT . congé:
 
 DT . TT:
   titre: Jours de télétravail par semaine
-  question: Combien de jours par semaine travaillez-vous en télétravail en moyenne ?
+  question: Combien de jours de télétravail faites-vous en moyenne par semaine ?
   description: |
     Le télétravail modifie l’empreinte carbone professionnelle, car il réduit certains déplacements mais augmente les consommations liées au domicile.
   par défaut: 2
@@ -142,9 +142,9 @@ DT . train . présent:
 
 DT . train:
   applicable si: DT . train . présent
-  titre: TER
+  titre: Train
   icônes: 🚞
-  formule: TER * km
+  formule: TER * km extrapolé
   unité: kgCO2e
 
 DT . train . TER: #On est obligé de créer la variable "DT . train . TER" et d'y trouver les mêmes infos que "transport . train . TER" car si l'utilisateur ne coche pas "train" dans transport publicodes ne récupère pas les infos (du fait du applicable si: présent dans "transport . train")
@@ -163,6 +163,11 @@ DT . train . km:
   unité: km/jour
   plancher: 0
   par défaut: 50
+
+DT . train . km extrapolé:
+  formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 ### Car longue distance ###
 
@@ -229,8 +234,8 @@ DT . voiture:
                     alors: empreinte calculée
                   - si: utilisateur = 'non régulier' #Cas ou l'utilisateur répond à voiture . utilisateur
                     alors: empreinte non régulier
-                  - sinon: 500 #Cas ou l'utilisateur répond jnsp à voiture . utilisateur (à remplacer par empreinte moyenne)
-            - sinon: 1000 #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T (à remplacer par empreinte par défaut)
+                  - sinon: empreinte moyenne #Cas ou l'utilisateur répond jnsp à voiture . utilisateur (à remplacer par empreinte moyenne)
+            - sinon: empreinte par défaut #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T (à remplacer par empreinte par défaut)
   unité: kgCO2e
 #            - si: #A-R voiture (complété en entier) + DT = voiture
 #                toutes ces conditions:
@@ -357,6 +362,11 @@ DT . voiture . km:
     15 km: 15
     20 km: 20
     30 km: 30
+
+DT . voiture . km extrapolé:
+  formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 #DT . voiture . km annuels moyen réel:
 #  #8210
@@ -623,7 +633,7 @@ DT . voiture . notif nombreux voyageurs:
 
 DT . voiture . usage:
   titre: Usage de la voiture
-  formule: usage au kilomètre * km
+  formule: usage au kilomètre * km extrapolé
   unité: kgCO2e
 
 DT . voiture . usage au kilomètre:
@@ -1523,7 +1533,7 @@ DT . deux roues . passagers:
 
 DT . deux roues . empreinte:
   icônes: 🛵
-  formule: (empreinte au km + entretien pondéré) * km / passagers
+  formule: (empreinte au km + entretien pondéré) * km extrapolé  / passagers
   unité: kgCO2e
 
 DT . deux roues . empreinte DT deux roues possédé:
@@ -1549,6 +1559,13 @@ DT . deux roues . km:
     15km: 15
     25km: 25
     50km: 50
+
+DT . deux roues . km extrapolé:
+  formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
+
+
 
 DT . deux roues . type:
   applicable si: #On pose cette question uniquement si Q1 transport (aller-retour) un utilisateur renseigne un deux roues de "petite cylindrée" (i.e = scooter) ou pas de deux roues dans la combinaison de transport
@@ -1732,7 +1749,7 @@ DT . transports commun . type . bus:
 #      - sinon: empreinte par défaut
 
 DT . transports commun . type . bus . empreinte:
-  formule: heures * impact par heure
+  formule: heures extrapolée * impact par heure
   unité: kgCO2e
 
 DT . transports commun . type . bus . empreinte par défaut:
@@ -1775,6 +1792,11 @@ DT . transports commun . type . bus . heures:
     1h: 1
   unité: h/jour
   par défaut: 0.5
+
+DT . transports commun . type . bus . heures extrapolée:
+  formule: heures * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 # On commente l'option Autocar pour ne garder que Bus urbain et métro/tramway dans DT/transport en commun
 #DT . transports commun . type . car:
@@ -1862,7 +1884,7 @@ DT . transports commun . type . métro ou tram:
 #      - sinon: empreinte par défaut
 
 DT . transports commun . type . métro ou tram . empreinte:
-  formule: heures * impact par heure
+  formule: heures extrapolée * impact par heure
   unité: kgCO2e
 
 DT . transports commun . type . métro ou tram . empreinte par défaut:
@@ -1915,6 +1937,11 @@ DT . transports commun . type . métro ou tram . heures:
     1h: 1
   unité: h/jour
   par défaut: 0.25
+
+DT . transports commun . type . métro ou tram . heures extrapolée:
+  formule: heures * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 ### Mobilité douce ###
 
@@ -2011,7 +2038,7 @@ DT . mobilité douce . type . vae:
   icônes: 🚲⚡
   applicable si: DT . mobilité douce . type . vae . présent
 #On ne peut malheureusement pas simplifier et renvoyer vers la même variable dans "mobilité douce.publicodes" du fait de conditions "applicable si" au sein de ce fichier --> on reprend donc les variables "empreinte au km"
-  formule: empreinte au km * km
+  formule: empreinte au km * km extrapolé
   unité: kgCO2e
   note: |
     Les vélos-cargo à assistance électrique sont à classer dans la catégorie VAE. La différence de motorisation et de poids, et donc d'empreinte, est trop minime pour mériter une catégorie à part.
@@ -2035,6 +2062,11 @@ DT . mobilité douce . type . vae . km:
     20 km: 20
     50 km: 50
     100 km: 100
+
+DT . mobilité douce . type . vae . km extrapolé:
+  formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
+  note: |
+    On a 253 jours ouvrés dans l'année on retranche les jours de congés posés, ensuite on convertit en jours par an les jours de TT qui sont en jours par semaine en ne considérant que les semaines travaillées (52 - congés/5)
 
 DT . mobilité douce . type . trottinette:
   titre: Trottinette
@@ -2095,3 +2127,4 @@ DT . mobilité douce . type . trottinette électrique . km:
     10 km: 10
     20 km: 20
     50 km: 50  
+

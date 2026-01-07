@@ -10,7 +10,7 @@ logement . bureaux:
 
 logement . bureaux . question rhétorique:
   titre: Question d'information sur les consommation d'énergie associée à la vie de bureau et au télétravail (Chauffage, climatisation, électricité)
-  question: Nous attribuons à chaque employé l'empreinte de sa "vie de bureau" sur son lieu de travail et chez lui (chauffage, climatisation, électricité...). Cela représente autour de 0,28 tonnes de CO2e par personne par an d'après un calcul mené par l'ABC.
+  question: Nous attribuons à chaque employé l'empreinte de sa "vie de bureau" sur son lieu de travail et chez lui (chauffage, climatisation, électricité...). Cela représente autour de 280kg de CO2e par personne par an.
   description: |
 
     Cette catégorie ne dépend pas de vos réponses. L'empreinte associée est une moyenne nationale, nous procédons ainsi car définir précisément votre consommation d'énergie liée à votre activité professionnelle est complexe et necessiterait de nombreuses informations que vous n'avez pas forcement à disposition.
