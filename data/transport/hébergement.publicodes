@@ -34,8 +34,8 @@ transport . hébergement . nuitées:
   formule:
     variations:
       - si: choix utilisateur
-        alors: empreinte totale / logement . habitants
-      - sinon: empreinte par défaut / logement . habitants
+        alors: empreinte totale
+      - sinon: empreinte par défaut
 
 transport . hébergement . nuitées . empreinte totale:
   formule:
@@ -43,7 +43,7 @@ transport . hébergement . nuitées . empreinte totale:
       - empreinte hotel
 #       - empreinte camping
 #       - empreinte résidence de tourisme
-# #      - empreinte auberge de jeunesse * logement . habitants
+# #      - empreinte auberge de jeunesse
       - empreinte locations
       - empreinte famille ou amis
   unité: kgCO2e
@@ -72,13 +72,7 @@ transport . hébergement . nuitées . empreinte hotel:
     toutes ces conditions:
       - est défini: hotel . présent
       - hotel . présent
-  formule:
-    variations:
-      - si: logement . habitants > 8
-        alors: 3 * hotel . nombre de nuitées * empreinte hotel par nuit
-      - si: logement . habitants > 4
-        alors: 2 * hotel . nombre de nuitées * empreinte hotel par nuit
-      - sinon: hotel . nombre de nuitées * empreinte hotel par nuit
+  formule: hotel . nombre de nuitées * empreinte hotel par nuit
   note: |
     ## Les paramètres du calcul
 
@@ -119,9 +113,7 @@ transport . hébergement . nuitées . empreinte hotel:
 
     - **Le nombre de personnes partageant la chambre :**
 
-    Nous considérons dans ce modèle que l'empreinte de l'hôtel est divisée par le nombre d'logement . habitants du transport.
-    C'est une hypothèse forte car on peut facilement imaginer que le famille / foyer ne voyage pas toujours au complet !
-    Par ailleurs, on fait également l'hypotèse qu'une famille de plus de 4 personnes prendra 2 chambres, plus de 8, 3 chambres, ce qui explique les facteurs 2 et 3 dans les formules.
+    Nous considérons dans ce modèle qu'une nuit d'hôtel est utilisée par une personne (i.e. il n'y a pas de partage de chambre).
 
 transport . hébergement . nuitées . hotel:
   titre: Hôtel ou chambre d'hôtes
@@ -360,7 +352,7 @@ transport . hébergement . aquatique:
   formule:
     variations:
       - si: choix utilisateur
-        alors: (empreinte totale / logement . habitants)
+        alors: (empreinte totale)
       - sinon: 0 #On considère que par défaut un hébergement n'a pas de piscine --> à sourcer toutefois !
 #  formule:
 #    somme:
