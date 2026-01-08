@@ -3,11 +3,9 @@ transport . train:
   applicable si: présent
   titre: Train
   icônes: 🚆
-#  description: |
-#    ![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/TER_Vesoul.jpg/640px-TER_Vesoul.jpg)
-  formule: km * impact par km
+  formule: km * impact par km * 12
 
-# On fait pour l'instant l'hypothèse que la proportion d'utilisation des différents train en HdF est la même qu'au niveau national
+# On fait pour l'instant l'hypothèse que la proportion d'utilisation des différents train est la même qu'au niveau national
 transport . train . impact par km:
   formule:
     somme:
@@ -85,12 +83,13 @@ transport . train . passagers km intercités:
 
 ### A voir si on passe le modèle en heure et non plus en km
 transport . train . km:
-  question: Combien de kilomètres allez vous parcourir en train pour aller et revenir de votre lieu de séjour ?
-  description: Renseignez un nombre de km cohérent (en arrondissant à la dizaine ou centaine supérieure) avec les distances que vous allez parcourir en train pour vous rendre sur votre lieu de séjour et en revenir.
-  suggestions:
-    Paris ⇄ Lille: 440
-    Bruxelles ⇄ Lille : 220
-  unité: km
+  question: Dans le cadres de vos déplacements professionnels, quelle distance parcourez-vous en train chaque mois ?
+  description: Renseignez la distance moyenne que vous parcourez chaque mois en  train pour vos déplacements professionnels. Si vous le prenez ponctuellement, sommez vos différents trajets et divisez par 12.
+  Suggestions:
+    peu: 100
+    moyennement: 300
+    beaucoup: 600
+  unité: km/mois
   plancher: 0
   par défaut: 300
 

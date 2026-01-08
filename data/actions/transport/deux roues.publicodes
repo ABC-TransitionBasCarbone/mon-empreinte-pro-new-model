@@ -24,9 +24,9 @@ transport . deux roues . scooter électrique:
   applicable si:
     toutes ces conditions:
       - est non défini: transport . deux roues . présent
-      - est défini: séjour . deux roues . présent
-      - séjour . deux roues . présent
-      - séjour . deux roues . type = 'scooter thermique'
+      - est défini: DT . deux roues . présent
+      - DT . deux roues . présent
+      - DT . deux roues . type = 'scooter thermique'
   non applicable si:
     toutes ces conditions:
       - est défini: transport . deux roues . présent
@@ -34,13 +34,13 @@ transport . deux roues . scooter électrique:
       - une de ces conditions:
         - transport . deux roues . type = 'moto inf 250'
         - transport . deux roues . type = 'moto sup 250'
-  formule: séjour . deux roues - transport . deux roues . scooter électrique . recalcul
+  formule: DT . deux roues - transport . deux roues . scooter électrique . recalcul
   description: |
     Rapidité, facilité pour se garer, consommation de carburant réduite… vous êtes nombreux à opter pour des scooters qui peuvent être une alternative à la voiture car ils émettent moins de CO2 et sont 3 à 4 fois moins vorace en place.
 
     Le marché évolue dans le bon sens : les fabricants sortent des alternatives peu polluantes : comme des scooters électriques.
 
 transport . deux roues . scooter électrique . recalcul:
-  valeur: séjour . deux roues
+  valeur: DT . deux roues
   contexte:
-    séjour . deux roues . type: "'scooter électrique'"
+    DT . deux roues . type: "'scooter électrique'"

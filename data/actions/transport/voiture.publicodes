@@ -1,5 +1,5 @@
 transport . voiture . éco-conduite:
-  titre: Adopter une éco-conduite pendant votre séjour
+  titre: Adopter une éco-conduite
   applicable si:
     toutes ces conditions:
       - voiture . km > 0
@@ -96,7 +96,7 @@ transport . voiture . covoiturage un:
     toutes ces conditions:
       - voiture . km > 0
       - est défini: voiture . utilisateur
-      - voiture . voyageurs < 4 #On ne prend un covoit que si 3 ou en dessous ? Descendre la limite à 2 ?
+      - voiture . passagers < 4 #On ne prend un covoit que si 3 ou en dessous ? Descendre la limite à 2 ?
       - une de ces conditions:
         - voiture . utilisateur = 'propriétaire'
         - voiture . utilisateur = 'régulier non propriétaire'
@@ -125,7 +125,7 @@ transport . voiture . covoiturage un:
 transport . voiture . covoiturage un . recalcul:
   valeur: transport . voiture
   contexte:
-    transport . voiture . voyageurs: transport . voiture . voyageurs + 1
+    transport . voiture . passagers: transport . voiture . passagers + 1
 
 transport . voiture . covoiturage deux:
   titre: Prendre deux covoitureurs
@@ -133,7 +133,7 @@ transport . voiture . covoiturage deux:
     toutes ces conditions:
       - voiture . km > 0
       - est défini: voiture . utilisateur
-      - voiture . voyageurs < 3  #On ne prend un covoit que si 2 ou en dessous ? Descendre la limite à 1 ?
+      - voiture . passagers < 3  #On ne prend un covoit que si 2 ou en dessous ? Descendre la limite à 1 ?
       - une de ces conditions:
         - voiture . utilisateur = 'propriétaire'
         - voiture . utilisateur = 'régulier non propriétaire'
@@ -165,7 +165,7 @@ transport . voiture . covoiturage deux:
 transport . voiture . covoiturage deux . recalcul:
   valeur: transport . voiture
   contexte:
-    transport . voiture . voyageurs: transport . voiture . voyageurs + 2
+    transport . voiture . passagers: transport . voiture . passagers + 2
 
 #transport . réduction covoiturage:
 #  formule: 20%
@@ -341,7 +341,7 @@ transport . voiture . location voiture électrique . recalcul:
 #    transport . voiture . motorisation: "'électrique'"
 
 transport . voiture . location réduire taille:
-  titre: Louer une petite voiture pour le séjour
+  titre: Louer une petite voiture pour les déplacements professionnels
   applicable si:
     toutes ces conditions: 
       - voiture . km > 0
@@ -352,7 +352,7 @@ transport . voiture . location réduire taille:
   non applicable si:
     une de ces conditions:
       - transport . voiture . gabarit = 'petite'
-      - transport . voiture . voyageurs > 3 #Si plus de 3 passagers on considère qu'on ne peut pas prendre une petite voiture
+      - transport . voiture . passagers > 3 #Si plus de 3 passagers on considère qu'on ne peut pas prendre une petite voiture
       - toutes ces conditions:
           - est défini: voiture . utilisateur
           - une de ces conditions:
@@ -428,7 +428,7 @@ transport . voiture . prendre le train:
   non applicable si: 
     une de ces conditions:
       - transport . train . présent
-      - transport . car longue distance . présent
+      # - transport . car longue distance . présent
       - transport . deux roues . présent
   applicable si: voiture . km > 0
   formule: transport . voiture - recalcul

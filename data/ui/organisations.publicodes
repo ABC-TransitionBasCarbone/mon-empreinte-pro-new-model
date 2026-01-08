@@ -27,7 +27,7 @@ ui . organisations . transport . prend l'avion:
   icônes: ✈️
   formule:
     toutes ces conditions:
-      - transport . avion . usager
+      - transport . avion . présent
   unité: '%'
 
 ui . organisations . transport . prend l'avion long courrier:
@@ -51,7 +51,7 @@ ui . organisations . transport . voyageurs en voiture:
   icônes: 👥
   formule:
     moyenne:
-      - transport . voiture . voyageurs
+      - transport . voiture . passagers
 
 ui . organisations . logement:
   titre: Logement

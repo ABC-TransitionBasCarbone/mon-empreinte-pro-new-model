@@ -1,13 +1,7 @@
 logement:
-  titre: Logement
-  abréviation: logmt.
-  description: |
-    On peut voir notre logement comme un bâti passif qui n'impacterait pas le climat... on aurait tort !
-
-    Le poste d'émission le plus important du logement en France consiste à chauffer l'air dans lequel on vit. L'empreinte ne sera pas du tout la même en fonction de la technologie de chauffage.
-
-    Mais ce n'est pas tout : construction, entretien, chauffage de l'eau chaude, électricité, tant de postes qui dépendent avant tout d'un seul paramètre : le nombre de m².
-  icônes: 🏠
+  titre: Bureaux
+  abréviation: brx.
+  icônes: 🏢
   formule:
     somme:
 #      - construction
@@ -17,11 +11,12 @@ logement:
 #      - piscine
 #      - extérieur
 #      - vacances
-      - hébergement
+      # - hébergement
+      - bureaux
 
 logement . habitants:
-  formule: transport . voyageurs
-  par défaut: habitants . moyen
+  formule: 1
+  par défaut: 1
 #  titre: Nombre voyageurs
 #  question: Combien de personnes voyagent (vous inclus) ?
 #  description: |
@@ -36,8 +31,8 @@ logement . habitants:
 #    en famille: 4
 
 logement . habitants . moyen:
-  formule: 2
-  note: On considère qu'un séjour se fait au moins à deux personnes.
+  formule: 1
+  note: Ce nombre n'a pas vraient de sens en tant que tel, il sert uniquement de valeur par défaut pour "logement . habitants".
 #  formule: 2.2
 #  note: D'après les chiffres [INSEE](https://www.insee.fr/fr/statistiques/2381486)
 

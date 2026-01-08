@@ -45,26 +45,13 @@ alimentation . boisson . chaude:
         thé . nombre: 0
         chocolat chaud . nombre: 1
         chicorée . nombre: 0
-  question: Quelle sera (approximativement) votre consommation de boissons chaudes par jour (en nombre de tasses) ?
+  question: Quelle est votre consommation de boissons chaudes par jour ? (en nombre de tasses par jour)
   icônes: ☕️🫖
   description: |
-    Cherchez ici à renseigner une consommation représentative de votre consommation, ce n'est pas grave si cela ne correspond pas à ce que vous boirez exactement
+    Cherchez ici à renseigner une consommation représentative de votre consommation, ce n'est pas grave si cela ne correspond pas à ce que vous buvez exactement
 
     _Précision_ : considérez le déca comme un café !
-  formule: par jour * transport . durée séjour
-
-alimentation . boisson . chaude . notif chicorée région générale: #"région générale" = hack pour la lecture des notifs par le front
-  type: notification
-  formule:
-    une de ces conditions:
-      - café . nombre > 0
-      - thé . nombre > 0
-      - chocolat chaud . nombre > 0
-      - chicorée . nombre > 0
-  description: |
-    **Le saviez-vous ?** La chicorée est une plante emblématique des Hauts-de-France, cultivée localement depuis le XIXe siècle. Peu gourmande en eau et résistante, 
-    elle s’inscrit dans une agriculture durable. Naturellement sans caféine, elle est riche en fibres, notamment en inuline, un prébiotique bénéfique pour la digestion et la satiété. 
-    On la savoure en boisson, ou dans des plats aux notes amères typiques de la région.
+  formule: par jour * (251 - DT . congé)
 
 alimentation . boisson . chaude . par jour:
   titre: Empreinte boissons chaudes par jour
@@ -96,28 +83,28 @@ alimentation . boisson . chaude . chicorée:
   formule: tasse de chicorée * nombre
 
 alimentation . boisson . chaude . café . nombre:
-  question: Nombre de cafés par jour pendant le séjour
+  question: Nombre de cafés par jour 
   par défaut: 1.5
   plancher: 0
   unité: tasse/jour
   note: Un français moyen boit 500 tasses de café par an ([source](https://fr.statista.com/themes/10144/le-cafe-en-france/#topFacts)), soit environ une tasse et demi par jour.
 
 alimentation . boisson . chaude . thé . nombre:
-  question: Nombre de thés par jour pendant le séjour
+  question: Nombre de thés par jour 
   par défaut: 0.5
   plancher: 0
   unité: tasse/jour
   note: Un français moyen consomme 250g de thé par an ([source](https://www.francesoir.fr/lifestyle-vie-quotidienne/le-boom-de-la-consommation-en-france)), soit 5 grammes par semaine. Nous avons estimé que cela correspondait approximativement à une demi tasse par jour.
 
 alimentation . boisson . chaude . chocolat chaud . nombre:
-  question: Nombre de chocolats chauds par jour pendant le séjour
+  question: Nombre de chocolats chauds par jour 
   par défaut: 0
   plancher: 0
   unité: tasse/jour
   note: Nous ne considérons pas de tasses de chocolat chaud par défaut.
 
 alimentation . boisson . chaude . chicorée . nombre:
-  question: Nombre de tasses de chicorée par jour pendant le séjour
+  question: Nombre de tasses de chicorée par jour 
   par défaut: 0
   plancher: 0
   unité: tasse/jour
@@ -343,41 +330,45 @@ alimentation . boisson . tasse de chocolat chaud . quantité lait par tasse:
   unité: kg/tasse
   note: on fait l'hypothèse qu'une tasse de chocolat chaud contient en moyenne 200 grammes de lait.
 
-# Suite à une demande des Hauts de France on commente les questions sur les boissons sucrées et alcoolisées et sur l'eau en bouteille.
+
 alimentation . boisson . froide:
   icônes: 🍺🥤🧴
-  formule: 0
-#  formule:
-#    somme:
-#      - sucrées et alcool
+  formule:
+    somme:
+      - sucrées
 ##      - alcool
-#      - eau en bouteille
+      - eau en bouteille
 
 alimentation . boisson . eau en bouteille:
   titre: Eau en bouteille
-  formule: consommation * empreinte
+  formule:
+    variations:
+      - si:
+          est défini: consommateur
+        alors: 1.5 * empreinte
+      - sinon: 0 
   unité: kgCO2e
 
-#alimentation . boisson . eau en bouteille . consommateur:
-#  question: Buvez-vous votre eau en bouteille ?
-#  description: |
-#    Si vous buvez principalement de l'eau du robinet et que votre consommation d'eau en bouteille se réduit à de rares occasions (par exemple un repas sur le pouce en boulangerie par semaine, avec leur fameux menu "sandwich + dessert + boisson en bouteille plastique"), répondez non.
-#
-#    Si vous achetez régulièrement des packs d'eau en bouteille au supermarché ou si vous achetez une petite bouteille chaque jour à la cantine du boulot, répondez oui.
-#
-#    > Sachez que la consommation d'eau du robinet a une empreinte climat si faible que nous ne vous poserons pas la question de votre consommation alimentaire d'eau.
-#  note: |
-#    Les français boivent en moyenne entre 100 et 150 litres d'eau en bouteille par an [source](https://www.planetoscope.com/consommation-eau/854-litres-d-eau-en-bouteille-vendus-en-france.html), soit environ un tiers de nos besoins de 1-1,5l par jour [source](https://www.mangerbouger.fr/Le-Mag/Bien-etre/L-eau-indispensable-a-notre-bonne-sante).
-#
-#    Nous avons considéré que la valeur par défaut était donc "non".
+alimentation . boisson . eau en bouteille . consommateur:
+ question: Buvez-vous votre eau en bouteille ?
+ description: |
+   Si vous buvez principalement de l'eau du robinet et que votre consommation d'eau en bouteille se réduit à de rares occasions (par exemple un repas sur le pouce en boulangerie par semaine, avec leur fameux menu "sandwich + dessert + boisson en bouteille plastique"), répondez non.
 
-alimentation . boisson . eau en bouteille . consommation:
-  question: Combien de bouteille d'eau en plastique comptez-vous boire par jour, pendant votre séjour (en équivalent d'1 litre) ?
-  description: |
-    Si vous comptez acheter une bouteille d'1,5l par jour, renseignez 1,5l. Si vous ne boirez qu'une seule
-    bouteille de 0,5l, renseignez 0,5.
-  par défaut: consommation moyenne / 365 #On divise par 365 pour ramener la consommation moyenne annuelle à une consommation moyenne journalière
-  unité: l
+   > Sachez que la consommation d'eau du robinet a une empreinte climat si faible que nous ne vous poserons pas la question de votre consommation alimentaire d'eau.
+ note: |
+   Les français boivent en moyenne entre 100 et 150 litres d'eau en bouteille par an [source](https://www.planetoscope.com/consommation-eau/854-litres-d-eau-en-bouteille-vendus-en-france.html), soit environ un tiers de nos besoins de 1-1,5l par jour [source](https://www.mangerbouger.fr/Le-Mag/Bien-etre/L-eau-indispensable-a-notre-bonne-sante).
+
+   Nous avons considéré que la valeur par défaut était donc "non".
+
+# alimentation . boisson . eau en bouteille . consommation:
+#   applicable si:
+#     consommateur = oui
+#   question: Combien de bouteille d'eau en plastique buvez-vous par jour (en équivalent d'1 litre) ?
+#   description: |
+#     Si vous comptez acheter une bouteille d'1,5l par jour, renseignez 1,5l. Si vous ne boirez qu'une seule
+#     bouteille de 0,5l, renseignez 0,5.
+#   par défaut: consommation moyenne / 365 #On divise par 365 pour ramener la consommation moyenne annuelle à une consommation moyenne journalière
+#   unité: l
 
 alimentation . boisson . eau en bouteille . empreinte:
   formule:
@@ -404,19 +395,19 @@ alimentation . boisson . eau en bouteille . consommation moyenne:
     La consommation moyenne de l'eau en bouteille est en 2018 de 135 litres par an par habitant (soit 90 bouteilles),
     d'après le syndicat des eaux minérales naturelles ([source](https://eaumineralenaturelle.fr/qui-sommes-nous/leau-minerale-en-chiffres))
 
-alimentation . boisson . sucrées et alcool:
+alimentation . boisson . sucrées:
   ordre: 8
   mosaique:
     type: nombre
     options:
       - sirop . nombre
-      - cocktail sans alcool . nombre
+      # - cocktail sans alcool . nombre
       - soda . nombre
       - jus de fruit . nombre
-      - bière demi . nombre
-      - vin . nombre
-      - champagne . nombre
-      - cocktail . nombre
+      # - bière demi . nombre
+      # - vin . nombre
+      # - champagne . nombre
+      # - cocktail . nombre
     suggestions:
       aucun:
         sirop . nombre: 0
@@ -427,157 +418,157 @@ alimentation . boisson . sucrées et alcool:
         vin . nombre: 0
         champagne . nombre: 0
         cocktail . nombre: 0
-  question: Quelle sera (approximativement) votre consommation de boissons pendant votre séjour ?
+  question: Quelle est votre consommation de boissons sucrées au travail ? (en nombre de verres par jour)
   formule:
     somme:
       - sirop
-      - cocktail sans alcool
+      # - cocktail sans alcool
       - soda
       - jus de fruit
-      - bière demi
-      - vin
-      - champagne
-      - cocktail
+      # - bière demi
+      # - vin
+      # - champagne
+      # - cocktail
 
-alimentation . boisson . sucrées et alcool . sirop:
+alimentation . boisson . sucrées . sirop:
   titre: Sirop à l'eau
   icônes: 💧
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . sirop . empreinte:
+alimentation . boisson . sucrées . sirop . empreinte:
   titre: Empreinte verre de sirop
   formule: 0.076
   unité: kgCO2e
   note: Source Agribalyse. Moyenne FE sirop 1,03 kgCO2eq/kg (3cl) + FE bouteille eau 0,268 kgCO2eq/kg (17cl) ; hypothèse masse volumique sirop = eau = 1kg/L et 20 cl par verre
 
-alimentation . boisson . sucrées et alcool . sirop . nombre:
+alimentation . boisson . sucrées . sirop . nombre:
   titre: Nombre de verres de sirop
   question: Combien de verres de sirop allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . cocktail sans alcool:
+alimentation . boisson . sucrées . cocktail sans alcool:
   titre: Cocktail sans alcool
   icônes: 🍹
   formule: empreinte * nombre
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . cocktail sans alcool . empreinte:
+alimentation . boisson . sucrées . cocktail sans alcool . empreinte:  
   titre: Empreinte cocktail sans alcool
   formule: 0.30
   unité: kgCO2e
   note: Source Agribalyse FE jus cocktail sans alcool 0,921 kgCO2eq/kg ; hypothèse masse volumique cocktail = eau = 1kg/L et 33 cl par verre
 
-alimentation . boisson . sucrées et alcool . cocktail sans alcool . nombre:
+alimentation . boisson . sucrées . cocktail sans alcool . nombre:
   titre: Nombre de cocktail sans alcool
   question: Combien de cocktail sans alcool allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . soda:
+alimentation . boisson . sucrées . soda:
   titre: Soda
   icônes: 🥤
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . soda . empreinte:
+alimentation . boisson . sucrées . soda . empreinte:
   titre: Empreinte verre de soda
   formule: 0.17
   unité: kgCO2e
   note: Source Agribalyse moyenne FE cola/tonic 0,512 kgCO2eq/kg * 0.33 kg/canette ; hypothèse masse volumique soda = eau = 1kg/L
 
-alimentation . boisson . sucrées et alcool . soda . nombre:
+alimentation . boisson . sucrées . soda . nombre:
   titre: Nombre de verres de soda
   question: Combien de verres de soda allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . jus de fruit:
+alimentation . boisson . sucrées . jus de fruit:
   titre: Jus de fruit
   icônes: 🧃
-  formule: empreinte * nombre
+  formule: empreinte * nombre * (251 - DT . congé)
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . jus de fruit . empreinte:
+alimentation . boisson . sucrées . jus de fruit . empreinte:
   titre: Empreinte verre de jus de fruit
   formule: 0.14
   unité: kgCO2e
   note: Source Agribalyse moyenne FE jus hors ananas 0,715 kgCO2eq/kg ; hypothèse masse volumique jus de fruit = eau = 1kg/L et quantité de 20 cl par verre
 
-alimentation . boisson . sucrées et alcool . jus de fruit . nombre:
+alimentation . boisson . sucrées . jus de fruit . nombre:
   titre: Nombre de verres de jus de fruit
   question: Combien de verres de jus de fruit allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . bière demi:
+alimentation . boisson . sucrées . bière demi:
   titre: Bière demi
   icônes: 🍻
   formule: empreinte * nombre
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . bière demi . empreinte:
+alimentation . boisson . sucrées . bière demi . empreinte:
   titre: Empreinte demi de bière
   formule: 0.28
   unité: kgCO2e
   note: Source Agribalyse moyenne FE bière 1,12 kgCO2eq/kg ; hypothèse masse volumique bière = eau = 1kg/l et quantité = 25 cl
 
-alimentation . boisson . sucrées et alcool . bière demi . nombre:
+alimentation . boisson . sucrées . bière demi . nombre:
   titre: Nombre de verres de sirop
   question: Combien de demis de bière allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . vin:
+alimentation . boisson . sucrées . vin: 
   titre: Vin
   icônes: 🍷
   formule: empreinte * nombre
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . vin . empreinte:
+alimentation . boisson . sucrées . vin . empreinte:
   titre: Empreinte verre de vin
   formule: 0.18
   unité: kgCO2e
   note: source Agribalyse moyenne FE vin 1,19 kgCO2eq/kg ; hypothèse masse volumique vin = eau = 1kg/L et quantité = 15 cl
 
-alimentation . boisson . sucrées et alcool . vin . nombre:
+alimentation . boisson . sucrées . vin . nombre:
   titre: Nombre de verres de vin
   question: Combien de verres de vin allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . champagne:
+alimentation . boisson . sucrées . champagne:
   titre: Champagne
   icônes: 🥂
   formule: empreinte * nombre
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . champagne . empreinte:
+alimentation . boisson . sucrées . champagne . empreinte:
   titre: Empreinte verre de champagne
   formule: 0.15
   unité: kgCO2e
   note: source Agribalyse FE champagne 1,22 kgCO2eq/kg ; hypothèse masse volumique champagne = eau = 1kg/L et quantité = 12,5 cl
 
-alimentation . boisson . sucrées et alcool . champagne . nombre:
+alimentation . boisson . sucrées . champagne . nombre:
   titre: Nombre de verres de champagne
   question: Combien de verres de champagne allez-vous boire ?
   plancher: 0
   par défaut: 0
 
-alimentation . boisson . sucrées et alcool . cocktail:
+alimentation . boisson . sucrées . cocktail:
   titre: Cocktail (30 cl)
   icônes: 🍸
   formule: empreinte * nombre
   unité: kgCO2e
 
-alimentation . boisson . sucrées et alcool . cocktail . empreinte:
+alimentation . boisson . sucrées . cocktail . empreinte:
   titre: Empreinte cocktail
   formule: 0.24
   unité: kgCO2e
   note: source Agribalyse moyenne FE cocktail (base rhum, base whisky, punch) 0,95 kgCO2eq/kg ; hypothèse masse volumique cocktail = eau = 1kg/L et quantité = 25 cl
 
-alimentation . boisson . sucrées et alcool . cocktail . nombre:
+alimentation . boisson . sucrées . cocktail . nombre:
   titre: Nombre de cocktail
   question: Combien de cocktail allez-vous boire ?
   plancher: 0

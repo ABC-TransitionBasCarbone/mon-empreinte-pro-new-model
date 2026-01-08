@@ -3,8 +3,8 @@ transport . avion . arrêter l'avion:
   titre: Voyager sans prendre l'avion
   applicable si:
     toutes ces conditions:
-      - est défini: avion . usager
-      - avion . usager
+      - est défini: avion . présent
+      - avion . présent
   action:
     dépasse:
       - transport . avion . arrêter l'avion court
@@ -40,8 +40,8 @@ transport . avion . arrêter l'avion court:
   icônes: 🛬🚆
   applicable si:
     toutes ces conditions:
-      - est défini: avion . usager
-      - avion . usager
+      - est défini: avion . présent
+      - avion . présent
       - transport . avion . court courrier . heures de vol > 0
   formule: transport . avion . court courrier - compensation train
   unité: kgCO2e
@@ -65,8 +65,8 @@ transport . avion . prendre moins l'avion:
   icônes: 📉🛬
   applicable si:
     toutes ces conditions:
-      - est défini: avion . usager
-      - avion . usager
+      - est défini: avion . présent
+      - avion . présent
   action:
     dépasse:
       - transport . avion . arrêter l'avion court
