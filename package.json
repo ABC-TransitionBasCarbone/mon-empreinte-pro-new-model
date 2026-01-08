@@ -1,6 +1,6 @@
 {
   "name": "@abc-transitionbascarbone/mon-empreinte-pro-new-model",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Le modèle de calcul d'empreinte climat professionnel, fork du modèle de calcul Nos Gestes Climat",
   "main": "index.js",
   "types": "index.d.ts",
