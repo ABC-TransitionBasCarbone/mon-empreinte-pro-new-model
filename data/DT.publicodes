@@ -47,13 +47,24 @@ DT:
   description: |
     Renseignez les différents types de transport que vous utilisez le plus souvent pour vos déplacements entre votre domicile et votre lieu de travail pour une semaine type.
   formule:
-    somme:
-      - train
-      - voiture 
-      - deux roues 
-      - transports commun 
-      - mobilité douce
-  # formule: empreinte totale
+    variations:
+      - si: choix utilisateur
+        alors:
+          somme:
+            - train
+            - voiture 
+            - deux roues 
+            - transports commun 
+            - mobilité douce   
+      - sinon: voiture . empreinte par défaut
+
+#  formule:
+#    somme:
+#      - train
+#      - voiture 
+#      - deux roues 
+#      - transports commun 
+#      - mobilité douce
 #  formule:
 #    variations:
 #      - si: choix utilisateur
@@ -104,7 +115,7 @@ DT . empreinte par défaut:
 #      - sinon: 0 #Si A-R = défini --> on considère qu'on peut dire jnsp à DT (car on ne sait pas ce qu'on va faire) et donc attribuer 0
 
 DT . congé:
-  ordre: 1
+  #ordre: 1
   titre: Jours de congés pris par an
   question: Combien de jours ne travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
   description: |
@@ -120,7 +131,7 @@ DT . congé:
   unité: jour
 
 DT . TT:
-  ordre: 1
+#  ordre: 2
   titre: Jours de télétravail par semaine
   question: Combien de jours de télétravail faites-vous en moyenne par semaine ?
   description: |
@@ -216,7 +227,7 @@ DT . voiture . présent:
 
 # L'attribut empreinte moyenne est gardé uniquement pour un cas bien spécifique : A-R = voiture mais jnsp sur utilisateur + DT = voiture
 DT . voiture:
-#  applicable si: DT . voiture . présent
+  applicable si: DT . voiture . présent
   titre: Voiture
   icônes: 🚘
   formule:
@@ -236,8 +247,8 @@ DT . voiture:
                     alors: empreinte calculée
                   - si: utilisateur = 'non régulier' #Cas ou l'utilisateur répond à voiture . utilisateur
                     alors: empreinte non régulier
-                  - sinon: empreinte moyenne #Cas ou l'utilisateur répond jnsp à voiture . utilisateur (à remplacer par empreinte moyenne)
-            - sinon: empreinte par défaut #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T (à remplacer par empreinte par défaut)
+                  - sinon: empreinte moyenne #Cas ou l'utilisateur répond jnsp à voiture . utilisateur --> du fait du par défaut à la variable utilisateur --> ce chemin n'est jamais pris
+            - sinon: empreinte par défaut #Dans le cas où l'utilisateur répond jnsp à la mosaique transport D-T
   unité: kgCO2e
 #            - si: #A-R voiture (complété en entier) + DT = voiture
 #                toutes ces conditions:
@@ -583,6 +594,7 @@ DT . voiture . empreinte moyenne:
 DT . voiture . empreinte par défaut:
   valeur: voiture . empreinte calculée
   contexte:
+    voiture . présent: oui
     voiture . utilisateur: "'propriétaire'"
     voiture . km: 15
     voiture . voyageurs: 1
@@ -604,7 +616,10 @@ DT . voiture . empreinte calculée:
 DT . voiture . voyageurs:
   titre: Nombre de voyageurs trajets DT
   question: Quel est le nombre moyen de voyageurs dans la voiture lors de vos déplacements domicile-travail ?
-  applicable si: DT . voiture . présent
+  applicable si: 
+    toutes ces conditions:
+      - DT . voiture . présent
+      - km > 0
   description: |
     Indiquez le nombre moyen de personnes (vous inclus) dans la voiture lors de vos déplacements domicile-travail sur une semaine type. Si vous êtes seul(e) dans la voiture, indiquez 1. Si vous êtes 2, indiquez 2. Si il ya une personne avec vous 1 trajet sur 2 indiquez 1.5, etc...
   plancher: 1
