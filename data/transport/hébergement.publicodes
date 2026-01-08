@@ -20,14 +20,14 @@ transport . hébergement . nuitées:
 #      - auberge de jeunesse . présent
       - locations . présent
       - famille ou amis . présent
-#    suggestions:
-#      aucun:
-#        hotel . présent: non
-#        camping . présent: non
-#        résidence de tourisme . présent: non
-##        auberge de jeunesse . présent: non
-#        locations . présent: non
-#        famille ou amis . présent: non
+    suggestions:
+     aucun:
+       hotel . présent: non
+      #  camping . présent: non
+      #  résidence de tourisme . présent: non
+#        auberge de jeunesse . présent: non
+       locations . présent: non
+       famille ou amis . présent: non
   icônes: 🏨
   description: |
     Choisissez le(s) type(s) d'hébergement que vous avez utilisé lors de vos déplacements professionnels de l'année passée. Vous pouvez en sélectionner plusieurs.
