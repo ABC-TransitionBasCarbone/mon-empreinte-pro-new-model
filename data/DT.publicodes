@@ -46,6 +46,8 @@ DT:
   icônes: 🏠➡️🏢
   description: |
     Renseignez les différents types de transport que vous utilisez le plus souvent pour vos déplacements entre votre domicile et votre lieu de travail pour une semaine type.
+
+    Si vous utilisez plusieurs modes de transport pour un même trajet (exemple : vélo + train), cochez tous les modes de transport utilisés, puis remplissez les détails pour chacun d'eux.
   formule:
     variations:
       - si: choix utilisateur
@@ -117,10 +119,12 @@ DT . empreinte par défaut:
 DT . congé:
   #ordre: 1
   titre: Jours de congés pris par an
-  question: Combien de jours ne travaillez-vous pas par an ? (congés, RTT, arrêts maladie, etc.)
+  question: Combien de jours êtes vous absent du travail par an (congés, RTT, etc.)
   description: |
-    Cette question permet d'estimer vos jours d'absence du lieu de travail. Renseignez donc tous vos jours d'absence quelle que soit leur nature (congés payés, RTT, arrêt maladie)
+    Cette question permet d'estimer vos jours d'absence du lieu de travail. Renseignez donc tous vos jours d'absence quelle que soit leur nature (congés payés, RTT, autres)
     Moins de jours sur site signifie moins de trajets domicile-travail par exemple.
+
+    Ne prenez pas en compte les jours de télétravail, ni les jours que nous vous pouvez pas prévoir (arrêt maladie, etc.)
   par défaut: 25
   plancher: 0 
   plafond: 365
@@ -157,25 +161,36 @@ DT . train:
   applicable si: DT . train . présent
   titre: Train
   icônes: 🚞
-  formule: TER * km extrapolé
+  formule: FE TER * km extrapolé
   unité: kgCO2e
 
-DT . train . TER: #On est obligé de créer la variable "DT . train . TER" et d'y trouver les mêmes infos que "transport . train . TER" car si l'utilisateur ne coche pas "train" dans transport publicodes ne récupère pas les infos (du fait du applicable si: présent dans "transport . train")
+DT . train . FE TER: #On est obligé de créer la variable "DT . train . TER" et d'y trouver les mêmes infos que "transport . train . TER" car si l'utilisateur ne coche pas "train" dans transport publicodes ne récupère pas les infos (du fait du applicable si: présent dans "transport . train")
   formule: 0.0277
   unité: kgCO2e/km
   note: |
     TER - 2022 - Traction moyenne ; 27.7 gCO2e/km/personne
 
+DT . train . vitesse TER:
+  formule: 95
+  unité: km/heure
+  note: |
+    Vitesse moyenne de 95 km/h pour le TER.
+
 DT . train . km:
+  formule: heure * vitesse TER
+  unité: km
+
+DT . train . heure:
   applicable si: DT . train . présent
-  question: Combien de kilomètres parcourez-vous en Train par jour pour vos déplacements domicile-travail ?
+  question: Combien d'heure (aller/retour) passez-vous dans le train par jour pour vos déplacements domicile-travail  ?
+  description :  |
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 min = 0.5 h, 45 min = 0.75 h).
   suggestions:
-    10 km: 10
-    20 km: 20
-    50 km: 50
-  unité: km/jour
+    1h : 1
+    2h : 2
+  unité: heure/jour
   plancher: 0
-  par défaut: 50
+  par défaut: 1
 
 DT . train . km extrapolé:
   formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
@@ -361,7 +376,7 @@ DT . voiture . km:
 #    toutes ces conditions:
 #      - transport . voiture . présent
 #      - est non défini: transport . voiture . utilisateur
-  question: Quelle distance (aller-retour) parcourez en voiture chaque jour pour vos déplacements domicile-travail ?
+  question: Quelle distance (aller-retour) parcourez-vous en voiture par jour pour vos déplacements domicile-travail ?
   description: |
     Renseignez un nombre de km cohérent (en arrondissant à la dizaine ou centaine supérieure) avec les distances que vous parcourez quotidiennement en voiture pour vos déplacements domicile-travail.
 # It seems that there is a [publicodes bug](https://github.com/publicodes/publicodes/issues/517). For now, we can't use `km annuels moyen réel` directly here, until the problem is fixed.
@@ -621,7 +636,9 @@ DT . voiture . voyageurs:
       - DT . voiture . présent
       - km > 0
   description: |
-    Indiquez le nombre moyen de personnes (vous inclus) dans la voiture lors de vos déplacements domicile-travail sur une semaine type. Si vous êtes seul(e) dans la voiture, indiquez 1. Si vous êtes 2, indiquez 2. Si il ya une personne avec vous 1 trajet sur 2 indiquez 1.5, etc...
+    Indiquez le nombre moyen de personnes (vous inclus) dans la voiture lors de vos déplacements domicile-travail sur une semaine type. 
+    
+    Si vous êtes seul(e) dans la voiture, indiquez 1. Si vous êtes 2, indiquez 2. Si il ya une personne avec vous 1 trajet sur 2 indiquez 1.5, etc...
   plancher: 1
   avertissement: |
     Le nombre de voyageurs ne peut pas être nul. Au volant de votre voiture, vous en êtes le premier voyageur.
@@ -1567,14 +1584,13 @@ DT . deux roues . empreinte moyenne:
 
 DT . deux roues . km:
   applicable si: présent
-  question: Combien de km parcourez-vous chaque jour en deux roues pour vos déplacements domicile-travail ?
+  question: Quelle distance (aller/retour) parcourez-vous par jour en deux roues pour vos déplacements domicile-travail ?
   par défaut: 15
   plancher: 0
   unité: km/jour
   suggestions:
     10km: 10
-    15km: 15
-    25km: 25
+    20km: 25
     50km: 50
 
 DT . deux roues . km extrapolé:
@@ -1591,7 +1607,7 @@ DT . deux roues . type:
         - transport . deux roues . présent = non
         - DT . deux roues . présent = oui
   question: Quelle est la motorisation du deux roues que vous utilisez ?
-  par défaut: "'scooter thermique0'"
+  par défaut: "'scooter thermique'"
   formule:
     une possibilité:
       choix obligatoire: oui
@@ -1802,13 +1818,15 @@ DT . transports commun . type . bus . vitesse:
 
 DT . transports commun . type . bus . heures:
   applicable si: DT . transports commun . type . bus . présent
-  question: Combien d'heures passez-vous en bus par jour pendant vos déplacements domicile-travail ?
+  question: Combien d'heures passez-vous en bus par jour pendant vos déplacements domicile-travail (aller/retour) ?
+  description:  |
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 minutes = 0.5 heure).
   suggestions:
-    15 min: 0.25
-    30 min: 0.5
+    30min: 0.5
     1h: 1
+    2h: 2
   unité: h/jour
-  par défaut: 0.5
+  par défaut: 1
 
 DT . transports commun . type . bus . heures extrapolée:
   formule: heures * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
@@ -1879,7 +1897,7 @@ DT . transports commun . type . bus . heures extrapolée:
 #  par défaut: 15
 
 DT . transports commun . type . métro ou tram:
-  titre: Métro, tramway
+  titre: Métro, tramway, train de balieue
   icônes: 🚊
   description: |
     Tous modes de transport urbains sur rails.
@@ -1908,8 +1926,8 @@ DT . transports commun . type . métro ou tram . empreinte par défaut:
   valeur: métro ou tram . empreinte
   contexte:
     métro ou tram . présent: oui
-    métro ou tram . heures: 0.25
-  note: la valeur de 15 min de temps de trajet par défaut n'est pas sourcée mais semble toutefois cohérente.
+    métro ou tram . heures: 0.5
+  note: la valeur de 30 min de temps de trajet par défaut n'est pas sourcée mais semble toutefois cohérente.
 
 DT . transports commun . type . métro ou tram . présent:
   question: Utilisez-vous le métro ou le tram pour vos déplacements domicile-travail ?
@@ -1946,14 +1964,17 @@ DT . transports commun . type . métro ou tram . vitesse:
 
 DT . transports commun . type . métro ou tram . heures:
   applicable si: DT . transports commun . type . métro ou tram . présent
-  question: Combien d'heures passez-vous en métro ou tram par jour pendant vos déplacements domicile-travail ?
+  question: Combien de temps passez-vous en métro, tram ou train de banlieue par jour pendant vos déplacements domicile-travail (aller/retour) ?
+  description: |
+    Nous confondons l'ensemble des moyens de transport urbains sur rails, à savoir métro, tramway et train de banlieue, car leur impact est similaire.
+
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 min = 0.5 h, 45 min = 0.75 h).
   suggestions:
-    15 min: 0.25
     30 min: 0.5
-    45 min: 0.75
     1h: 1
+    2h: 2
   unité: h/jour
-  par défaut: 0.25
+  par défaut: 1
 
 DT . transports commun . type . métro ou tram . heures extrapolée:
   formule: heures * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
@@ -1991,7 +2012,11 @@ DT . mobilité douce . type:
         vae . présent: non
         trottinette . présent: non
         trottinette électrique . présent: non
-  question: Quel(s) mode(s) de déplacement "actif" utilisez-vous pendant vos déplacements domicile-travail ?
+  question: Quel(s) mode(s) de déplacement "actif" utilisez-vous lors de vos déplacements domicile-travail ?
+  description :  |
+    Si vous cochez le vélo ou la trottinette musculaire, nous ne nous vous demanderons pas la distance parcourue car nous considérons que l'usage de ces modes de déplacement n'a pas d'impact carbone, la construction elle, est bien prise en compte.
+
+    La marche elle, n'a pas d'impact carbone selon notre méthodologie.
   titre: Déplacements actifs 
   formule:
     somme:
@@ -2071,14 +2096,14 @@ DT . mobilité douce . type . vae . empreinte au km:
 
 DT . mobilité douce . type . vae . km:
   applicable si: DT . mobilité douce . type . vae . présent
-  question: Combien de kilomètres faites-vous en vélo électrique par jour pour vos déplacements domicile-travail ?
-  par défaut: 1000
+  question: Quelle distance (aller/retour) parcourez-vous en vélo électrique par jour pour vos déplacements domicile-travail ?
+  par défaut: 10
   unité: km/jour
   suggestions:
+    5 km: 5
     10 km: 10
     20 km: 20
-    50 km: 50
-    100 km: 100
+
 
 DT . mobilité douce . type . vae . km extrapolé:
   formule: km * ( 253 - DT . congé - ( 52 - DT . congé / 5 ) * DT . TT )
@@ -2137,11 +2162,12 @@ DT . mobilité douce . type . trottinette électrique . empreinte au km:
 
 DT . mobilité douce . type . trottinette électrique . km:
   applicable si: DT . mobilité douce . type . trottinette électrique . présent
-  question: Combien de kilomètres faites-vous en trottinette électrique par jour pour vos déplacements domicile-travail ?
-  par défaut: 1000
+  question: Quelle distance (aller/retour) parcourez-vous en trottinette électrique par jour pour vos déplacements domicile-travail ?
+  par défaut: 10
   unité: km/jour
   suggestions:
+    5 km: 5
     10 km: 10
     20 km: 20
-    50 km: 50  
+
 

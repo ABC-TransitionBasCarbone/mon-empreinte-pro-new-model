@@ -21,11 +21,13 @@ transport:
         mobilité douce . présent: non
         taxi . présent: non
         avion . présent: non
-  question: Quel moyen de transport utilisez-vous pour faire vos déplacements professionnels ?
+  question: Quel(s) moyen(s) de transport utilisez-vous pour vos déplacements professionnels ?
   abréviation: transp.
   icônes: 🚦
   description: |
-    Cochez tous les modes de transport que vous utilisez régulièrement pour vos déplacements professionnels. Vous renseignerez ensuite les détails pour chacun des modes de transport que vous aurez sélectionnés sur l'année écoulée.
+    Cochez tous les modes de transport que vous utilisez régulièrement pour vos déplacements professionnels. 
+    
+    Vous renseignerez ensuite les détails pour chacun des modes de transport que vous aurez sélectionnés sur l'année écoulée.
   formule:
     somme:
       - train

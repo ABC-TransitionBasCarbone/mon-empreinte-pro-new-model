@@ -17,7 +17,7 @@ transport . voiture:
                   - transport . voiture . présent
                   - DT . voiture . utilisateur = 'propriétaire'
                   - DT . voiture . présent  
-              alors: empreinte meme voiture
+              alors: empreinte meme voiture # ici on ne fait pas *12 car déja annualisée dans DT . voiture . empreinte calculée
             - si: 
                 une de ces conditions:
                   - toutes ces conditions:
@@ -50,8 +50,8 @@ transport . voiture:
                           - transport . mobilité douce . présent = non
                           - transport . taxi . présent = non
                           - transport . avion . présent = non
-              alors: empreinte calculée
-            - sinon: 100 #(à remplacer par empreinte par défaut)
+              alors: empreinte calculée * 12
+            - sinon: 0 #(à remplacer par empreinte par défaut)
 #                variations:
 #                  - si:
 #                       une de ces conditions:
@@ -68,7 +68,7 @@ transport . voiture:
             #       - transport . voiture . présent
             #       - est non défini: utilisateur
             #   alors: empreinte moyenne
-            - sinon: 100
+            # - sinon: 100
 #                 variations:
 #                   - si:
 #                       une de ces conditions:
@@ -154,7 +154,7 @@ transport . voiture . km:
 #  ordre: 1
   titre: Km en voiture
   applicable si: voiture . présent
-  question: Dans le cadre de vos déplacements professionnels, combien de kilomètres parcourrez-vous en voiture chaque mois ?
+  question: Dans le cadre de vos déplacements professionnels, combien de kilomètres parcourez-vous en voiture chaque mois ?
   description: |
     Renseignez la distance moyenne que vous parcourez chaque mois en voiture pour vos déplacements professionnels. 
     
@@ -241,7 +241,14 @@ transport . voiture . nombre véhicules circulation . VUL:
 transport . voiture . passagers:
   applicable si: voiture . présent
   question: Combien il y a t-il en moyenne de passagers avec vous lors de vos déplacements professionnels en voiture ?
-  description: Cette question permet de répartir les émissions de votre voiture entre les différents passagers, selon le nombre. Si vous êtes seul dans la voiture, indiquez 1. S'il y a vous et un passager, indiquez 2. Comme nous raisonnons en moyenne par mois, vous pouvez remplir des nombres décimaux. (Par exemple si vous avez un passager 1 trajet sur 2 repondez 1.5)
+  description: |
+    Cette question permet de répartir les émissions de votre voiture entre les différents passagers, selon le nombre. 
+    
+    Si vous êtes seul dans la voiture, indiquez 1. S'il y a vous et un passager, indiquez 2. 
+    
+    Comme nous raisonnons en moyenne par mois, vous pouvez remplir des nombres décimaux. (Par exemple si vous avez un passager 1 trajet sur 2 repondez 1.5)
+
+    On comptabilise tous les passagers, qu’ils soient choisis (ex. covoiturage) ou fait par nécessité (ex. enfant qu'on amène à l'école).
   par défaut: 1
   suggestions:
     seul: 1
@@ -327,7 +334,7 @@ transport . voiture . empreinte par défaut:
   valeur: voiture . empreinte calculée
   contexte:
     voiture . présent: oui
-    voiture . km: 500
+    voiture . km: 200
     voiture . passagers: 1.4
     # ici on met le taux de remplissage moyen
     voiture . utilisateur: "'propriétaire'"

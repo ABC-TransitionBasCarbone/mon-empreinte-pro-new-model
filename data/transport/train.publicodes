@@ -3,7 +3,7 @@ transport . train:
   applicable si: présent
   titre: Train
   icônes: 🚆
-  formule: km * impact par km * 12
+  formule: heure * impact par h * 12
 
 # On fait pour l'instant l'hypothèse que la proportion d'utilisation des différents train est la même qu'au niveau national
 transport . train . impact par km:
@@ -19,6 +19,32 @@ transport . train . impact par km:
     Source : [Autorité de régulation des transports](https://www.autorite-transports.fr/wp-content/uploads/2023/06/bilan-ferroviaire-2022-a-mi-2023.pdf)
 
     ![Répartition Passagers.km](https://github.com/incubateur-ademe/nosgestesclimat/assets/55186402/4bbdf823-8e9a-4570-90da-77ff8af05b14)
+
+transport . train . impact par h:
+  formule:
+    somme:
+      - proportion TGV * TGV . heure
+      - proportion TER * TER . heure
+      - proportion intercités * intercités . heure
+  unité: kgCO2e/heure
+
+transport . train . TGV . heure:
+  formule: TGV * 240
+  unité: kgCO2e/heure 
+  note: |
+    Conversion de kgCO2e/km en kgCO2e/heure basée sur une vitesse moyenne de 240 km/h pour le TGV.
+
+transport . train . TER . heure:
+  formule: TER * 95
+  unité: kgCO2e/heure 
+  note: |
+    Conversion de kgCO2e/km en kgCO2e/heure basée sur une vitesse moyenne de 95 km/h pour le TER.
+
+transport . train . intercités . heure:
+  formule: intercités * 115
+  unité: kgCO2e/heure 
+  note: |
+    Conversion de kgCO2e/km en kgCO2e/heure basée sur une vitesse moyenne de 115 km/h pour les intercités.
 
 transport . train . TGV:
   formule: 0.00293
@@ -81,10 +107,12 @@ transport . train . passagers km intercités:
     Chiffres issus de l'[autorité de régulation des transports](https://www.autorite-transports.fr/wp-content/uploads/2023/06/bilan-ferroviaire-2022-a-mi-2023.pdf).
     On omet ici les trajets en RER et transilien.
 
-### A voir si on passe le modèle en heure et non plus en km
+### version en km
 transport . train . km:
   question: Dans le cadres de vos déplacements professionnels, quelle distance parcourez-vous en train chaque mois ?
-  description: Renseignez la distance moyenne que vous parcourez chaque mois en  train pour vos déplacements professionnels. Si vous le prenez ponctuellement, sommez vos différents trajets et divisez par 12.
+  description: Renseignez la distance moyenne que vous parcourez chaque mois en  train pour vos déplacements professionnels. 
+    Si vous le prenez seulement quelques fois par an, sommez vos différents trajets et divisez par 12.
+
   Suggestions:
     peu: 100
     moyennement: 300
@@ -92,6 +120,24 @@ transport . train . km:
   unité: km/mois
   plancher: 0
   par défaut: 300
+
+transport . train . heure:
+  question: Dans le cadre de vos déplacements professionnels, combien de temps passez-vous en train chaque mois ?
+  description: |
+    Renseignez la durée moyenne que vous passez dans le train pour vos déplacements professionnels chaque mois.
+    
+    Le calcul se base sur une moyenne pondérée des différents types de train (TGV, TER, intercités), renseignez donc vos temps de trajets tout type de train confondus.
+
+    Si vous le prenez seulement quelques fois par an, sommez les durées de vos différents trajets et divisez par 12.
+
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 min = 0.5 h, 45 min = 0.75 h).
+  suggestions:
+    peu: 1
+    moyennement: 3
+    beaucoup: 6
+  unité: heure/mois
+  plancher: 0
+  par défaut: 3
 
 #  question: Combien de kilomètres parcourez-vous en train par an ?
 #  description: |

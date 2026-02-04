@@ -30,7 +30,8 @@ logement . hébergement . nuitées:
 #        famille ou amis . présent: non
   icônes: 🏨
   description: |
-    Choissiezez le(s) type(s) d'hébergement que vous avez utilisé lors de vos déplacements professionnels de l'année passée. Vous pouvez en sélectionner plusieurs.
+    Choisissez le(s) type(s) d'hébergement que vous avez utilisé lors de vos déplacements professionnels de l'année passée. Vous pouvez en sélectionner plusieurs.
+    Si vous n'avez pas dormi à l'extérieur pour vos déplacements professionnels, cliquez sur "Aucun".
   formule:
     variations:
       - si: choix utilisateur

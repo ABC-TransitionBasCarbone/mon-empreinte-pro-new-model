@@ -13,6 +13,7 @@ logement:
 #      - vacances
       # - hébergement
       - bureaux
+      - déchets
 
 logement . habitants:
   formule: 1

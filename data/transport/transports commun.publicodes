@@ -19,7 +19,7 @@ transport . transports commun . type:
         bus . présent: non
         # car . présent: non
         métro ou tram . présent: non
-  question: Quels types de transports en commun avez-vous utilisés pour vos déplacements professionnels ?
+  question: Quels types de transports en commun utilisez-vous pour vos déplacements professionnels ?
   icônes: 🚋
   formule:
     somme:
@@ -85,7 +85,10 @@ transport . transports commun . type . bus . vitesse:
   note: Hypothèse de 12 km/h de vitesse moyenne d'après [cet article](https://www.lemonde.fr/blog/transports/2013/03/11/les-petits-secrets-de-la-ratp-reveles-au-public/) sur la RATP)
 
 transport . transports commun . type . bus . heures:
-  question: Dans le cadre de vos déplacements professionnels, combien d'heures passez-vous en bus par mois ?
+  question: |
+    Dans le cadre de vos déplacements professionnels, combien d'heures passez-vous en bus par mois ?
+
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 minutes = 0.5 heure).
   suggestions:
     1h: 1
     2h: 2
@@ -243,7 +246,10 @@ transport . transports commun . type . métro ou tram . vitesse:
   note: Hypothèse de 25 km/h de vitesse moyenne, d'après l'article [Les petits secrets de la RATP révélés au public](http://transports.blog.lemonde.fr/2013/03/11/les-petits-secrets-de-la-ratp-reveles-au-public/)
 
 transport . transports commun . type . métro ou tram . heures:
-  question:  Dans le cadre de vos déplacements professionnels, combien d'heures passez-vous dans le métro, tram ou RER par mois ?
+  question: |
+    Dans le cadre de vos déplacements professionnels, combien d'heures passez-vous dans le métro, tram ou RER par mois ?
+
+    Si vous voulez renseignez des minutes, convertissez-les en fraction d'heure (ex: 30 minutes = 0.5 heure).
   suggestions:
     30 min: 0.5
     1h: 1

@@ -89,7 +89,7 @@ divers . numérique . ia . empreinte requête:
 divers . numérique . ia . nombre de requêtes par jour: 
   description: 
     Cette question permet d’évaluer l’impact carbone lié à l’usage de l’intelligence artificielle générative. Ces outils nécessitent d’importantes ressources informatiques et énergétiques pour fonctionner, chaque requête sollicitant des serveurs à forte consommation électrique partout dans le monde.
-  question: Combien de requêtes à des modèles d'IA (ChatGPT, Copilot, Gemini…) effectuez-vous par jour dans le cadre de votre activité professionnelle ? 
+  question: Combien de requêtes à des modèles d'Intelligence Artificielle (IA) (ChatGPT, Copilot, Gemini…) effectuez-vous par jour dans le cadre de votre activité professionnelle ? 
   unité: requêtes/jour
   plancher: 0
   plafond: 1000
@@ -159,7 +159,10 @@ divers . numérique . internet . empreinte horaire:
 
 divers . numérique . internet . durée journalière:
   question: Combien d'heures passez-vous par jour sur internet ?
-  description: Seules les heures liées à votre activité professionnelle doivent être comptabilisées.
+  description: |
+    Renseignez ici le temps passé sur internet quelque soit la nature de votre activité (consultation de mails, surf web, streaming vidéo ou audio, réseaux sociaux, etc.). Comptez aussi le travail sur des documents partagés en ligne (Google Docs, word, etc.).
+
+    Seules les heures liées à votre activité professionnelle doivent être comptabilisées.
   unité: h/jour
   plancher: 0
   plafond: 16

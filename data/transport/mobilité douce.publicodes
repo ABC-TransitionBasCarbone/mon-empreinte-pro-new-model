@@ -21,7 +21,7 @@ transport . mobilité douce . type:
         vélo . présent: non
         vae . présent: non
         trottinette électrique . présent: non
-  question: Quel(s) mode(s) de déplacement "actif" allez-vous utiliser pour aller et revenir de votre lieu de séjour  ?
+  question: Quel(s) mode(s) de déplacement "actif" utilisez-vous lors de vos déplacements professionnels  ?
   titre: Déplacements actifs 
   description: Avec ou sans assistance électrique (marche, vélo, trottinette)
 #  description: |

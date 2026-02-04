@@ -9,7 +9,7 @@ transport . hébergement:
       # - aquatique
 
 transport . hébergement . nuitées:
-  question: Dans quel(s) type(s) d'hébergement(s) vous logez lors de vos déplacements professionnels ?
+  question: Dans quel(s) type(s) d'hébergement(s) logez-vous lors de vos déplacements professionnels ?
   titre: Nuitées d'hébergement
   mosaique:
     type: selection
@@ -31,6 +31,7 @@ transport . hébergement . nuitées:
   icônes: 🏨
   description: |
     Choisissez le(s) type(s) d'hébergement que vous avez utilisé lors de vos déplacements professionnels de l'année passée. Vous pouvez en sélectionner plusieurs.
+    Si vous n'avez pas dormi à l'extérieur pour vos déplacements professionnels, cliquez sur "Aucun".
   formule:
     variations:
       - si: choix utilisateur

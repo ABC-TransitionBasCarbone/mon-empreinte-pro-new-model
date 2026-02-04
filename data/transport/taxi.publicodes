@@ -6,9 +6,12 @@ transport . taxi:
 
 
 transport . taxi . km:
-  question: Dans le cadres de vos déplacements professionnels, quelle distance parcourez-vous en taxi chaque mois ?
+  question: Dans le cadre de vos déplacements professionnels, quelle distance parcourez-vous en taxi chaque mois ?
   description: |
-    Indiquez la distance moyenne mensuelle parcourue en taxi pour vos déplacements professionnels sur l'année écoulée.
+    Indiquez la distance moyenne mensuelle parcourue en taxi pour vos déplacements professionnels sur l'année écoulée. 
+    
+    Si vous le prenez seulement quelques fois par an, sommez vos différents trajets et divisez par 12.
+  Suggestions:
   suggestions:
     20 km: 20
     50 km: 50
