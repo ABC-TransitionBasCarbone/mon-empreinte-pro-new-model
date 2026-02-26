@@ -2,19 +2,12 @@ informations regionales:
   titre: Informations régionales
 
 informations regionales . transport:
-informations regionales . transport . alternartives:
-  titre: Comment trouver une alternative à la voiture pour venir en Hauts-de-France ?
-  icônes: 🚗❌
-  intensiteCouleur: 100
-  description: |
-    Ce [calculateur d'itinéraire](https://www.rome2rio.com) vous permettra de trouver une alternative à la voiture. On vous prévient, ça peut être un peu plus long 🙂.
-
 informations regionales . transport . alternartives train:
   titre: Le train qu'il vous faut !
   icônes: 🚗❌
   intensiteCouleur: 100
   description: |
-    C'est sur [SNCF Connect](https://www.sncf-connect.com/) ou sur [TER Hauts-de-France](https://www.ter.sncf.com/hauts-de-france).
+    C'est sur [SNCF Connect](https://www.sncf-connect.com/) 
 
 informations regionales . DT:
 informations regionales . DT . covoiturage:

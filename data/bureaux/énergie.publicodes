@@ -1,14 +1,13 @@
-logement . bureaux:
-  titre: bureaux
+bureaux . énergie:
+  titre: énergie consommée dans les bureaux
   applicable si: question rhétorique
-  abréviation: brx.
   icônes: 🏢
   description: |
     Dans le cadre de ce calculateur, nous allons prendre en compte les consommations d'énergie associées au chauffage et à l'electricité des bureaux dans lesquels vous travaillez et de votre logment lorsque vous êtes en télétravail, ces chiffres se basent sur des moyennes nationales, 
   formule:
-    bureaux . empreinte
+    bureaux . énergie . empreinte
 
-logement . bureaux . question rhétorique:
+bureaux . énergie . question rhétorique:
   titre: Question d'information sur les consommation d'énergie associée à la vie de bureau et au télétravail (Chauffage, climatisation, électricité)
   question: Nous attribuons à chaque employé l'empreinte de sa "vie de bureau" sur son lieu de travail et chez lui (chauffage, climatisation, électricité...). Cela représente autour de 280kg de CO2e par personne par an.
   description: |
@@ -21,9 +20,9 @@ logement . bureaux . question rhétorique:
       possibilités:
         - ok
 
-logement . bureaux . question rhétorique . ok:
+bureaux . énergie . question rhétorique . ok:
   titre: OK
 
-logement . bureaux . empreinte:
+bureaux . énergie . empreinte:
   formule:
     282 kgCO2e/an

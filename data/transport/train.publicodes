@@ -1,11 +1,9 @@
-#A voir si on détail par type de trajets (TGV, TER, Europe)
 transport . train:
   applicable si: présent
   titre: Train
   icônes: 🚆
   formule: heure * impact par h * 12
 
-# On fait pour l'instant l'hypothèse que la proportion d'utilisation des différents train est la même qu'au niveau national
 transport . train . impact par km:
   formule:
     somme:
@@ -139,7 +137,4 @@ transport . train . heure:
   plancher: 0
   par défaut: 3
 
-#  question: Combien de kilomètres parcourez-vous en train par an ?
-#  description: |
-#    Renseignez un nombre de km cohérent avec les distances que vous allez parcourir en train le temps de votre séjour (aller-retour depuis votre domicile 
-#    et déplacements éventuels pendant le séjour).
+

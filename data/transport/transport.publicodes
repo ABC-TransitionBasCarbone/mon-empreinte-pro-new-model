@@ -4,7 +4,6 @@ transport:
     type: selection
     options:
       - train . présent
-      # - car longue distance . présent
       - voiture . présent
       - deux roues . présent
       - transports commun . présent
@@ -14,7 +13,6 @@ transport:
     suggestions:
       aucun:
         train . présent: non
-        # car longue distance . présent: non
         voiture . présent: non
         deux roues . présent: non
         transports commun . présent: non
@@ -31,7 +29,6 @@ transport:
   formule:
     somme:
       - train
-      # - car longue distance
       - voiture
       - deux roues
       - transports commun
@@ -43,10 +40,6 @@ transport:
 
 transport . avion . présent:
   question: Avez vous pris l'avion pour vos déplacements profesionnels au cours de l'année passée ?
-  par défaut: non
-
-transport . car longue distance . présent:
-  question: Avez vous pris le car longue distance pour vos déplacements profesionnels au cours de l'année passée ?
   par défaut: non
 
 transport . train . présent:

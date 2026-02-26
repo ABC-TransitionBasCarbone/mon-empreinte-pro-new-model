@@ -1,4 +1,4 @@
-logement . déchets:
+bureaux . déchets:
   titre: Déchets
   icônes: 🚮
   description: |
@@ -14,13 +14,13 @@ logement . déchets:
       - sinon: empreinte
   unité: kgCO2e
 
-logement . déchets . empreinte:
+bureaux . déchets . empreinte:
   formule:
     somme:
       - papiers . empreinte
       - ordures menageres . empreinte
 
-logement . déchets . tri:
+bureaux . déchets . tri:
   question: Avez-vous l'habitude de faire le tri de vos déchets au bureau ?
   description: |
     Répondez "Oui" si le geste de tri est un geste automatique pour vous (même si vous ne disposez pas toujours de poubelles de tri à votre disposition). 
@@ -39,47 +39,47 @@ logement . déchets . tri:
         - parfois
         - toujours
         
-logement . déchets . tri . jamais:
+bureaux . déchets . tri . jamais:
   titre: Non, je ne trie pas mes déchets
   description: |
     Vous avez tendance à jeter sans vous poser de question quant à la nature du déchet et sa poubelle de destination.
 
-logement . déchets . tri . parfois:
+bureaux . déchets . tri . parfois:
   titre: Oui, parfois
   description: |
     Vous avez encore des progrès à faire mais vous essayez de faire le tri au maximum.
 
-logement . déchets . tri . toujours:
+bureaux . déchets . tri . toujours:
   titre: Oui, tout le temps
   description: |
     Vous cherchez toujours à jeter un déchet dans la poubelle qui lui est destiné.
 
 # papier carton _____________________________
-logement . déchets . papiers:
+bureaux . déchets . papiers:
   titre: Déchets papiers
   description: |
     Ce poste couvre les déchets de papiers et cartons produits au bureau (impressions, emballages, etc).
 
-logement . déchets . papiers . empreinte:
+bureaux . déchets . papiers . empreinte:
   formule:
     somme:
       - incinération
       - stockage
       - recyclage
 
-logement . déchets . papiers . poids:
+bureaux . déchets . papiers . poids:
   formule: 77
   unité : kg
 
 #_ papier carton . incinération _____________________________
-logement . déchets . papiers . incinération:
+bureaux . déchets . papiers . incinération:
   formule: papiers . poids * incinération . pourcentage * incinération . impact
   unité: kgCO2e
 
-logement . déchets . papiers . incinération . pourcentage:
+bureaux . déchets . papiers . incinération . pourcentage:
   formule: 10%
 
-logement . déchets . papiers . incinération . impact:
+bureaux . déchets . papiers . incinération . impact:
   formule: 0.120
   unité: kgCO2e/kg
   note: |
@@ -87,28 +87,28 @@ logement . déchets . papiers . incinération . impact:
 
 
 #_ papier carton . stockage _____________________________
-logement . déchets . papiers . stockage:
+bureaux . déchets . papiers . stockage:
   formule: papiers . poids * stockage . pourcentage * stockage . impact
   unité: kgCO2e
 
-logement . déchets . papiers . stockage . pourcentage:
+bureaux . déchets . papiers . stockage . pourcentage:
   formule: 35%
 
-logement . déchets . papiers . stockage . impact:
+bureaux . déchets . papiers . stockage . impact:
   formule: 0.950
   unité: kgCO2e/kg
   note: |
     Le FE considéré est : Emballages - Carton - Stockage - Impacts
 
 #_ papier carton . recyclage _____________________________
-logement . déchets . papiers . recyclage:
+bureaux . déchets . papiers . recyclage:
   formule: papiers . poids * recyclage . pourcentage * recyclage . impact
   unité: kgCO2e
 
-logement . déchets . papiers . recyclage . pourcentage:
+bureaux . déchets . papiers . recyclage . pourcentage:
   formule: 55%
 
-logement . déchets . papiers . recyclage . impact:
+bureaux . déchets . papiers . recyclage . impact:
   formule: 0.992
   unité: kgCO2e/kg
   note: |
@@ -116,20 +116,20 @@ logement . déchets . papiers . recyclage . impact:
 
 # ordures menageres _____________________________
 
-logement . déchets . ordures menageres:
+bureaux . déchets . ordures menageres:
   titre: Ordures ménagères
   description: |
     Ce poste couvre les ordures ménagères produites au bureau (déchets alimentaires, emballages non recyclables, etc).
 
-logement . déchets . ordures menageres . empreinte:
+bureaux . déchets . ordures menageres . empreinte:
   formule: poids * impact
   unité: kgCO2e
 
-logement . déchets . ordures menageres . poids:
+bureaux . déchets . ordures menageres . poids:
   formule: 55
   unité : kg
 
-logement . déchets . ordures menageres . impact:
+bureaux . déchets . ordures menageres . impact:
   formule: 0.386 
   unité: kgCO2e/kg
   note: |

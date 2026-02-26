@@ -1,0 +1,11 @@
+bureaux:
+  titre: Bureaux
+  abréviation: brx.
+  icônes: 🏢
+  formule:
+    somme:
+      - énergie
+      - déchets
+
+
+

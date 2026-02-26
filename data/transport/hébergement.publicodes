@@ -6,7 +6,6 @@ transport . hébergement:
   formule:
     somme:
       - nuitées
-      # - aquatique
 
 transport . hébergement . nuitées:
   question: Dans quel(s) type(s) d'hébergement(s) logez-vous lors de vos déplacements professionnels ?
@@ -15,17 +14,11 @@ transport . hébergement . nuitées:
     type: selection
     options:
       - hotel . présent
-      # - camping . présent
-      # - résidence de tourisme . présent
-#      - auberge de jeunesse . présent
       - locations . présent
       - famille ou amis . présent
     suggestions:
      aucun:
        hotel . présent: non
-      #  camping . présent: non
-      #  résidence de tourisme . présent: non
-#        auberge de jeunesse . présent: non
        locations . présent: non
        famille ou amis . présent: non
   icônes: 🏨
@@ -42,9 +35,6 @@ transport . hébergement . nuitées . empreinte totale:
   formule:
     somme:
       - empreinte hotel
-#       - empreinte camping
-#       - empreinte résidence de tourisme
-# #      - empreinte auberge de jeunesse
       - empreinte locations
       - empreinte famille ou amis
   unité: kgCO2e
@@ -61,9 +51,6 @@ transport . hébergement . nuitées . choix utilisateur:
   formule:
     une de ces conditions:
       - est défini: hotel . présent
-      # - est défini: camping . présent
-      # - est défini: résidence de tourisme . présent
-#      - est défini: auberge de jeunesse . présent
       - est défini: locations . présent
       - est défini: famille ou amis . présent
 
@@ -153,7 +140,6 @@ transport . hébergement . nuitées . empreinte hotel par nuit:
 
       > Point publicodes : Cette règle étant utilisée dans d'autres espaces nom que `transport . hébergement . nuitées . hotel` c'est important ici de ne pas l'inclure dans cet espace non qui rendrait l'empreinte de la nuitée non applicable si la règle hotel est elle aussi non applicable.
 
-#A caler avec Hdf Tourisme pour la valeur par défaut
 transport . hébergement . nuitées . hotel . nombre de nuitées:
   question: Combien de nuits avez-vous passé à l'hôtel lors de vos déplacements professionnels l'année passée ?
   unité: nuit
@@ -163,108 +149,6 @@ transport . hébergement . nuitées . hotel . nombre de nuitées:
   par défaut: 0
 
 
-transport . hébergement . nuitées . empreinte résidence de tourisme:
-  titre: Empreinte résidence de tourisme
-  applicable si:
-    toutes ces conditions:
-      - est défini: résidence de tourisme . présent
-      - résidence de tourisme . présent
-  formule: empreinte hotel par nuit * résidence de tourisme . nombre de nuitées
-
-transport . hébergement . nuitées . résidence de tourisme:
-  titre: Résidence de tourisme
-  icônes: 🏘️
-
-transport . hébergement . nuitées . résidence de tourisme . présent:
-  question: Allez-vous réserver une résidence de tourisme ?
-
-transport . hébergement . nuitées . résidence de tourisme . nombre de nuitées:
-  question: Combien de nuits allez-vous passer dans une résidence de tourisme ?
-  unité: nuit
-  description: |
-    Renseignez ici les nuits passées en résidence de tourisme, apparhôtel ou vilage vacances
-  plancher: 0
-  par défaut: 0
-  note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
-#  suggestions:
-#    un week-end: 1
-#    un week-end prolongé: 2
-#    une semaine: 6
-
-transport . hébergement . nuitées . empreinte camping:
-  titre: Empreinte emplacement en camping
-  applicable si:
-    toutes ces conditions:
-      - est défini: camping . présent
-      - camping . présent
-  formule: camping . empreinte par nuit * camping . nombre de nuitées
-
-transport . hébergement . nuitées . camping:
-  titre: Emplacement en camping
-  icônes: ⛺️
-
-transport . hébergement . nuitées . camping . présent:
-  question: Allez-vous réserver un emplacement de camping ?
-
-transport . hébergement . nuitées . camping . empreinte par nuit:
-  formule: 1.4
-  unité: kgCO2e/nuit
-  note: |
-    Ces données sont issues de la proposition de référentiel ADEME pour l'hôtellerie de plein air, étude effectuée sur 13 campings de l'Hérault conjointement entre Betterfly Tourism et l'ADEME.
-    Les données sont fournies par Betterfly Tourism et datent de juin 2021. La moyenne de l'empreinte par nuitée sur les 13 campings étudiés est de 1,4 kg éqCO2.
-    Le référentiel ADEME est présent dans la base Impacts depuis mai 2023.
-
-transport . hébergement . nuitées . camping . nombre de nuitées:
-  question: Combien de nuits allez-vous passer en camping par an pendant votre séjour ?
-  unité: nuit
-  description: |
-    Renseignez ici les nuits passées en camping (tente, hamac, bungalow...).
-  plancher: 0
-  par défaut: 0
-  note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
-#  suggestions:
-#    un week-end: 1
-#    un week-end prolongé: 2
-#    une semaine: 6
-
-transport . hébergement . nuitées . empreinte auberge de jeunesse:
-  titre: Empreinte auberge de jeunesse
-  applicable si:
-    toutes ces conditions:
-      - est défini: auberge de jeunesse . présent
-      - auberge de jeunesse . présent
-  formule: auberge de jeunesse . empreinte par nuit * auberge de jeunesse . nombre de nuitées
-
-transport . hébergement . nuitées . auberge de jeunesse:
-  titre: Auberge de jeunesse
-  icônes: 🛏️
-
-transport . hébergement . nuitées . auberge de jeunesse . présent:
-  question: Allez-vous réserver une place en auberge de jeunesse ?
-
-transport . hébergement . nuitées . auberge de jeunesse . empreinte par nuit:
-  formule: empreinte hotel par nuit / nombre de personnes dans le dortoir
-  unité: kgCO2e/nuit
-  note: |
-    Pour une première approximation d'une nuit en auberge de jeunesse, l'idée est ici de diviser l'impact
-    d'une nuitée classique en hôtel par le nombre de personnes dans un dortoir moyen.
-
-transport . hébergement . nuitées . auberge de jeunesse . nombre de personnes dans le dortoir:
-  formule: 6
-  note: On considère ici qu'un dortoir "classique" comprend 6 personnes.
-
-transport . hébergement . nuitées . auberge de jeunesse . nombre de nuitées:
-  question: Combien de nuits allez-vous passer en auberge de jeunesse pendant votre séjour ?
-  unité: nuit
-  description: |
-    Renseignez ici les nuits passées en auberge de jeunesse (dortoir).
-  plancher: 0
-  par défaut: 0
-  note: La valeur par défaut est arbitraire et doit être calée avec HdF Tourisme.
-#  suggestions:
-#    un week-end: 1
-#    un week-end prolongé: 2
-#    une semaine: 6
 
 transport . hébergement . nuitées . empreinte locations:
   titre: Empreinte locations meublées
@@ -324,179 +208,3 @@ transport . hébergement . nuitées . famille ou amis . notif:
   description: |
     Vous avez renseigné "Famille ou amis" : l'empreinte associée à ces nuits sera nulle, nous le comptons dans l'empreinte des accueillants !
 
-# Pour être parfaitement exacte côté modèle, il faudrait que je divise cette empreinte d'un ratio j_séjour/365 car je crois que l'empreinte de la piscine est calculée sur une année
-transport . hébergement . aquatique:
-  non applicable si:
-    toutes ces conditions:
-      - est défini: nuitées . famille ou amis . présent
-      - nuitées . famille ou amis . présent
-      - est non défini: nuitées . hotel . présent
-      - est non défini: nuitées . camping . présent
-      - est non défini: nuitées . résidence de tourisme . présent
-      - est non défini: nuitées . locations . présent
-      
-  titre: Piscines, spa, jacuzzi
-  question: Votre hébergement est-t-il équipé d'une piscine ou d'un spa, sauna, bain nordique, etc. ?
-  mosaique:
-    type: selection
-    options:
-      - piscine non chauffée . présent
-      - piscine chauffée . présent
-      - spa jacuzzi . présent
-    suggestions:
-      aucun:
-        piscine non chauffée . présent: non
-        piscine chauffée . présent: non
-        spa jacuzzi . présent: non
-  description: |
-    Même si vous ne comptez pas les utiliser, renseignez quand même ce dont votre hébergement est équipé.
-  formule:
-    variations:
-      - si: choix utilisateur
-        alors: (empreinte totale)
-      - sinon: 0 #On considère que par défaut un hébergement n'a pas de piscine --> à sourcer toutefois !
-#  formule:
-#    somme:
-#      - piscine non chauffée
-#      - piscine chauffée
-#      - spa jacuzzi
-
-transport . hébergement . aquatique . choix utilisateur:
-  titre: Choix utilisateur aquatique
-  formule:
-    une de ces conditions:
-      - est défini: piscine non chauffée . présent
-      - est défini: piscine chauffée . présent
-      - est défini: spa jacuzzi . présent
-
-#Idéalement il faudrait aussi diviser par un nombre d'usager moyen par jour --> faute de données on divise une uniquement par le nombre de jours d'utilisabilité de la piscine (ce qui est bien aussi car on impute l'empreinte que le répondant l'utilise ou pas pendant son séjour)
-transport . hébergement . aquatique . empreinte totale:
-  formule:
-    somme:
-      - empreinte piscine non chauffée / 122 #L'empreinte est considérée sur 4 mois d'utilisation (Juin, Juillet, Août, Septembre)
-      - empreinte piscine chauffée / 365 #L'empreinte est considérée sur 1 an d'utilisation
-      - empreinte spa jacuzzi / 365 #L'empreinte est considérée sur 1 an d'utilisation
-  unité: kgCO2e
-    
-transport . hébergement . aquatique . empreinte piscine non chauffée:
-  applicable si:
-    toutes ces conditions:
-      - est défini: piscine non chauffée . présent
-      - piscine non chauffée . présent
-  titre: Empreinte annuelle piscine non chauffée
-  formule: piscine non chauffée . empreinte annuelle
-  unité: kgCO2e
-
-transport . hébergement . aquatique . piscine non chauffée:
-  titre: Piscine non chauffée
-  icônes: 🏊‍♀️
-
-transport . hébergement . aquatique . piscine non chauffée . présent:
-  question: Allez-vous disposer d'une piscine non chauffée ?
-
-###Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data 
-###--> on inscrit en dur l'empreinte
-transport . hébergement . aquatique . piscine non chauffée . empreinte annuelle:
-  formule: 538
-  unité: kgCO2e
-  note: |
-    Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data --> on inscrit en dur l'empreinte dans le modèle
-    On considère donc une piscine de 60 m2 utilisée seulement 4 mois dans l'année, ce qui semble raisonnable pour une piscine non chaufée dans les Hauts-de-France
-    L'empreinte se décompose comme telle : 
-     - Empreinte eau froide : 35.46
-     - Chauffage : 0
-     - Traitement chimique : 24.31
-     - Pompe de filtrag	: 97.04
-     - Construction : 414.04
-#  valeur: transport . piscine
-#  contexte:
-#    métrique: "'carbone'"
-#    surface: 60 #On considère une piscine de 5 x 12
-#    type: "'creusée'"
-#    voiture . électrique . consommation aux 100:   # Je garde cette sous-structure pour pour le template au cas où j'aurai besoin de l'adapter pour que le modèle tourne
-#      valeur: voiture . électrique . consommation estimée
-#      contexte:
-#        voiture . utilisateur: "'propriétaire'"
-
-transport . hébergement . aquatique . empreinte piscine chauffée:
-  applicable si:
-    toutes ces conditions:
-      - est défini: piscine chauffée . présent
-      - piscine chauffée . présent
-  titre: Empreinte annuelle piscine chauffée
-  formule: piscine chauffée . empreinte annuelle
-  unité: kgCO2e
-
-transport . hébergement . aquatique . piscine chauffée:
-  titre: Piscine chauffée
-  icônes: 🏊‍♀️🌡️
-
-transport . hébergement . aquatique . piscine chauffée . présent:
-  question: Allez-vous disposer d'une piscine chauffée ?
-
-###Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data 
-###--> on inscrit en dur l'empreinte
-transport . hébergement . aquatique . piscine chauffée . empreinte annuelle:
-  formule: 2042
-  unité: kgCO2e
-  note: |
-    Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data --> on inscrit en dur l'empreinte dans le modèle
-    On considère donc une piscine de 60 m2 utilisée 12 mois dans l'année, ce qui semble logique pour une piscine chaufée
-    L'empreinte se décompose comme telle : 
-     - Empreinte eau froide : 35.46
-     - Chauffage : 1374,71 (chauffage sans pompe à chaleur)
-     - Traitement chimique : 24.31
-     - Pompe de filtrage	: 194,08
-     - Construction : 414.04
-#  valeur: transport . piscine
-#  contexte:
-#    métrique: "'carbone'"
-#    transport . piscine . surface: 60 #On considère une piscine de 5 x 12
-#    transport . piscine . type: "'creusée'"
-#    voiture . électrique . consommation aux 100:   # Je garde cette sous-structure pour pour le template au cas où j'aurai besoin de l'adapter pour que le modèle tourne
-#      valeur: voiture . électrique . consommation estimée
-#      contexte:
-#        voiture . utilisateur: "'propriétaire'"
-
-transport . hébergement . aquatique . empreinte spa jacuzzi:
-  applicable si:
-    toutes ces conditions:
-      - est défini: spa jacuzzi . présent
-      - spa jacuzzi . présent
-  titre: Empreinte annuelle spa jacuzzi
-  icônes: 🧖‍♂️♨️
-  formule: spa jacuzzi . empreinte annuelle
-  unité: kgCO2e
-
-transport . hébergement . aquatique . spa jacuzzi:
-  titre: Spa, sauna, hammam, bain nordique
-  icônes: 🧖‍♂️♨️
-
-transport . hébergement . aquatique . spa jacuzzi . présent:
-  question: Allez-vous disposer d'un spa/jacuzzi ?
-
-###Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data 
-###--> on inscrit en dur l'empreinte
-transport . hébergement . aquatique . spa jacuzzi . empreinte annuelle:
-  formule: 1701
-  unité: kgCO2e
-  note: |
-    Impossible de faire fonctionner une fonction 'contexte' ou les règles importées de futureco-data --> on inscrit en dur l'empreinte
-    On considère donc un spa d'environ 20 m2 (5m de diamètre) utilisée 12 mois dans l'année, ce qui semble logique pour une piscine chaufée
-    L'empreinte se décompose comme telle : 
-     - Empreinte eau froide : 11.82
-     - Chauffage : 1374,71 (chauffage sans pompe à chaleur)
-     - Traitement chimique : 24.31
-     - Pompe de filtrage	: 194,08
-     - Construction : 96.16
-    /!\ L'estimation de l'empreinte du chauffage, du traitement chimique et du filtrage n'est pas fonction du volume d'eau à traiter 
-    --> l'empreinte de ces trois traitements est donc identique entre une piscine chaufée de 60 m2 et un spa d'environ 20 m2.
-#  valeur: transport . piscine
-#  contexte:
-#    métrique: "'carbone'"
-#    transport . piscine . surface: 10 #On considère une piscine de 3 x 3
-#    transport . piscine . type: "'hors sol'"
-#    voiture . électrique . consommation aux 100:   # Je garde cette sous-structure pour pour le template au cas où j'aurai besoin de l'adapter pour que le modèle tourne
-#      valeur: voiture . électrique . consommation estimée
-#      contexte:
-#        voiture . utilisateur: "'propriétaire'"

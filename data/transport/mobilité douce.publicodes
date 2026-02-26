@@ -24,11 +24,6 @@ transport . mobilité douce . type:
   question: Quel(s) mode(s) de déplacement "actif" utilisez-vous lors de vos déplacements professionnels  ?
   titre: Déplacements actifs 
   description: Avec ou sans assistance électrique (marche, vélo, trottinette)
-#  description: |
-#    Ces déplacements incluent tout ce qu'on regroupe aussi sous le terme de mobilité douce car il s'agit de déplacements alternatifs aux transports motorisés. Cela
-#    inclut la marche, les vélos électriques ou non, les trottinettes électriques ou non, les gyropodes, etc.
-#
-#    Si vous n'utilisez pas de modes de déplacements actifs, cliquez sur "Aucun", puis passez à la question suivante.
   formule:
     somme:
       - marche
@@ -37,21 +32,21 @@ transport . mobilité douce . type:
       - trottinette électrique
   note: Pour la question des modalités utilisées pour aller et revenir de son lieu de séjour, nous excluons les petits véhicules électriques (gyropod, hoverboard, etc.) ainsi que la trottinette non électrique.
 
-### On commente car on ne veut pas voir poper la notif
-#transport . mobilité douce . type . notif marche ou vélo:
-#  type: notification
-#  formule:
-#    une de ces conditions:
-#      - type . marche . présent = oui
-#      - type . vélo . présent = oui
-#  description: |
-#    **Vous avez renseigné marcher ou faire du vélo ?**
-#    Félicitations ! 👏
-#
-#    Le vélo est un mode de transport super sobre : on utilise 15 kilos de matériel pour déplacer un corps de ~70 kilos.
-#    Quant à vos chaussures, elles sont un véhicule ultra léger !
-#
-#    💡 A noter que l'empreinte de la marche et de **l'usage** du vélo classique (et non la fabrication) est considérée comme nulle.
+
+transport . mobilité douce . type . notif marche ou vélo:
+ type: notification
+ formule:
+   une de ces conditions:
+     - type . marche . présent = oui
+     - type . vélo . présent = oui
+ description: |
+   **Vous avez renseigné marcher ou faire du vélo ?**
+   Félicitations ! 👏
+
+   Le vélo est un mode de transport super sobre : on utilise 15 kilos de matériel pour déplacer un corps de ~70 kilos.
+   Quant à vos chaussures, elles sont un véhicule ultra léger !
+
+   💡 A noter que l'empreinte de la marche et de **l'usage** du vélo classique (et non la fabrication) est considérée comme nulle.
 
 transport . mobilité douce . type . marche:
   titre: Marche
@@ -69,7 +64,6 @@ transport . mobilité douce . type . vélo:
   titre: Vélo classique
   applicable si: présent
   icônes: 🦵🚲
-# On proratise la construction en fonction de la durée du séjour car il s'agit très certainement d'un vélo de location
   formule: construction amortie
   unité: kgCO2e
   note: |
