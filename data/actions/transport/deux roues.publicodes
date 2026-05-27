@@ -1,5 +1,5 @@
 transport . deux roues . limitation autoroute:
-  titre: Rouler à 110km/h sur l'autoroute pour venir en Hauts-de-France
+  titre: Rouler à 110km/h sur l'autoroute
   icônes: 🏍️🛣️
   applicable si: deux roues . km > 0
   formule: transport . deux roues . empreinte au km * km autoroute * réduction
@@ -7,9 +7,9 @@ transport . deux roues . limitation autoroute:
     Diminuer sa vitesse de 20 km/h sur l’autoroute permet de réduire sa consommation de carburant de l’ordre de 20 %.
 
 transport . deux roues . limitation autoroute . km autoroute:
-  formule: voiture . km * 0.9
+  formule: voiture . km * 0.7
   note: |
-    On considère que 90 % des km faits pour venir en Hauts-de-France le seront sur autoroute.
+    On considère que 70 % des km faits pour les déplacements professionnels le sont sur autoroute
   unité: km
 
 transport . deux roues . limitation autoroute . réduction:
@@ -24,9 +24,9 @@ transport . deux roues . scooter électrique:
   applicable si:
     toutes ces conditions:
       - est non défini: transport . deux roues . présent
-      - est défini: DT . deux roues . présent
-      - DT . deux roues . présent
-      - DT . deux roues . type = 'scooter thermique'
+      - est défini: transport . deux roues . présent
+      - transport . deux roues . présent
+      - transport . deux roues . type = 'scooter thermique'
   non applicable si:
     toutes ces conditions:
       - est défini: transport . deux roues . présent
@@ -34,13 +34,13 @@ transport . deux roues . scooter électrique:
       - une de ces conditions:
         - transport . deux roues . type = 'moto inf 250'
         - transport . deux roues . type = 'moto sup 250'
-  formule: DT . deux roues - transport . deux roues . scooter électrique . recalcul
+  formule: transport . deux roues - transport . deux roues . scooter électrique . recalcul
   description: |
     Rapidité, facilité pour se garer, consommation de carburant réduite… vous êtes nombreux à opter pour des scooters qui peuvent être une alternative à la voiture car ils émettent moins de CO2 et sont 3 à 4 fois moins vorace en place.
 
     Le marché évolue dans le bon sens : les fabricants sortent des alternatives peu polluantes : comme des scooters électriques.
 
 transport . deux roues . scooter électrique . recalcul:
-  valeur: DT . deux roues
+  valeur: transport . deux roues
   contexte:
-    DT . deux roues . type: "'scooter électrique'"
+    transport . deux roues . type: "'scooter électrique'"

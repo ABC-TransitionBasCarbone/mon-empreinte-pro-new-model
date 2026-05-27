@@ -11,6 +11,8 @@ bureaux . déchets:
         alors: empreinte
       - si: tri = 'toujours'
         alors: 0.5 * empreinte
+      - si: tri = 'zéro déchet'
+        alors: 0 * empreinte
       - sinon: empreinte
   unité: kgCO2e
 
@@ -29,6 +31,8 @@ bureaux . déchets . tri:
     
     Répondez "Non" si vous ne faites jamais le tri.
 
+    Répondez "Zéro déchet" si vous ne générez aucun déchets au travail
+
     On parle ici de tous les déchets produits au bureau (papiers, emballages, déchets alimentaires, etc).
   par défaut: "'non'"
   formule:
@@ -38,6 +42,7 @@ bureaux . déchets . tri:
         - jamais
         - parfois
         - toujours
+        - zéro déchet
         
 bureaux . déchets . tri . jamais:
   titre: Non, je ne trie pas mes déchets
@@ -53,6 +58,11 @@ bureaux . déchets . tri . toujours:
   titre: Oui, tout le temps
   description: |
     Vous cherchez toujours à jeter un déchet dans la poubelle qui lui est destiné.
+
+bureaux . déchets . tri . zéro déchet:
+  titre: Je suis zéro déchet
+  description: |
+    Vous ne générez aucun déchets au travail.
 
 # papier carton _____________________________
 bureaux . déchets . papiers:

@@ -1,0 +1,48 @@
+bureaux . audit: 
+  titre: Audit énergétique
+  icônes: ⚡
+  description:
+    Demander ou porter un audit énergétique des locaux.
+
+##tri
+
+bureaux . déchets . plus de tri:
+  titre: Tri des déchets
+  icônes: 📦🚯
+  non applicable si: bureaux . déchets . tri = 'toujours'
+  formule: bureaux . déchets - recalcul
+  description: 
+    Pensez à bien trier vos déchets alimentaires et de bureaux dans les bacs prévus.
+
+    En France, toute entreprise doit organiser le tri à la source de ses déchets et mettre en place les dispositifs adaptés pour le permettre (Service-public.fr, fiche F37782).
+
+bureaux . déchets . plus de tri . recalcul:
+  valeur: bureaux . déchets
+  contexte:
+    bureaux . déchets . tri: "'toujours'"
+
+##zéro déchet
+
+bureaux . déchets . zéro déchet:
+  titre: 0 déchet
+  non applicable si: bureaux . déchets . tri = 'zéro déchet'
+  formule: bureaux . déchets - recalcul 
+
+bureaux . déchets . zéro déchet . recalcul:
+  valeur: bureaux . déchets
+  contexte:
+    bureaux . déchets . tri: "'zéro déchet'"
+
+##TT
+
+bureaux . TT:
+bureaux . TT . température:
+  non applicable si: DT . TT = 5
+  titre: Chauffage TT
+  icône: ♨️
+  description:
+    Quand je suis en télétravail, je veille à ne pas surchauffer en accord avec les recommandations de l'ADEME https://agirpourlatransition.ademe.fr/particuliers/amenager-maison/chauffer/bons-gestes-chauffage-plus-economique
+    Si j'ai froid, je mets un pull.
+
+
+

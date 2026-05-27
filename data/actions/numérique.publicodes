@@ -6,31 +6,31 @@ numérique . internet . durée journalière . réduction:
   description: Nous proposons ici de réduire d'une heure le temps passé à regarder des vidéos en ligne.
   unité: h/jour
 
-# numérique . appareils . allongement:
-#   titre: Allonger la vie de tous ses appareils
-#   icônes: 💪💻️
-#   formule: numérique . appareils - numérique . appareils . préservation allongée
-#   description: |
-#     > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
+numérique . appareils . allongement:
+  titre: Allonger la vie de tous ses appareils
+  icônes: 💪💻️
+  formule: numérique . appareils - numérique . appareils . préservation allongée
+  description: |
+    > Découvrez toutes les solutions pour prolonger la vie de vos appareils et pour économiser les ressources de la planète sur le site [Épargnons nos ressources](https://epargnonsnosressources.gouv.fr/).
+    Vous pouvez aussi demander une formation d’utilisation et d’entretien des équipements numérique pour allonger la durée de vie 
 
-# numérique . appareils . préservation allongée:
-#   valeur: numérique . appareils
-#   contexte:
-#     coefficient préservation: 4 / 3
+numérique . appareils . préservation allongée:
+  valeur: numérique . appareils * 1.25
+
 
 numérique . reconditionné:
-  titre: Acheter des appareils reconditionnés
+  titre: Utiliser des appareils reconditionnés
   icônes: ♻️💻️
   formule: numérique . appareils * 0.5 # On diminue de moitié arbitrairement
   description: |
-    Acheter un appareil reconditionné permet d'éviter la fabrication d'un appareil neuf, qui consomme de l'énergie et des ressources.
+    Utiliser un appareil reconditionné permet d'éviter la fabrication d'un appareil neuf, qui consomme de l'énergie et des ressources.
 
 numérique . réduire ia:
   titre: Limiter l'usage de l'IA générative
   icônes: 🤖❌
   formule: numérique . ia * 0.5 # On diminue de moitié arbitrairement
   description: |
-    L'utilisation d'outils d'intelligence artificielle générative (comme ChatGPT, DALL-E, etc.) nécessite une puissance de calcul importante, ce qui se traduit par une consommation d'eau et d'énergie élevée.
+    L'utilisation d'outils d'intelligence artificielle générative (comme ChatGPT, Claude, etc.) nécessite une puissance de calcul importante, ce qui se traduit par une consommation d'eau et d'énergie élevée.
 
     Pour réduire votre empreinte carbone liée à l'utilisation de ces outils, limitez leur usage aux situations où ils sont vraiment nécessaires ou priviligiez des petits modèles spécifiques à votre besoin.
 
