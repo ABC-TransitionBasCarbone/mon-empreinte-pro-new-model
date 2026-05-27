@@ -296,9 +296,9 @@ DT . voiture . faire du covoiturage:
       - voiture . utilisateur = 'utilisateur . propriétaire'
       - voyageurs = 1
   icônes: 🚗👥
-# Revoir les formules
-#  formule: empreinte * (1 - 1 / boulot . covoiturage . nombre de voyageurs)
-   formule: empreinte calculée - (empreinte / (voyageurs + nombre de covoitureurs))
+#Revoir les formules
+#formule: empreinte * (1 - 1 / boulot . covoiturage . nombre de voyageurs)
+  formule: empreinte calculée - (empreinte / (voyageurs + nombre de covoitureurs))
   unité: kgCO2e
   description: |
     3 % seulement des déplacements quotidiens en France sont réalisés en covoiturage. C’est peu, surtout quand on sait que 70 % des déplacements domicile-travail sont réalisés au moyen de véhicules individuels.
