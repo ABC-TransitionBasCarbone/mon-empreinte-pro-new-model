@@ -107,10 +107,7 @@ alimentation . plats:
   question: Comment se composent vos repas du midi sur une semaine type de travail ? 
   titre: Empreinte des repas
   description: |
-    On inclut le repas du midi car il est directement lié au cadre professionnel : il existe parce que l’on travaille.
-
-    Que le déjeuner soit pris au restaurant d’entreprise, avec des tickets restaurant fournis par l’employeur, ou à domicile en télétravail, c’est un impact induit par l’activité professionnelle et organisé en partie par l’entreprise.
-    
+    Le déjeuner peut être intégré à l’empreinte carbone professionnelle dans la mesure où la journée de travail induit la prise d’un repas : il s’agit donc d’une consommation liée à l’activité professionnelle, dont l’impact peut être attribué à celle-ci. 
     Vous devez renseignez ici les 5 repas du midi de votre semaine de travail type.
   formule:
     somme:
