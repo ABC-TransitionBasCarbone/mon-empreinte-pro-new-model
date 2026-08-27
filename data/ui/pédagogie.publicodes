@@ -74,12 +74,14 @@ ui . pédagogie . sous catégories . DT . voiture:
   icônes: 🚗
   formule: DT . voiture
   actions:
+    - DT . voiture . faire du covoiturage
     - DT . voiture . éco-conduite
     - DT . voiture . opter transport commun
     - DT . voiture . intensifier transport commun
     - DT . voiture . sans voiture
   informations:
-    - informations regionales . DT . covoiturage
+    - informations regionales . DT . voiture . covoiturage
+    - informations regionales . DT . voiture . écoconduite
 
 ui . pédagogie . sous catégories . DT . deux roues:
   titre: déplacement domicile - travail en deux roues

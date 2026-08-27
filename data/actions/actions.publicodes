@@ -40,6 +40,7 @@ actions:
       - transport . deux roues . scooter électrique
       - transport . train déplacements pro
       - DT . voiture . éco-conduite
+      - DT . voiture . faire du covoiturage
       - DT . voiture . opter transport commun
       - DT . voiture . intensifier transport commun
       - DT . voiture . sans voiture

@@ -10,12 +10,20 @@ informations regionales . transport . alternartives train:
     C'est sur [SNCF Connect](https://www.sncf-connect.com/) 
 
 informations regionales . DT:
-informations regionales . DT . covoiturage:
+informations regionales . DT . voiture:
+informations regionales . DT . voiture . covoiturage:
   titre: (A personnaliser) Connaissez-vous notre application de covoiturage entre collègue !
   icônes: 🖥️❌
   intensiteCouleur: 100
   description: |
     Trouvez un collègue près de chez vous pour covoiturer jusqu'à votre lieu de travail. Plus d'informations [ici]()
+
+informations regionales . DT . voiture . écoconduite:
+  titre: (A personnaliser) Découvrez nos ressources pour apprendre à écoconduire !
+  icônes: 🖥️❌
+  intensiteCouleur: 100
+  description: |
+    Vidéos, témoignages, simulations avec nos ressources dédiées, vous serez bientôt un pro de l'écoconduite. Plus d'informations [ici]()
 
 informations regionales . numérique:
 informations regionales . numérique . ia:
