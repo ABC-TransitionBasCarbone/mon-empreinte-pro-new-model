@@ -3,6 +3,7 @@ DT:
     toutes ces conditions:
       - DT . congé >= 0
       - DT . TT >= 0  
+      - DT . filtrage > 0
   titre: Déplacements domicile-travail
   mosaique:
     type: selection
@@ -53,8 +54,22 @@ DT . choix utilisateur:  ### Enlever les par défaut: non
 DT . empreinte par défaut:
   formule: DT . voiture . empreinte par défaut
 
+DT . filtrage:
+  #ordre: 3
+  titre: Filtrage par entité
+  question: Dans quel service travaillez-vous ?
+  description: |
+    Si vous ne trouvez pas votre service, répondez "Autres"
+  suggestions:
+    Ressources humaines: 1
+    Informatique: 2
+    Commercial: 3
+    Direction: 4
+    Autres: 99
+  par défaut: 99
 
 DT . congé:
+  applicable si: DT . filtrage > 0 #Je mets ça là comme un hack pour que la question filtrage s'affiche avan la mosaique (sinon ça ne le fait pas). Toutefois, la question congés s'affiche quand même avant la question filtrage...
   #ordre: 1
   titre: Jours de congés pris par an
   question: Combien de jours êtes vous absent du travail par an (congés, RTT, etc.)
