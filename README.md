@@ -88,6 +88,14 @@ La branche par défaut du dépôt est `preprod`, notre branche de développement
 
 `master` est la branche depuis laquelle code est versionné et publié sur NPM.
 
+### Questionnaire MIP
+
+L'ordre des questions est défini par `ordre` dans les sources Publicodes ; les
+conditions d'affichage, libellés et choix sont également portés par le modèle.
+Les régressions du questionnaire se vérifient avec `yarn test:questionnaire`.
+Après `yarn compile:fr`, le modèle généré doit être intégré dans MIP et dans les
+modèles des campagnes concernées pour que les corrections soient effectives.
+
 ### QuickDoc
 
 Pour faciliter le développement, nous avons mis en place un outil de
