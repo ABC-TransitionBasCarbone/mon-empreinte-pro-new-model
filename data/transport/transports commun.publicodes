@@ -25,6 +25,7 @@ transport . transports commun . type:
       - métro ou tram
 
 transport . transports commun . type . bus:
+  non applicable si: présent = non
   titre: Bus
   icônes: 🚌
   description: |
@@ -84,6 +85,7 @@ transport . transports commun . type . bus . heures:
   par défaut: 0.5
 
 transport . transports commun . type . métro ou tram:
+  non applicable si: présent = non
   titre: Métro, tramway, train de banlieue
   icônes: 🚊
   description: |

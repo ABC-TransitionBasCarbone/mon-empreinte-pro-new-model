@@ -54,6 +54,7 @@ transport . voiture:
             - sinon: 0 
           
 transport . voiture . km:
+  ordre: 2
   titre: Km en voiture
   applicable si: voiture . présent
   question: Dans le cadre de vos déplacements professionnels, combien de kilomètres parcourez-vous en voiture chaque mois ?
@@ -68,6 +69,7 @@ transport . voiture . km:
   plancher: 0
 
 transport . voiture . meme voiture:
+  ordre: 3
   question: Utilisez-vous le même véhicule pour vos déplacements professionnels que celui que vous utilisez pour vos trajets domicile-travail ?
   applicable si: 
     toutes ces conditions:
@@ -140,6 +142,7 @@ transport . voiture . nombre véhicules circulation . VUL:
     On garde la sémantique du modèle source NGC (propriétaire, régulier non propriétaire, non régulier) pour ne pas se compliquer quand bien même elle n'est pas des plus claire au regard des cas d'utilisation (proprio, location/emprunt, covoit)
 
 transport . voiture . passagers:
+  ordre: 8
   applicable si: voiture . présent
   question: Combien il y a t-il en moyenne de passagers avec vous lors de vos déplacements professionnels en voiture ?
   description: |
@@ -384,6 +387,7 @@ transport . voiture . empreinte au kilomètre calculée:
     > Hybride : enlever 15% aux consommations ci-dessus (source ADEME: http://www2.ademe.fr/servlet/KBaseShow?catid=13655)
 
 transport . voiture . motorisation:
+  ordre: 5
   question: Quelle est la motorisation de la voiture que vous utilisez le plus pour vos déplacements professionnels ?
   description: |
     Si vous l'ignorez, choisissez la motorisation thermique, qui est la plus répandue.
@@ -425,6 +429,7 @@ transport . voiture . thermique . consommation au kilomètre:
   unité: l/km
 
 transport . voiture . thermique . consommation aux 100:
+  ordre: 6
   question: Connaissez-vous la consommation moyenne de la voiture ?
   applicable si:
     toutes ces conditions:
@@ -619,6 +624,7 @@ transport . voiture . thermique . empreinte au litre:
   unité: kgCO2e/l
 
 transport . voiture . thermique . carburant:
+  ordre: 7
   question: Quel type de carburant la voiture consomme-t-elle ?
   applicable si:
     toutes ces conditions:
@@ -696,6 +702,7 @@ transport . voiture . électrique . consommation au kilomètre:
   unité: kWh/km
 
 transport . voiture . électrique . consommation aux 100:
+  ordre: 6
   titre: Consommation électrique au km
   question: Connaissez-vous la consommation moyenne de la voiture ?
   description: |
@@ -734,6 +741,7 @@ transport . voiture . électrique . consommation estimée:
   note: Données moyennes fournies par le service Transport et Mobilité de l'ADEME.
 
 transport . voiture . gabarit:
+  ordre: 4
   question: Quel est le gabarit de la voiture que vous utilisez le plus pour vos déplacements professionnels ?
   applicable si:
     toutes ces conditions:

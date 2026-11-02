@@ -1,11 +1,13 @@
 bureaux . énergie:
   titre: énergie consommée dans les bureaux
-  applicable si: question rhétorique
   icônes: 🏢
   description: |
     Dans le cadre de ce calculateur, nous allons prendre en compte les consommations d'énergie associées au chauffage et à l'electricité des bureaux dans lesquels vous travaillez et de votre logment lorsque vous êtes en télétravail, ces chiffres se basent sur des moyennes nationales, 
   formule:
-    bureaux . énergie . empreinte
+    variations:
+      - si: question rhétorique = 'ok'
+        alors: empreinte
+      - sinon: empreinte
 
 bureaux . énergie . question rhétorique:
   titre: Question d'information sur les consommation d'énergie associée à la vie de bureau et au télétravail (Chauffage, climatisation, électricité)
