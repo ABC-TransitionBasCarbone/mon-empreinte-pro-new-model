@@ -25,7 +25,7 @@
     "compile:rules": "node scripts/rulesToJSON.mjs",
     "test:personas": "node tests/testPersonas.mjs",
     "test:optim": "node tests/testOptim.mjs",
-    "test:translation": "node tests/testTranslation.mjs",
+    "test:translation": "node --test tests/unit/addTranslationToBaseRules.test.mjs && node tests/testTranslation.mjs",
     "test:questionnaire": "node --test tests/unit/questionnaire.test.mjs",
     "test": "yarn test:questionnaire && yarn test:personas && yarn test:optim && yarn test:translation",
     "translate": "node scripts/i18n/translate-rules.mjs && node scripts/i18n/translate-personas.js",
