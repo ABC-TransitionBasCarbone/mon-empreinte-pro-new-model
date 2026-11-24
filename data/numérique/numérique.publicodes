@@ -59,7 +59,7 @@ numérique:
 
 numérique . ia:
   icônes: 🤖
-  formule: empreinte requête * nombre de requêtes par jour * (251 - DT . congé)
+  formule: empreinte requête * nombre de requêtes par jour * (251 jour - DT . congé)
 
 numérique . ia . empreinte requête:
   formule:
@@ -86,7 +86,7 @@ numérique . ia . nombre de requêtes par jour:
 
 numérique . visio:
   icônes: 🎥
-  formule: empreinte horaire * durée journalière * (251 - DT . congé)
+  formule: empreinte horaire * durée journalière * (251 jour - DT . congé)
 
 numérique . visio . empreinte horaire:
   formule: 0.995 kgCO2e/h
@@ -108,7 +108,7 @@ numérique . visio . durée journalière:
 
 numérique . internet:
   icônes: 🌐
-  formule: empreinte horaire * durée journalière * (251 - DT . congé)
+  formule: empreinte horaire * durée journalière * (251 jour - DT . congé)
 
 numérique . internet . empreinte horaire:
   formule:
@@ -436,4 +436,3 @@ numérique . appareils . nombre total:
       - ordinateur fixe . nombre
       - tablette . nombre
       - imprimante . nombre
-

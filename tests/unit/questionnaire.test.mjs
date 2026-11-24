@@ -88,12 +88,21 @@ test('the office information has a single OK choice and keeps the footprint afte
   assert.deepEqual(rules[question].formule['une possibilité'].possibilités, ['ok'])
   assert.equal(rules[`${question} . ok`].titre, 'OK')
   const current = engine.shallowCopy().setSituation({})
+  const nonOfficeTotal = rules.bilan.formule.somme
+    .filter((category) => category !== 'bureaux')
+    .reduce((total, category) => total + current.evaluate(category).nodeValue, 0)
   assert.equal(current.evaluate('bureaux . énergie').nodeValue, 282)
+  assert.ok(
+    Math.abs(current.evaluate('bilan').nodeValue - (nonOfficeTotal + current.evaluate('bureaux').nodeValue)) < 1e-9,
+  )
   assert.ok(
     Object.hasOwn(current.evaluate('bureaux . énergie').missingVariables, question)
   )
   current.setSituation({ [question]: "'ok'" })
   assert.equal(current.evaluate('bureaux . énergie').nodeValue, 282)
+  assert.ok(
+    Math.abs(current.evaluate('bilan').nodeValue - (nonOfficeTotal + current.evaluate('bureaux').nodeValue)) < 1e-9,
+  )
 })
 
 test('the commuting two-wheel passenger question counts the driver and has a numeric default', () => {
