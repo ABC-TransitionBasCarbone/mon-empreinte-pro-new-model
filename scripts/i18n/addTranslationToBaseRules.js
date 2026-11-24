@@ -35,6 +35,8 @@ const addTranslationToBaseRules = (baseRules, translatedRules) => {
     baseRuleSuggestions,
     translatedSuggestionsKeys
   ) => {
+    if (baseRuleSuggestions == null) return
+
     const suggestionValues = Object.values(baseRuleSuggestions)
     const translatedSuggestions = Object.fromEntries(
       translatedSuggestionsKeys.map((translatedKey, i) => [
@@ -58,7 +60,7 @@ const addTranslationToBaseRules = (baseRules, translatedRules) => {
               updateBaseRulesWithSuggestions(
                 rule,
                 attr,
-                baseRule.suggestions,
+                baseRule?.suggestions,
                 transVal
               )
               break
@@ -67,8 +69,8 @@ const addTranslationToBaseRules = (baseRules, translatedRules) => {
               updateBaseRulesWithSuggestions(
                 rule,
                 [attr, 'suggestions'],
-                baseRule.mosaique.suggestions,
-                transVal.suggestions
+                baseRule?.mosaique?.suggestions,
+                transVal?.suggestions
               )
               break
             }
